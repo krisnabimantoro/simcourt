@@ -1,4 +1,6 @@
-import { Book, ChevronDown, Gavel, Home, LogOut, ScrollText, User } from "lucide-react";
+"use client";
+
+import { Book, ChevronDown, CircleHelp, Gavel, LayoutDashboard, LogOut, Moon, ScrollText, Sun, User } from "lucide-react";
 import { SidebarFooter, SidebarHeader, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar";
 
 import {
@@ -11,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
+import { useTheme } from "next-themes";
 import { Collapsible, CollapsibleTrigger } from "../../../../components/ui/collapsible";
 import { CollapsibleContent } from "@radix-ui/react-collapsible";
 import Link from "next/link";
@@ -30,15 +32,13 @@ const kemahasiswaan = [
   {
     title: "Dashboard",
     url: "/mahasiswa/dashboard",
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
     title: "KRS Kelas",
     url: "/mahasiswa/krskelas",
     icon: Book,
   },
-
-
 ];
 
 const persidangan = [
@@ -97,10 +97,11 @@ const subPerdataKhusus = [
 ];
 
 export function AppSidebar() {
+  const { setTheme } = useTheme();
   return (
     <Sidebar>
       <SidebarHeader>
-        <CardHeaderSidebar/>
+        <CardHeaderSidebar />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -177,6 +178,22 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Sistem</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem key={"faq"}>
+                <SidebarMenuButton>
+                  <a href="/faq" className="flex justify-center items-center gap-2">
+                    <CircleHelp width={16} height={16}/>
+                    FAQ
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter>
@@ -192,6 +209,13 @@ export function AppSidebar() {
               <Link href={"/profile"} className="flex gap-1 w-full">
                 <User /> Profle
               </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("light")}>
+              {" "}
+              <Sun /> Light
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>
+              <Moon /> Dark
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="flex gap-1">
