@@ -8,7 +8,7 @@ import CardPersidangan from "./components/card-persidangan";
 
 export default function DashboardMahasiswa() {
   return (
-    <div className="w-[calc(100vw-18rem)] ml-2 ">
+    <div className="w-[calc(100vw-18rem)]  ml-2 ">
       <Typography.H2 className="flex flex-col">
         Halaman Dashboard{" "}
         <span>
@@ -16,7 +16,7 @@ export default function DashboardMahasiswa() {
         </span>
       </Typography.H2>
 
-      <div className="flex gap-2 mt-4">
+      <div className="flex h-full gap-2 mt-4">
         <div className="w-full">
           <BlurFade delay={0.05}>
             <CardTatacara />
