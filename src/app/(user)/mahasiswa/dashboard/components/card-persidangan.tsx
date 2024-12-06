@@ -2,48 +2,34 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const invoices = [
+const status = [
   {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
+    noSidang: "INV001",
+    status: "selesai",
   },
   {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
+    noSidang: "INV002",
+    status: "dibatalkan",
   },
   {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
+    noSidang: "INV003",
+    status: "selesai",
   },
   {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
+    noSidang: "INV004",
+    status: "tertunda",
   },
   {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
+    noSidang: "INV005",
+    status: "selesai",
   },
   {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
+    noSidang: "INV006",
+    status: "selesai",
   },
   {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
+    noSidang: "INV007",
+    status: "selesai",
   },
 ];
 
@@ -63,31 +49,27 @@ export default function CardPersidangan() {
 
 export function TablePersidangan() {
   return (
-    <ScrollArea className="h-[150px] w-[350px] rounded-md border ">
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+    <div className=" max-h-[120px] overflow-y-auto ">
+      <Table className="">
+        {/* <TableCaption>A list of your recent noSidangs.</TableCaption> */}
         <TableHeader>
           <TableRow>
-            <TableHead className="w-1/2">Persidangan</TableHead>
+            <TableHead>Persidangan</TableHead>
 
-            <TableHead >Status</TableHead>
+            <TableHead className="text-right">Status</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+        {/* <ScrollArea className="h-[120px] w-full rounded-md border "> */}
+        <TableBody className="">
+          {status.map((sidang) => (
+            <TableRow key={sidang.noSidang}>
+              <TableCell className="font-medium">{sidang.noSidang}</TableCell>
+              <TableCell className="text-right">{sidang.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
+        {/* </ScrollArea> */}
       </Table>
-    </ScrollArea>
+    </div>
   );
 }

@@ -57,7 +57,7 @@ const persidangan = [
 const subPerdata = [
   {
     title: "Gugatan",
-    url: "#",
+    url: "/mahasiswa/perdata/gugatan",
   },
   {
     title: "Bantahan",

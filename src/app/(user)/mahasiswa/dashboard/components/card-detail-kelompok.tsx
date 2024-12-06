@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 
 export default function CardKelompok() {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Detail Kelompok</CardTitle>
         <CardDescription>Informasi Singkat</CardDescription>

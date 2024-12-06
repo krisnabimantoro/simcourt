@@ -11,12 +11,12 @@ export default function DashboardMahasiswa() {
     <div className="w-[calc(100vw-18rem)]  ml-2 ">
       <Typography.H2 className="flex flex-col">
         Halaman Dashboard{" "}
-        <span>
+        <div>
           <p className="text-sm font-normal">Informasi Terkait Sim-Court</p>
-        </span>
+        </div>
       </Typography.H2>
 
-      <div className="flex h-full gap-2 mt-4">
+      <div className="flex gap-2 mt-4 h-full">
         <div className="w-full">
           <BlurFade delay={0.05}>
             <CardTatacara />

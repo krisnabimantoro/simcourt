@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 
 export default function CardInformasi() {
   return (
-    <Card className="h-">
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Informasi Simcourt</CardTitle>
         <CardDescription>Lorem ipsum dolor sit amet consectetur adipisicing elit. </CardDescription>
