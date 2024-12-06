@@ -1,8 +1,6 @@
-"use client";
 import Typography from "@/components/ui/typhography";
 import { Separator } from "@radix-ui/react-separator";
-
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { promises as fs } from "fs";
 import { Input } from "@/components/ui/input";
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,6 +13,12 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Label } from "@/components/ui/label";
 
 import { useState } from "react";
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "@/components/ui/columns";
+import path from "path";
+import { z } from "zod";
+import { taskSchema } from "@/data/schema";
+import DialogForm from "../components/dialog-form";
 
 const invoices = [
   {
@@ -61,10 +65,19 @@ const invoices = [
   },
 ];
 
-export default function Gugatan() {
-  const [selectedValue, setSelectedValue] = useState("");
+async function getTasks() {
+  const data = await fs.readFile(path.join(process.cwd(), "src/data/task.json"));
+
+  const tasks = JSON.parse(data.toString());
+
+  return z.array(taskSchema).parse(tasks);
+}
+
+export default async function Gugatan() {
+  const tasks = await getTasks();
+
   return (
-    <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-2">
+    <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-4">
       <Typography.H2 className="flex flex-col">
         Daftar Gugatan Online{" "}
         <div>
@@ -89,70 +102,10 @@ export default function Gugatan() {
                   <SelectItem value="belumterdaftar">Perkara Belum Terdaftar</SelectItem>
                 </SelectGroup>
               </SelectContent>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button>
-                    <Plus /> Tambah Gugatan
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="">
-                  <DialogHeader>
-                    <DialogTitle>MEMILIH PENGADILAN TUJUAN MENDAFTAR PERKARA</DialogTitle>
-                    {/* <DialogDescription>
-                      This action cannot be undone. This will permanently delete your account and remove your data from our servers.
-                    </DialogDescription>
-                     */}
-                    <br />
-                    <Label>Mendaftar pada Pengadilan (Ketik Nama Kota)</Label>
-                    <Input placeholder="Pilih Pengadilan atau Ketik Nama Kota Untuk Mencari Cepat" />
-                    <br />
-
-                    <Label>Pembiayaan Perkara</Label>
-                    <Select onValueChange={(value) => setSelectedValue(value)}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Pilih Status Pembayaran" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="nonProdeo">Sudah Membayar</SelectItem>
-                        <SelectItem value="prodeo">Prodeo</SelectItem>
-                      </SelectContent>
-                    </Select>
-
-                    {selectedValue === "prodeo" && <div className="mt-4"></div>}
-                  </DialogHeader>
-                  <DialogFooter>
-                    <Button type="submit">Lanjut Pendaftaran</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <DialogForm />
             </Select>
           </div>
-
-          <Table>
-            <TableCaption>A list of your recent invoices.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Invoice</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Method</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                  <TableCell>{invoice.paymentStatus}</TableCell>
-                  <TableCell className="hover:cursor-pointer">
-                    <Link href={"/persidangan/pendaftaran"}>{invoice.paymentMethod}</Link>
-                  </TableCell>
-                  <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter></TableFooter>
-          </Table>
+          <DataTable data={tasks} columns={columns} />
         </div>
       </BlurFade>
     </div>
