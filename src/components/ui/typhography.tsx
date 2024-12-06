@@ -40,7 +40,7 @@ const TypographyH3 = ({ children, className, ...props }: any) => {
   return (
     <h3
       className={cn(
-        "mt-8 scroll-m-20 text-2xl font-semibold tracking-tight",
+        " scroll-m-20 text-2xl font-semibold tracking-tight",
         className
       )}
       {...props}
