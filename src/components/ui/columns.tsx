@@ -47,10 +47,7 @@ export const columns: ColumnDef<Task>[] = [
 
       return (
         <div className="flex space-x-2">
-            {/* <Link href={"/persidangan"}>
-
-            </Link> */}
-          {label && <Badge variant="outline">{label.label}</Badge>}
+          <Link href={"../persidangan"}>{label && <Badge variant="outline">{label.label}</Badge>}</Link>
           <span className="max-w-[500px] truncate font-medium">{row.getValue("title")}</span>
         </div>
       );

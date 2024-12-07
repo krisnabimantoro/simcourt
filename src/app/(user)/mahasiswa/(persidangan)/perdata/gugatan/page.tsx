@@ -77,7 +77,7 @@ export default async function Gugatan() {
   const tasks = await getTasks();
 
   return (
-    <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-4">
+    <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-3">
       <Typography.H2 className="flex flex-col">
         Daftar Gugatan Online{" "}
         <div>

@@ -18,7 +18,7 @@ export function CardFooterSidebar() {
 export function CardHeaderSidebar() {
   return (
     <div className="flex items-center justify-center w-full h-full p-2">
-      <Image src="/logo.png" width={50} height={74.6} alt="Logo Laboratorium Hukum" className="bg-black p-2 rounded-lg dark:bg-white" />
+      <Image src="/logo.png" width={50} height={74.6} alt="Logo Laboratorium Hukum" className=" p-2 rounded-lg dark:bg-white" />
       <div className="ml-3 items-center justify-center">
         <Typography.H3>Sim-Court</Typography.H3>
         <Typography.P>Sistem lorem ipsum</Typography.P>
