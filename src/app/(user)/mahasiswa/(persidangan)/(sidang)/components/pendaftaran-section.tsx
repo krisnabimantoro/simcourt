@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import Typography from "@/components/ui/typhography";
-import Pendaftaran from '../../../../../persidangan/pendaftaran/page';
+
 
 export default function PendaftaranSection(){
     return(
