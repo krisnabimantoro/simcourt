@@ -21,7 +21,11 @@ const SignUpForm = () => {
             </div>
             <div className="flex flex-col  space-y-1.5">
               <Label htmlFor="nim">NIM</Label>
-              <Input id="nim" placeholder="Masukkan NIM anda" />
+              <Input id="nim" type="number" placeholder="Masukkan NIM anda" />
+            </div>
+            <div className="flex flex-col  space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" placeholder="Masukkan Email anda" />
             </div>
             {/* <Select>
               <Label htmlFor="kelas">Kelas</Label>
@@ -43,14 +47,18 @@ const SignUpForm = () => {
               <Label htmlFor="confirm-pic">Konfirmasi PIC</Label>
               <Input type="password" id="pic" placeholder="Ketik Ulang PIC anda" />
             </div>
+
+            <Button className="w-full pt font-medium" size={"default"}>
+              Buat Akun
+            </Button>
           </div>
         </form>
       </CardContent>
       <CardFooter>
         <div className="flex flex-col w-full gap-2">
-          <Button className="w-full font-medium" size={"default"}>
+          {/* <Button className="w-full font-medium" size={"default"}>
             Buat Akun
-          </Button>
+          </Button> */}
           {/* <Button variant={"outline"} className="w-full font-medium" size={"default"}>
             Sudah Punya Akun
           </Button> */}
