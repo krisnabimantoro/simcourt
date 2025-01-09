@@ -13,10 +13,12 @@ import BlurFade from "@/components/ui/blur-fade";
 export default function Login() {
   return (
     <div className="h-screen w-screen flex  items-center justify-center bg-background gap-[80px]">
-      <div className="w-full justify-center items-center flex h-screen bg-white">
-        <BlurFade>
-          <Image src="/logo.png" width={210} height={210} alt="Logo Laboratorium Hukum" />
-        </BlurFade>
+      <div className="w-full justify-center items-center flex h-screen bg-hero bg-center ">
+        {/* <div className=" w-fit h-fit p-6 bg-white">
+        </div> */}
+          <BlurFade>
+            <Image src="/logo.png" width={210} height={210} alt="Logo Laboratorium Hukum" />
+          </BlurFade>
       </div>
       <div className="w-1/2">
         <BlurFade delay={0.25}>
@@ -26,7 +28,7 @@ export default function Login() {
               <TabsTrigger value="signup">Buat Akun</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
-              <LoginForm />
+              <LoginForm tittleCard={"Login Simcourt"} />
             </TabsContent>
             <TabsContent value="signup">
               <SignUpForm />
