@@ -28,7 +28,7 @@ export default function Login() {
               <TabsTrigger value="signup">Buat Akun</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
-              <LoginForm tittleCard={"Login Simcourt"} />
+              <LoginForm/>
             </TabsContent>
             <TabsContent value="signup">
               <SignUpForm />
