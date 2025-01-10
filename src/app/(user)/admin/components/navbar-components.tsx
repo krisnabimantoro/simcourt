@@ -3,7 +3,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center p-4 bg-black text-white w-full">
+    <nav className="flex justify-between items-center p-4 bg-primary text-white w-full">
       <div className="w-1/2">
         <div className="text-xl">Admin Panel</div>
       </div>
@@ -14,10 +14,10 @@ const Navbar = () => {
               Dashboard
             </Link>
             <Link className="mx-4 hover:text-slate-300 transition-colors" href={"/admin/kelola/instruktur"}>
-              Kelola Mahasiswa
+              Kelola Instruktur
             </Link>
             <Link className="mx-4 hover:text-slate-300 transition-colors" href={"/admin/kelola/mahasiswa"}>
-              Kelola Admin
+              Kelola Mahasiswa
             </Link>
           </li>
         </ul>
