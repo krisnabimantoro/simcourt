@@ -4,6 +4,7 @@ import { Settings2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import TableAnggota from "./table-anggota";
 import Typography from "@/components/ui/typhography";
+import InputSearchAnggota from "./input-search";
 
 export default function CardAnggota() {
   return (
@@ -22,6 +23,7 @@ export default function CardAnggota() {
                   <DialogDescription>
                     This action cannot be undone. This will permanently delete your account and remove your data from our servers.
                   </DialogDescription>
+                  <InputSearchAnggota/>
                   <TableAnggota />
                 </DialogHeader>
               </DialogContent>
