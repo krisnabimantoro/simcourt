@@ -17,7 +17,8 @@ export default function KrsKelas() {
           <InputSearchComponents />
         </div>
       </div>
-      <div className="w-full gap-5 flex pt-4">
+      <Typography.H3 className="mt-4">List Kelas</Typography.H3>
+      <div className="w-full gap-5 flex pt-2">
         <div className="w-1/2">
           <ComponentSelectClass />
         </div>
