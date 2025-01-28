@@ -15,9 +15,9 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./dropdown-menu";
+} from "../../../../../../components/ui/dropdown-menu";
 import { labels } from "@/data/data";
-import { Button } from "./button";
+import { Button } from "../../../../../../components/ui/button";
 import { taskSchema } from "@/data/schema";
 
 interface DataTableRowActionsProps<TData> {

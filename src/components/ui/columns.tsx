@@ -5,68 +5,56 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "./checkbox";
 import { Badge } from "./badge";
 import { labels, priorities, statuses } from "@/data/data";
-import { DataTableColumnHeader } from "./data-table-column-headet";
-import { DataTableRowActions } from "./data-table-row-action";
+import { DataTableColumnHeader } from "../../app/(user)/mahasiswa/(persidangan)/perdata/components/data-table-column-headet";
+import { DataTableRowActions } from "../../app/(user)/mahasiswa/(persidangan)/perdata/components/data-table-row-action";
 import { Task } from "@/data/schema";
 import Link from "next/link";
 
 export const columns: ColumnDef<Task>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+
   {
     accessorKey: "id",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Task" />,
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
-    enableSorting: false,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="No" />,
+    cell: ({ row }) => <div className="w-fit">{row.getValue("id")}</div>,
+    enableSorting: true,
     enableHiding: false,
   },
   {
-    accessorKey: "title",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Title" />,
+    accessorKey: "kode_register",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Kode & Tanggal Register" />,
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
+      const kodeRegister = row.getValue("kode_register");
+      const tanggalRegister = row.original.tanggal_register;
 
       return (
-        <div className="flex space-x-2">
-          <Link href={"../persidangan"}>{label && <Badge variant="outline">{label.label}</Badge>}</Link>
-          <span className="max-w-[500px] truncate font-medium">{row.getValue("title")}</span>
+        <div className="flex flex-col space-x-2">
+          <Link href={"../persidangan"}>
+            <Badge variant="outline">{kodeRegister as string}</Badge>
+          </Link>
+          <span className="max-w-[500px] truncate font-medium">{tanggalRegister}</span>
         </div>
       );
     },
   },
-  {
-    accessorKey: "status",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
-    cell: ({ row }) => {
-      const status = statuses.find((status) => status.value === row.getValue("status"));
 
-      if (!status) {
+  {
+    accessorKey: "status_pembayaran",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Status Pembayaran" />,
+    cell: ({ row }) => {
+      const statusPembayaran = row.getValue("status_pembayaran");
+
+      if (!statusPembayaran) {
         return null;
       }
 
       return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />}
-          <span>{status.label}</span>
+        <div className="flex flex-col space-x-2">
+          <Badge className="w-fit" variant="outline">
+            {statusPembayaran as string}
+          </Badge>
+          <Link href={"../persidangan"}>
+            <span className="max-w-[500px] truncate font-medium text-blue-600">(Konfirmasi Otomatis)</span>
+          </Link>
         </div>
       );
     },
@@ -75,24 +63,58 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: "priority",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Priority" />,
+    accessorKey: "status_pendaftaran",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Status Pendaftaran" />,
     cell: ({ row }) => {
-      const priority = priorities.find((priority) => priority.value === row.getValue("priority"));
+      const statusPendaftaran = row.getValue("status_pendaftaran");
 
-      if (!priority) {
+      if (!statusPendaftaran) {
         return null;
       }
 
       return (
-        <div className="flex items-center">
-          {priority.icon && <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />}
-          <span>{priority.label}</span>
+        <div className="flex flex-col space-x-2">
+          <Badge className="w-fit" variant="outline">
+            {statusPendaftaran as string}
+          </Badge>
         </div>
       );
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: "jumlah_panjar",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Jumlah Panjar Perkara" />,
+    cell: ({ row }) => {
+      const panjar = row.getValue("jumlah_panjar");
+
+      if (!panjar) {
+        return null;
+      }
+
+      return <div className="flex flex-col space-x-2">Rp. {panjar as string}</div>;
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: "nomor_perkara",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Kode Perkara & Tanggal Pendaftaran" />,
+    cell: ({ row }) => {
+      const nomorPerkara = row.getValue("nomor_perkara");
+      const tanggalPendaftaran = row.original.tanggal_pendaftaran;
+
+      return (
+        <div className="flex flex-col space-x-2">
+          <Link href={"../persidangan"}>
+            <Badge variant="outline">{nomorPerkara as string}</Badge>
+          </Link>
+          <span className="max-w-[500px] truncate font-medium">{tanggalPendaftaran}</span>
+        </div>
+      );
     },
   },
   {

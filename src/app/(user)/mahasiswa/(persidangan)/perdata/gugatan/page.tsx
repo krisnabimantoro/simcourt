@@ -13,57 +13,13 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Label } from "@/components/ui/label";
 
 import { useState } from "react";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/app/(user)/mahasiswa/(persidangan)/perdata/components/data-table";
 import { columns } from "@/components/ui/columns";
 import path from "path";
 import { z } from "zod";
 import { taskSchema } from "@/data/schema";
 import DialogForm from "../components/dialog-form";
-
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+import ComponentTablePersidangan from "../components/table-persidangan";
 
 async function getTasks() {
   const data = await fs.readFile(path.join(process.cwd(), "src/data/task.json"));
@@ -106,6 +62,7 @@ export default async function Gugatan() {
             </Select>
           </div>
           <DataTable data={tasks} columns={columns} />
+          {/* <ComponentTablePersidangan /> */}
         </div>
       </BlurFade>
     </div>
