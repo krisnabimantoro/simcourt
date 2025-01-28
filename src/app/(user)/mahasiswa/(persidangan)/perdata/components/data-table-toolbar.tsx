@@ -6,7 +6,8 @@ import { Input } from "../../../../../../components/ui/input";
 import { Button } from "../../../../../../components/ui/button";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DataTableViewOptions } from "./data-table-view-options";
-import { priorities, statuses } from "@/data/data";
+import { priorities, statuses, statusPendaftaran } from "@/data/data";
+import DialogForm from "./dialog-form";
 
 // import { Button } from "@/registry/new-york/ui/button"
 // import { Input } from "@/registry/new-york/ui/input"
@@ -23,17 +24,16 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between gap-2 mb">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter tasks..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("title")?.setFilterValue(event.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
+          placeholder="Cari Persidangan berdasarkan Kode Register"
+          value={(table.getColumn("kode_register")?.getFilterValue() as string) ?? ""}
+          onChange={(event) => table.getColumn("kode_register")?.setFilterValue(event.target.value)}
+          className="h-8 w-full"
         />
-        {table.getColumn("status") && <DataTableFacetedFilter column={table.getColumn("status")} title="Status" options={statuses} />}
-        {table.getColumn("priority") && (
-          <DataTableFacetedFilter column={table.getColumn("priority")} title="Priority" options={priorities} />
+        {table.getColumn("status_pendaftaran") && (
+          <DataTableFacetedFilter column={table.getColumn("status_pendaftaran")} title="Filter Pendaftaran" options={statusPendaftaran} />
         )}
         {isFiltered && (
           <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="h-8 px-2 lg:px-3">
@@ -43,6 +43,7 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
         )}
       </div>
       <DataTableViewOptions table={table} />
+      <DialogForm />
     </div>
   );
 }

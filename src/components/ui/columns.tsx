@@ -117,8 +117,5 @@ export const columns: ColumnDef<Task>[] = [
       );
     },
   },
-  {
-    id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
-  },
+ 
 ];

@@ -43,24 +43,7 @@ export default async function Gugatan() {
       <Separator />
 
       <BlurFade delay={0.05}>
-        <div className="px-4 mt-6">
-          <div className="flex gap-2">
-            <Input placeholder="Cari..." />
-            <Select>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter Perkara" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Detail Status Perkara</SelectLabel>
-                  <SelectItem value="all">Semua Perkara</SelectItem>
-                  <SelectItem value="terdaftar">Perkara Terdaftar</SelectItem>
-                  <SelectItem value="belumterdaftar">Perkara Belum Terdaftar</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-              <DialogForm />
-            </Select>
-          </div>
+        <div className="px-4 mt-6 mb-6">
           <DataTable data={tasks} columns={columns} />
           {/* <ComponentTablePersidangan /> */}
         </div>

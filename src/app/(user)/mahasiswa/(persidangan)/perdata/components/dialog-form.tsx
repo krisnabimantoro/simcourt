@@ -20,7 +20,7 @@ export default function DialogForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="h-8">
           <Plus /> Tambah Gugatan
         </Button>
       </DialogTrigger>

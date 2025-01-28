@@ -15,6 +15,16 @@ export const labels = [
   },
 ];
 
+export const statusPendaftaran = [
+  {
+    value: "Perkara Terdaftar",
+    label: "Perkara Terdaftar",
+  },
+  {
+    value: "Perkara Belum Terdaftar",
+    label: "Perkara Belum Terdaftar",
+  },
+];
 export const statuses = [
   {
     value: "backlog",
