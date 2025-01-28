@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import TableAnggota from "./table-anggota";
 import Typography from "@/components/ui/typhography";
 import InputSearchAnggota from "./input-search";
+import { ComponentComboboxDemo } from "./role-combobox";
 
 export default function CardAnggota() {
   return (
@@ -23,7 +24,7 @@ export default function CardAnggota() {
                   <DialogDescription>
                     This action cannot be undone. This will permanently delete your account and remove your data from our servers.
                   </DialogDescription>
-                  <InputSearchAnggota/>
+                  <InputSearchAnggota />
                   <TableAnggota />
                 </DialogHeader>
               </DialogContent>
@@ -34,14 +35,20 @@ export default function CardAnggota() {
       </CardHeader>
       <CardContent>
         <Typography.H5>Koordinator</Typography.H5>
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between items-center text-sm">
           <p>Krisna Bimantoro</p>
-          <p>202210370311254</p>
-          <p>Hakim</p>
+
+          <ComponentComboboxDemo />
         </div>
       </CardContent>
       <CardFooter>
-        <Typography.H5>Anggota Kelompok</Typography.H5>
+        <div className="flex flex-col w-full">
+          <Typography.H5>Anggota Kelompok</Typography.H5>
+          <div className="flex justify-between items-center text-sm">
+            <p>Krisna Bimantoro</p>
+            <ComponentComboboxDemo />
+          </div>
+        </div>
       </CardFooter>
     </Card>
   );
