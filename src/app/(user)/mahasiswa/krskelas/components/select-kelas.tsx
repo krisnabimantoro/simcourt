@@ -1,28 +1,26 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 
 const items = [
   {
     id: "1",
-    title: "What makes Origin UI different?",
-    content:
-      "Origin UI focuses on developer experience and performance. Built with TypeScript, it offers excellent type safety, follows accessibility standards, and provides comprehensive documentation with regular updates.",
+    title: "Hukum Perdata",
+    content: ["Kelas A", "Kelas B", "Kelas C", "Kelas D", "Kelas E", "Kelas F", "Kelas G", "Kelas H", "Kelas I", "Kelas J", "Kelas K"],
   },
   {
     id: "2",
-    title: "How can I customize the components?",
-    content:
-      "Use our CSS variables for global styling, or className and style props for component-specific changes. We support CSS modules, Tailwind, and dark mode out of the box.",
+    title: "Hukum Pidana",
+    content: ["Kelas A", "Kelas B", "Kelas C", "Kelas D", "Kelas E", "Kelas F", "Kelas G", "Kelas H", "Kelas I", "Kelas J", "Kelas K"],
   },
   {
     id: "3",
-    title: "Is Origin UI optimized for performance?",
-    content: "Yes, with tree-shaking, code splitting, and minimal runtime overhead. Most components are under 5KB gzipped.",
+    title: "Hukum administrasi negara",
+    content: ["Kelas A", "Kelas B", "Kelas C", "Kelas D", "Kelas E", "Kelas F", "Kelas G", "Kelas H", "Kelas I", "Kelas J", "Kelas K"],
   },
   {
     id: "4",
-    title: "How accessible are the components?",
-    content:
-      "All components follow WAI-ARIA standards, featuring proper ARIA attributes, keyboard navigation, and screen reader support. Regular testing ensures compatibility with NVDA, VoiceOver, and JAWS.",
+    title: "Hukum Lingkungan",
+    content: ["Kelas A", "Kelas B", "Kelas C", "Kelas D", "Kelas E", "Kelas F", "Kelas G", "Kelas H", "Kelas I", "Kelas J", "Kelas K"],
   },
 ];
 
@@ -33,7 +31,17 @@ export default function ComponentSelectClass() {
         {items.map((item) => (
           <AccordionItem value={item.id} key={item.id} className="rounded-lg border bg-background px-4 py-1">
             <AccordionTrigger className="py-2 text-[15px] leading-6 hover:no-underline">{item.title}</AccordionTrigger>
-            <AccordionContent className="pb-2 text-muted-foreground">{item.content}</AccordionContent>
+            <AccordionContent className="pb-2 text-muted-foreground">
+              {item.content.map((content, index) => (
+                <div key={index}>
+                  <Card className="w-full my-2">
+                    <CardHeader>
+                      <CardDescription className="hover:cursor-pointer">{content}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                </div>
+              ))}
+            </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
