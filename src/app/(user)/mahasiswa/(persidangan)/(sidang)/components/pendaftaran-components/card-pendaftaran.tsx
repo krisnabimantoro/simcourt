@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function CardPendaftaran() {
   return (
-    <Card className="w-full">
+    <Card className="w-full mt-6">
       <CardHeader>
         <CardTitle>Pendaftaran Perkara (e-Filing)</CardTitle>
         <CardDescription>Deploy your new project in one-click.</CardDescription>

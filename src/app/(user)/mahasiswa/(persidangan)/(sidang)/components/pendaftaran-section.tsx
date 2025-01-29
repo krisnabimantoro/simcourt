@@ -3,6 +3,7 @@ import Typography from "@/components/ui/typhography";
 import CardPendaftaran from "./pendaftaran-components/card-pendaftaran";
 
 import CardPembayaran from "./pendaftaran-components/card-pembayaran";
+import CardSaluranElektronik from "./pendaftaran-components/card-saluran-elektronik";
 
 export default function PendaftaranSection() {
   return (
@@ -12,6 +13,7 @@ export default function PendaftaranSection() {
       <Separator />
       <CardPendaftaran />
       <CardPembayaran />
+      <CardSaluranElektronik />
     </div>
   );
 }
