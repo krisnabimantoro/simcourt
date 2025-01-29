@@ -14,12 +14,11 @@ import { Label } from "@/components/ui/label";
 
 import { useState } from "react";
 import { DataTable } from "@/app/(user)/mahasiswa/(persidangan)/perdata/components/data-table";
-import { columns } from "@/components/ui/columns";
+import { columns } from "@/app/(user)/mahasiswa/(persidangan)/perdata/components/columns";
 import path from "path";
 import { z } from "zod";
 import { taskSchema } from "@/data/schema";
 import DialogForm from "../components/dialog-form";
-import ComponentTablePersidangan from "../components/table-persidangan";
 
 async function getTasks() {
   const data = await fs.readFile(path.join(process.cwd(), "src/data/task.json"));

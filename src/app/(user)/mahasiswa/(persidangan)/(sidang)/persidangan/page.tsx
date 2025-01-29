@@ -10,6 +10,7 @@ export default function PendaftaranSidang() {
         Persidangan Perdata <p className="text-sm font-normal">Berikut adalah detail dari perkara online yang saudara daftarkan </p>
       </Typography.H2>
       <Separator />
+      
 
       <Tabs defaultValue="pendaftaran" className=" mt-4">
         <Separator />
@@ -17,7 +18,7 @@ export default function PendaftaranSidang() {
           <TabsTrigger value="pendaftaran">Pendaftaran</TabsTrigger>
           <TabsTrigger value="persidangan">Persidangan</TabsTrigger>
           <TabsTrigger value="dokumen">Dokumen</TabsTrigger>
-          <TabsTrigger value="putusan">putusan</TabsTrigger>
+          <TabsTrigger value="putusan">Putusan</TabsTrigger>
         </TabsList>
         <TabsContent value="pendaftaran">
           <PendaftaranSection />
