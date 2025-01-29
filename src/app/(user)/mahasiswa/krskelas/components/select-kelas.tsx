@@ -27,7 +27,7 @@ const items = [
 export default function ComponentSelectClass() {
   return (
     <div className="space-y-4">
-      <Accordion type="single" collapsible className="w-full space-y-2" defaultValue="3">
+      <Accordion type="single" collapsible className="w-full space-y-2" >
         {items.map((item) => (
           <AccordionItem value={item.id} key={item.id} className="rounded-lg border bg-background px-4 py-1">
             <AccordionTrigger className="py-2 text-[15px] leading-6 hover:no-underline">{item.title}</AccordionTrigger>
