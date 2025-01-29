@@ -2,7 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import Typography from "@/components/ui/typhography";
 
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription,CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export default function CardPembayaran() {
@@ -38,6 +38,6 @@ export default function CardPembayaran() {
             <Typography.P className={cn("text-muted-foreground w-80")}>08:00:59 WIB</Typography.P>
           </div>
         </CardContent>
-        <CardFooter></CardFooter>
+
       </Card>
     )}
