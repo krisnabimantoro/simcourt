@@ -2,9 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Checkbox } from "../../../../../../components/ui/checkbox";
 import { Badge } from "../../../../../../components/ui/badge";
-import { labels, priorities, statuses } from "@/data/data";
 import { DataTableColumnHeader } from "./data-table-column-headet";
 import { Task } from "@/data/schema";
 import Link from "next/link";
@@ -27,7 +25,9 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className="flex flex-col space-x-2">
           <Link href={"../persidangan"}>
-            <Badge variant="outline" className="text-destructive">{kodeRegister as string}</Badge>
+            <Badge variant="outline" className="text-destructive">
+              {kodeRegister as string}
+            </Badge>
           </Link>
           <span className="max-w-[500px] truncate font-medium">{tanggalRegister}</span>
         </div>
