@@ -5,7 +5,7 @@ import CardPendaftaran from "./pendaftaran-components/card-pendaftaran";
 import CardPembayaran from "./pendaftaran-components/card-pembayaran";
 import CardSaluranElektronik from "./pendaftaran-components/card-saluran-elektronik";
 import CardPembayaranJuruSita from "./pendaftaran-components/card-pembayaran-juru-sita";
-import CardPanggilanJuruSita from "./card-panggilan-e-summon";
+import CardPanggilanJuruSita from "./pendaftaran-components/card-panggilan-e-summon";
 
 export default function PendaftaranSection() {
   return (
