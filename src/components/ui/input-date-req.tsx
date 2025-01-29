@@ -19,7 +19,7 @@ export function InputDateWIthLabel({ label }: InputProps) {
 
   return (
     <div className="space-y-2 flex flex-col justify-start items-start">
-      <Label>
+      <Label className="mb-1">
         {label}
         <span className="text-destructive">*</span>
       </Label>
