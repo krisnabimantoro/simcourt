@@ -11,7 +11,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Label } from "./label";
 
 interface InputProps {
-  label: string;
+  label: string,
+  
 }
 
 export function InputDateWIthLabel({ label }: InputProps) {
