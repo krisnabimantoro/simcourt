@@ -28,15 +28,15 @@ const items = [
 ];
 export default function CardPanggilanJuruSita() {
   return (
-    <Card>
+    <Card className="mt-6">
       <CardHeader>
         <CardTitle>Panggilan (e-summons)</CardTitle>
         <CardDescription>Juru Sita</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex justify-end space-x-2">
-          <Button variant={"outline"}>Cetak</Button>
+        <div className="flex  space-x-2">
           <Button variant={"default"}>Kirim Panggilan/Pemberitahuan</Button>
+          <Button variant={"outline"}>Cetak</Button>
         </div>
       </CardContent>
       <CardFooter>
