@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Typography from "@/components/ui/typhography";
@@ -16,7 +15,7 @@ export default function CardPendaftaran() {
         <Separator />
         <div className="grid grid-cols-2 gap-2 justify-self-center mt-4">
           <Typography.H4 className={cn("text-lg text-right")}>Tanggal Pendaftaran</Typography.H4>
-          <Typography.P className={cn("text-muted-foreground")}>6 Agustus 2024</Typography.P>
+          <Typography.P className={cn("text-muted-foreground w-80")}>6 Agustus 2024</Typography.P>
 
           <Typography.H4 className={cn("text-lg text-right")}>Nomor Pendaftaran Online</Typography.H4>
           <Typography.P className={cn("text-muted-foreground")}>PN MLG-13082024NGC</Typography.P>
