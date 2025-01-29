@@ -2,6 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil } from "lucide-react";
+
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import ModalPersidanganPertama from "./modal/summons-persidangan-pertama";
+
 const items = [
   {
     id: 1,
@@ -35,7 +39,18 @@ export default function CardPanggilanJuruSita() {
       </CardHeader>
       <CardContent>
         <div className="flex  space-x-2">
-          <Button variant={"default"}>Kirim Panggilan/Pemberitahuan</Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant={"default"}>Kirim Panggilan/Pemberitahuan</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Kirim Panggilan/Pemberitahuan</DialogTitle>
+                <ModalPersidanganPertama/>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+
           <Button variant={"outline"}>Cetak</Button>
         </div>
       </CardContent>
