@@ -4,6 +4,7 @@ import CardPendaftaran from "./pendaftaran-components/card-pendaftaran";
 
 import CardPembayaran from "./pendaftaran-components/card-pembayaran";
 import CardSaluranElektronik from "./pendaftaran-components/card-saluran-elektronik";
+import CardPembayaranJuruSita from "./pendaftaran-components/card-pembayaran-juru-sita";
 
 export default function PendaftaranSection() {
   return (
@@ -14,6 +15,7 @@ export default function PendaftaranSection() {
       <CardPendaftaran />
       <CardPembayaran />
       <CardSaluranElektronik />
+      <CardPembayaranJuruSita />
     </div>
   );
 }
