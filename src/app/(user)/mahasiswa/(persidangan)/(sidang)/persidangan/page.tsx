@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PendaftaranSection from "../components/pendaftaran-section";
 import DokumenSection from "../components/dokumen-section";
 import PutusanSidang from "../components/putusan-section";
+import SectionPersidangan from "../components/persidangan-section";
 
 export default function PendaftaranSidang() {
   return (
@@ -25,6 +26,7 @@ export default function PendaftaranSidang() {
           <PendaftaranSection />
         </TabsContent>
         <TabsContent value="persidangan">
+          <SectionPersidangan />
         </TabsContent>
         <TabsContent value="dokumen">
           <DokumenSection />
