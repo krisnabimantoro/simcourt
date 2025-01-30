@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Separator } from "@/components/ui/separator";
 
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 export default function ModalPersidanganPertama() {
   return (
     <div>
@@ -60,6 +61,7 @@ export default function ModalPersidanganPertama() {
             Catatan panggilan digunakan untuk mengkomunikasikan hal-hal terkait persidangan yang harus disampaikan dalam panggilan
           </p>
         </div>
+        <Button type="submit">Simpan</Button>
       </Form>
     </div>
   );
