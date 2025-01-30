@@ -3,6 +3,7 @@ import Typography from "@/components/ui/typhography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PendaftaranSection from "../components/pendaftaran-section";
 import DokumenSection from "../components/dokumen-section";
+import PutusanSidang from "../components/putusan-section";
 
 export default function PendaftaranSidang() {
   return (
@@ -23,9 +24,13 @@ export default function PendaftaranSidang() {
         <TabsContent value="pendaftaran">
           <PendaftaranSection />
         </TabsContent>
-        <TabsContent value="persidangan">Change your password here.</TabsContent>
+        <TabsContent value="persidangan">
+        </TabsContent>
         <TabsContent value="dokumen">
           <DokumenSection />
+        </TabsContent>
+        <TabsContent value="putusan">
+          <PutusanSidang />
         </TabsContent>
       </Tabs>
     </div>
