@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil } from "lucide-react";
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent,  DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ModalPersidanganPertama from "./modal/summons-persidangan-pertama";
 
 const items = [
@@ -62,6 +62,7 @@ export default function CardPanggilanJuruSita() {
               <TableHead>Jenis Panggilan</TableHead>
               <TableHead>Pihak</TableHead>
               <TableHead>Dokumen Panggilan(Rp.)</TableHead>
+              <TableHead>Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -106,6 +107,9 @@ export default function CardPanggilanJuruSita() {
                       <span>{item.catatan_panggilan}</span>
                     </p>
                   </div>
+                </TableCell>
+                <TableCell>
+                  <Pencil className="hover:cursor-pointer" />
                 </TableCell>
               </TableRow>
             ))}
