@@ -1,21 +1,9 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardDescription, CardHeader } from "@/components/ui/card";
-import url_fetch from "@/constant/data-fetching";
-import { GetToken } from "@/lib/get-token";
-
+import GetFetchingData from "@/lib/fetching-component-get";
 
 export default async function ComponentSelectClass() {
-  const token = await GetToken();
-
-  const response = await fetch(`${url_fetch}/v1/classes`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-
-  const datas = await response.json();
+  const datas = await GetFetchingData("v1/classes");
 
   return (
     <div className="space-y-4">
