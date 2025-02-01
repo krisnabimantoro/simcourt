@@ -68,7 +68,7 @@ export default function LoginForm() {
               <Input id="nim" name="nim" placeholder="Masukkan NIM anda" />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">password</Label>
+              <Label htmlFor="password">Password</Label>
               <Input type="Password" id="password" name="password" placeholder="Masukkan password Anda" />
             </div>
           </div>
