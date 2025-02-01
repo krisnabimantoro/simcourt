@@ -7,26 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-const data = [
-  {
-    id: 1,
-    nim: "2022",
-    name: "krisna",
-    email: "krisnabmntr@gmail.com",
-    password: "123",
-    role: "hakim",
-    jabatan: "koordinator",
-  },
-  {
-    id: 2,
-    nim: "2023",
-    name: "fatih",
-    email: "fatih@gmail.com",
-    password: "123",
-    role: "juru sita",
-    jabatan: "anggota",
-  },
-];
+
 
 export default function LoginForm() {
   const router = useRouter();
@@ -36,20 +17,35 @@ export default function LoginForm() {
 
     const formData = new FormData(event.currentTarget);
     const nim = formData.get("nim");
-    const pic = formData.get("pic");
+    const password = formData.get("password");
 
-    const user = await data.find((user) => user.nim === nim && user.password === pic);
+    // const user = await data.find((user) => user.nim === nim && user.password === password);
 
-    if (user) {
-      router.push("/mahasiswa/dashboard");
+    const response = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nim, password }),
+    });
+
+    const data = await response.json();
+   
+    if (response.ok) {
+      toast({ title: "Login Berhasil", description: "Anda akan dialihkan ke dashboard.", variant: "default" });
+      const userId = data.userId;
+      router.push(`/mahasiswa/${userId}/dashboard`);
     } else {
-      // Handle errors
-      toast({
-        title: "Error Login",
-        description: "NIM atau PIC anda salah",
-        variant: "destructive",
-      });
+      toast({ title: "Error Login", description: data.message, variant: "destructive" });
     }
+    // if (user) {
+    //   router.push("/mahasiswa/dashboard");
+    // } else {
+    //   // Handle errors
+    //   toast({
+    //     title: "Error Login",
+    //     description: "NIM atau password anda salah",
+    //     variant: "destructive",
+    //   });
+    // }
   }
 
   // if (response.ok) {
@@ -72,8 +68,8 @@ export default function LoginForm() {
               <Input id="nim" name="nim" placeholder="Masukkan NIM anda" />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="pic">PIC</Label>
-              <Input type="password" id="pic" name="pic" placeholder="Masukkan PIC Anda" />
+              <Label htmlFor="password">password</Label>
+              <Input type="Password" id="password" name="password" placeholder="Masukkan password Anda" />
             </div>
           </div>
           <Button className="w-full font-medium mt-4" size={"default"} type="submit">
