@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createSession } from "@/lib/session";
-
-
-const url_fetch = process.env.URL_FETCH;
+import url_fetch from "@/constant/data-fetching";
 
 export async function POST(req: Request) {
   const { nim, password } = await req.json();

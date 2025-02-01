@@ -1,46 +1,34 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardDescription, CardHeader } from "@/components/ui/card";
+import url_fetch from "@/constant/data-fetching";
+import { GetToken } from "@/lib/get-token";
 
-const items = [
-  {
-    id: "1",
-    title: "Hukum Perdata",
-    content: ["Kelas A", "Kelas B", "Kelas C", "Kelas D", "Kelas E", "Kelas F", "Kelas G", "Kelas H", "Kelas I", "Kelas J", "Kelas K"],
-  },
-  {
-    id: "2",
-    title: "Hukum Pidana",
-    content: ["Kelas A", "Kelas B", "Kelas C", "Kelas D", "Kelas E", "Kelas F", "Kelas G", "Kelas H", "Kelas I", "Kelas J", "Kelas K"],
-  },
-  {
-    id: "3",
-    title: "Hukum administrasi negara",
-    content: ["Kelas A", "Kelas B", "Kelas C", "Kelas D", "Kelas E", "Kelas F", "Kelas G", "Kelas H", "Kelas I", "Kelas J", "Kelas K"],
-  },
-  {
-    id: "4",
-    title: "Hukum Lingkungan",
-    content: ["Kelas A", "Kelas B", "Kelas C", "Kelas D", "Kelas E", "Kelas F", "Kelas G", "Kelas H", "Kelas I", "Kelas J", "Kelas K"],
-  },
-];
 
-export default function ComponentSelectClass() {
+export default async function ComponentSelectClass() {
+  const token = await GetToken();
+
+  const response = await fetch(`${url_fetch}/v1/classes`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  const datas = await response.json();
+
   return (
     <div className="space-y-4">
-      <Accordion type="single" collapsible className="w-full space-y-2" >
-        {items.map((item) => (
-          <AccordionItem value={item.id} key={item.id} className="rounded-lg border bg-background px-4 py-1">
-            <AccordionTrigger className="py-2 text-[15px] leading-6 hover:no-underline">{item.title}</AccordionTrigger>
+      <Accordion type="single" collapsible className="w-full space-y-2">
+        {datas.data.map((data: { id: string; name: string; code: string }) => (
+          <AccordionItem value={data.id} key={data.id} className="rounded-lg border bg-background px-4 py-1">
+            <AccordionTrigger className="py-2 text-[15px] leading-6 hover:no-underline">{data.name}</AccordionTrigger>
             <AccordionContent className="pb-2 text-muted-foreground">
-              {item.content.map((content, index) => (
-                <div key={index}>
-                  <Card className="w-full my-2">
-                    <CardHeader>
-                      <CardDescription className="hover:cursor-pointer">{content}</CardDescription>
-                    </CardHeader>
-                  </Card>
-                </div>
-              ))}
+              <Card className="w-full my-2">
+                <CardHeader>
+                  <CardDescription className="hover:cursor-pointer">{data.code}</CardDescription>
+                </CardHeader>
+              </Card>
             </AccordionContent>
           </AccordionItem>
         ))}
