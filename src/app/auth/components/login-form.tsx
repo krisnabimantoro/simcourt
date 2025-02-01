@@ -34,7 +34,7 @@ export default function LoginForm() {
       const userId = data.userId;
       router.push(`/mahasiswa/${userId}/dashboard`);
     } else {
-      toast({ title: "Error Login", description: data.message, variant: "destructive" });
+      toast({ title: "Login gagal", description: data.message, variant: "destructive" });
     }
     // if (user) {
     //   router.push("/mahasiswa/dashboard");

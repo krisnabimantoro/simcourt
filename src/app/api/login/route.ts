@@ -30,7 +30,7 @@ export async function POST(req: Request) {
   const user = data.find((user) => user.nim === nim && user.password === password);
 
   if (!user) {
-    return NextResponse.json({ message: "Login gagal" }, { status: 401 });
+    return NextResponse.json({ message: "NIM atau password salah" }, { status: 401 });
   }
 
   await createSession(user.id, user.name);
