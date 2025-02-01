@@ -1,54 +1,132 @@
+"use client";
+
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 const SignUpForm = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+
+  // State untuk form input
+  const [formData, setFormData] = useState({
+    nim: "",
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    role: "saksi", // Default role
+  });
+
+  // Handle perubahan input form
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle submit form
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    // Validasi password & konfirmasi password
+    if (formData.password !== formData.password_confirmation) {
+      toast({ title: "Error", description: "Konfirmasi password tidak cocok", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const response = await fetch("http://127.0.0.1:8020/api/v1/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast({ title: "Pendaftaran Berhasil", description: "Silakan login!", variant: "default" });
+        router.push("/auth"); // Redirect ke halaman login
+      } else {
+        toast({ title: "Pendaftaran Gagal", description: result.message || "Terjadi kesalahan", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Error", description: "Gagal menghubungi server", variant: "destructive" });
+    }
+  };
+
   return (
-    <Card className="w-96 ">
+    <Card className="w-96">
       <CardHeader>
         <CardTitle>Buat Akun Sim-Court</CardTitle>
         <CardDescription>Masukkan Data Diri Anda</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col  space-y-1.5">
-              <Label htmlFor="nama">Nama Lengkap</Label>
-              <Input id="nama" placeholder="Masukkan Nama Lengkap anda" />
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="name">Nama Lengkap</Label>
+              <Input
+                id="name"
+                name="name"
+                placeholder="Masukkan Nama Lengkap Anda"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
-            <div className="flex flex-col  space-y-1.5">
+            <div className="flex flex-col space-y-1.5">
               <Label htmlFor="nim">NIM</Label>
-              <Input id="nim" type="number" placeholder="Masukkan NIM anda" />
+              <Input
+                id="nim"
+                name="nim"
+                type="number"
+                placeholder="Masukkan NIM Anda"
+                value={formData.nim}
+                onChange={handleChange}
+                required
+              />
             </div>
-            <div className="flex flex-col  space-y-1.5">
+            <div className="flex flex-col space-y-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="Masukkan Email anda" />
-            </div>
-            {/* <Select>
-              <Label htmlFor="kelas">Kelas</Label>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Kelas Hukum A" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="A">Kelas Hukum A</SelectItem>
-                <SelectItem value="B">Kelas Hukum B</SelectItem>
-                <SelectItem value="C">Kelas Hukum C</SelectItem>
-                <SelectItem value="D">Kelas Hukum D</SelectItem>
-              </SelectContent>
-            </Select> */}
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="pic">PIC</Label>
-              <Input type="password" id="pic" placeholder="Masukkan PIC Anda" />
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Masukkan Email Anda"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="confirm-pic">Konfirmasi PIC</Label>
-              <Input type="password" id="pic" placeholder="Ketik Ulang PIC anda" />
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Masukkan Password Anda"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
             </div>
-
-            <Button className="w-full pt font-medium" size={"default"}>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="password_confirmation">Konfirmasi Password</Label>
+              <Input
+                type="password"
+                id="password_confirmation"
+                name="password_confirmation"
+                placeholder="Ketik Ulang Password Anda"
+                value={formData.password_confirmation}
+                onChange={handleChange}
+                required
+              />
+            </div>
+           
+            <Button className="w-full font-medium mt-4" size="default" type="submit">
               Buat Akun
             </Button>
           </div>
@@ -56,12 +134,9 @@ const SignUpForm = () => {
       </CardContent>
       <CardFooter>
         <div className="flex flex-col w-full gap-2">
-          {/* <Button className="w-full font-medium" size={"default"}>
-            Buat Akun
-          </Button> */}
-          {/* <Button variant={"outline"} className="w-full font-medium" size={"default"}>
-            Sudah Punya Akun
-          </Button> */}
+          <Button variant="outline" className="w-full font-medium" size="default" onClick={() => router.push("/login")}>
+            Sudah Punya Akun? Login
+          </Button>
         </div>
       </CardFooter>
     </Card>
