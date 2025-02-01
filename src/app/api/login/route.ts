@@ -2,26 +2,6 @@ import { NextResponse } from "next/server";
 
 import { createSession } from "@/lib/session";
 
-const data = [
-  {
-    id: 1,
-    nim: "2022",
-    name: "krisna",
-    email: "krisnabmntr@gmail.com",
-    password: "123",
-    role: "hakim",
-    jabatan: "koordinator",
-  },
-  {
-    id: 2,
-    nim: "2023",
-    name: "fatih",
-    email: "fatih@gmail.com",
-    password: "123",
-    role: "juru sita",
-    jabatan: "anggota",
-  },
-];
 
 const url_fetch = process.env.URL_FETCH;
 
