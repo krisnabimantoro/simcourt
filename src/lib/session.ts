@@ -17,13 +17,13 @@ export async function decrypt(session: string | undefined = "") {
     });
     return payload;
   } catch (error) {
-    console.log("Failed to verify session",error);
+    console.log("Failed to verify session", error);
   }
 }
 
-export async function createSession(userId: number, name: string) {
+export async function createSession(payload: string) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ id: userId, name, exp: expiresAt.getTime() });
+  const session = payload;
   const cookieStore = await cookies();
 
   cookieStore.set("session", session, {
