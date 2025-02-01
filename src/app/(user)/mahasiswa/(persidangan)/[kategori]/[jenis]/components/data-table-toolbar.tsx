@@ -2,11 +2,11 @@
 
 import { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";
-import { Input } from "../../../../../../components/ui/input";
-import { Button } from "../../../../../../components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DataTableViewOptions } from "./data-table-view-options";
-import { priorities, statuses, statusPendaftaran } from "@/data/data";
+import { statusPendaftaran } from "@/data/data";
 import DialogForm from "./dialog-form";
 
 // import { Button } from "@/registry/new-york/ui/button"

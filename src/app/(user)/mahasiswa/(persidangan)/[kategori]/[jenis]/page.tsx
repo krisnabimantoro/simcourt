@@ -3,13 +3,11 @@ import { Separator } from "@radix-ui/react-separator";
 import { promises as fs } from "fs";
 
 import BlurFade from "@/components/ui/blur-fade";
-
-
-import { DataTable } from "@/app/(user)/mahasiswa/(persidangan)/perdata/components/data-table";
-import { columns } from "@/app/(user)/mahasiswa/(persidangan)/perdata/components/columns";
 import path from "path";
 import { z } from "zod";
 import { taskSchema } from "@/data/schema";
+import { DataTable } from "./components/data-table";
+import { columns } from "./components/columns";
 
 async function getTasks() {
   const data = await fs.readFile(path.join(process.cwd(), "src/data/task.json"));
@@ -19,15 +17,19 @@ async function getTasks() {
   return z.array(taskSchema).parse(tasks);
 }
 
-export default async function Gugatan() {
+interface persidanganProps {
+  params: { kategori: string; jenis: string };
+}
+export default async function PersidanganTable({ params }: persidanganProps) {
+  const { kategori, jenis } = params;
   const tasks = await getTasks();
 
   return (
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-3">
       <Typography.H2 className="flex flex-col">
-        Daftar Gugatan Online{" "}
+        Daftar {jenis} Online{" "}
         <div>
-          <p className="text-sm font-normal">Klik Nomor Register Pendaftaran Untuk Melihat Detail Pendaftaran</p>
+          <p className="text-sm font-normal">Klik Nomor Register Pendaftaran Untuk Melihat Detail Pendaftaran {kategori}</p>
         </div>
       </Typography.H2>
       <Separator />

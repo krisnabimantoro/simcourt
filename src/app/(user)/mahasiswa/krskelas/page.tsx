@@ -1,8 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Typography from "@/components/ui/typhography";
 import InputSearchComponents from "./components/input-search";
-import { Separator } from "@/components/ui/separator";
 import ComponentSelectClass from "./components/select-kelas";
 import { CardClass } from "./components/card-class";
 

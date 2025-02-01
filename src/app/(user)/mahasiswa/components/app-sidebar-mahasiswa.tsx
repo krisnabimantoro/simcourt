@@ -1,6 +1,6 @@
 "use client";
 
-import { Book, ChevronDown, CircleHelp, Gavel, LayoutDashboard, LogOut, Moon, ScrollText, Sun, User } from "lucide-react";
+import { Book, ChevronDown, CircleHelp, LayoutDashboard, LogOut, Moon, Sun, User } from "lucide-react";
 import { SidebarFooter, SidebarHeader, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar";
 
 import {
@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CardFooterSidebar, CardHeaderSidebar } from "./card-sidebar";
+import { KategoriSidang } from "@/data/jenis-persidangan";
 
 // Menu items.
 const kemahasiswaan = [
@@ -41,60 +42,8 @@ const kemahasiswaan = [
   },
 ];
 
-const persidangan = [
-  {
-    title: "Perdata",
-    url: "#",
-    icon: Gavel,
-  },
-  {
-    title: "Perdata Khusus",
-    url: "#",
-    icon: ScrollText,
-  },
-];
 
-const subPerdata = [
-  {
-    title: "Gugatan",
-    url: "/mahasiswa/perdata/gugatan",
-  },
-  {
-    title: "Bantahan",
-    url: "#",
-  },
-  {
-    title: "Gugatan Sederhana",
-    url: "#",
-  },
-  {
-    title: "Pemohonan",
-    url: "#",
-  },
-];
 
-const subPerdataKhusus = [
-  {
-    title: "Kepailitan",
-    url: "#",
-  },
-  {
-    title: "PKPU",
-    url: "#",
-  },
-  {
-    title: "Hak Kekayaan Intelektual",
-    url: "#",
-  },
-  {
-    title: "Pengadilan HUbungan Internasional",
-    url: "#",
-  },
-  {
-    title: "KPPU",
-    url: "#",
-  },
-];
 
 export function AppSidebar() {
   const { setTheme } = useTheme();
@@ -126,51 +75,37 @@ export function AppSidebar() {
           <SidebarGroupLabel>Persidangan</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {persidangan.map((item) => (
+              {KategoriSidang.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <Collapsible defaultOpen={false} className="group/collapsible">
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton asChild>
-                        <a href={item.url} className="flex items-center">
+                        <div className="flex items-center">
                           <item.icon />
                           <span className="">{item.title}</span>
 
                           <span className="ml-auto">
                             <ChevronDown />
                           </span>
-                        </a>
+                        </div>
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
 
                     <CollapsibleContent>
-                      {item.title === "Perdata" && (
-                        <SidebarMenuSub>
-                          {subPerdata.map((subItemPerdata) => (
-                            <SidebarMenuSubItem key={subItemPerdata.title}>
-                              <SidebarMenuSubButton asChild>
-                                <a href={subItemPerdata.url}>
-                                  <span>{subItemPerdata.title}</span>
+                      <SidebarMenuSub>
+                        {item.items.map((subItem) => (
+                          <SidebarMenuSubItem key={subItem}>
+                            <SidebarMenuSubButton asChild>
+                              <a
+                                  href={`/mahasiswa/${item.title.toLowerCase().replace(/\s+/g, "-")}/${subItem.toLowerCase().replace(/\s+/g, "-")}`}
+                                >
+                                  <span>{subItem}</span>
                                 </a>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          ))}
-                        </SidebarMenuSub>
-                      )}
-
-                      {/* Submenu for "Perdata Khusus" */}
-                      {item.title === "Perdata Khusus" && (
-                        <SidebarMenuSub>
-                          {subPerdataKhusus.map((subItemPerdataKhusus) => (
-                            <SidebarMenuSubItem key={subItemPerdataKhusus.title}>
-                              <SidebarMenuSubButton asChild>
-                                <a href={subItemPerdataKhusus.url}>
-                                  <span>{subItemPerdataKhusus.title}</span>
-                                </a>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          ))}
-                        </SidebarMenuSub>
-                      )}
+                              
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
                     </CollapsibleContent>
                   </Collapsible>
                 </SidebarMenuItem>
@@ -186,7 +121,7 @@ export function AppSidebar() {
               <SidebarMenuItem key={"faq"}>
                 <SidebarMenuButton>
                   <a href="/faq" className="flex justify-center items-center gap-2">
-                    <CircleHelp width={16} height={16}/>
+                    <CircleHelp width={16} height={16} />
                     FAQ
                   </a>
                 </SidebarMenuButton>

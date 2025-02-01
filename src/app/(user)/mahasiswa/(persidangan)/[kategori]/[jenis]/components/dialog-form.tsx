@@ -6,9 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import FileInputForm from "../../../../../../components/ui/file-input";
 import { Separator } from "@radix-ui/react-separator";
 import { useRouter } from "next/navigation";
+import FileInputForm from "@/components/ui/file-input";
 
 export default function DialogForm() {
   const router = useRouter();

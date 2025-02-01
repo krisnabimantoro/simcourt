@@ -2,10 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Badge } from "../../../../../../components/ui/badge";
 import { DataTableColumnHeader } from "./data-table-column-headet";
 import { Task } from "@/data/schema";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Task>[] = [
   {

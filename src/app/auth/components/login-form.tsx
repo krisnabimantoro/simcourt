@@ -31,8 +31,8 @@ export default function LoginForm() {
    
     if (response.ok) {
       toast({ title: "Login Berhasil", description: "Anda akan dialihkan ke dashboard.", variant: "default" });
-      const userId = data.userId;
-      router.push(`/mahasiswa/${userId}/dashboard`);
+      
+      router.push(`/mahasiswa/dashboard`);
     } else {
       toast({ title: "Login gagal", description: data.message, variant: "destructive" });
     }
