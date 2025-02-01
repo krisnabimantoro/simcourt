@@ -5,8 +5,11 @@ import CardKelompok from "./components/card-detail-kelompok";
 import CardInformasi from "./components/card-informasi";
 import CardTatacara from "./components/card-tatacara.";
 import CardPersidangan from "./components/card-persidangan";
+// import { GetIdUser } from "@/lib/get-id-user";
 
-export default function DashboardMahasiswa() {
+
+export default async function DashboardMahasiswa() {
+
   return (
     <div className="w-[calc(100vw-18rem)]  ml-2 ">
       <Typography.H2 className="flex flex-col">
