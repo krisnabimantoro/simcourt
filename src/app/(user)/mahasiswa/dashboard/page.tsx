@@ -5,8 +5,8 @@ import CardKelompok from "./components/card-detail-kelompok";
 import CardInformasi from "./components/card-informasi";
 import CardTatacara from "./components/card-tatacara.";
 import CardPersidangan from "./components/card-persidangan";
+import { GetIdUser } from "@/lib/get-id-user";
 // import { GetIdUser } from "@/lib/get-id-user";
-
 
 export default async function DashboardMahasiswa() {
 
