@@ -13,13 +13,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog-kelas";
+import GetFetchingDataSelected from "@/lib/fetching-component-get-selected";
+import { GetIdUser } from "@/lib/get-id-user";
+import GetFetchingData from "@/lib/fetching-component-get";
 
-export function CardClass() {
+export default async function CardClass() {
+  const getUser = await GetFetchingData("v1/auth/me");
+  const classId = getUser.data.kelas_id;
+
+  const response = await GetFetchingDataSelected("v1/classes", classId);
+
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Hukum administrasi negara</CardTitle>
-        <CardDescription>Kelas A</CardDescription>
+        <CardTitle>{response.data.name}</CardTitle>
+        <CardDescription>{response.data.code}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
         <AlertDialog>
