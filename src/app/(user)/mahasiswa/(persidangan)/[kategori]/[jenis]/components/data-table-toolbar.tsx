@@ -8,6 +8,7 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { statusPendaftaran } from "@/data/data";
 import DialogForm from "./dialog-form";
+import DialogServer from "./dialog-server";
 
 // import { Button } from "@/registry/new-york/ui/button"
 // import { Input } from "@/registry/new-york/ui/input"
@@ -43,7 +44,6 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
         )}
       </div>
       <DataTableViewOptions table={table} />
-      <DialogForm />
     </div>
   );
 }

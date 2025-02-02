@@ -3,7 +3,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
-import url_fetch from "@/constant/data-fetching";
 import { useToast } from "@/hooks/use-toast"; // Optional for better UI feedback
 import { useRouter } from "next/navigation";
 
