@@ -2,6 +2,7 @@ import Typography from "@/components/ui/typhography";
 import InputSearchComponents from "./components/input-search";
 import ComponentSelectClass from "./components/select-kelas";
 import CardClass from "./components/card-class";
+import CardClassServer from "./components/card-class-server";
 
 
 export default async function KrsKelas() {
@@ -22,7 +23,7 @@ export default async function KrsKelas() {
           <ComponentSelectClass />
         </div>
         <div className="w-1/2 space-y-4">
-          <CardClass />
+          <CardClassServer/>
         </div>
       </div>
     </div>

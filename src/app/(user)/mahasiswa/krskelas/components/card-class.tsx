@@ -1,4 +1,4 @@
-import * as React from "react";
+"use client"; // Client Component
 
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,28 +13,59 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog-kelas";
-import GetFetchingDataSelected from "@/lib/fetching-component-get-selected";
-import { GetIdUser } from "@/lib/get-id-user";
-import GetFetchingData from "@/lib/fetching-component-get";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import url_fetch from "@/constant/data-fetching";
+import { revalidatePath } from 'next/cache'
+import { useRouter } from "next/navigation";
 
-export default async function CardClass() {
-  const getUser = await GetFetchingData("v1/auth/me");
-  const classId = getUser.data.kelas_id;
+interface CardClassClientProps {
+  classData: { id: string; name: string; code: string };
+  token: string;
+  userId: string;
+}
 
-  const response = await GetFetchingDataSelected("v1/classes", classId);
+export default function CardClassClient({ classData, token, userId }: CardClassClientProps) {
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
+  const router = useRouter();
+  const handleUpdateClass = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://127.0.0.1:8020/api/v1/students/${userId}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ kelas_id: null }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update class");
+      }
+
+      router.refresh();
+      toast({ title: "Class updated successfully", variant: "default" });
+    } catch (error) {
+      console.error("Error updating class:", error);
+      toast({ title: "Error updating class", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>{response.data.name}</CardTitle>
-        <CardDescription>{response.data.code}</CardDescription>
+        <CardTitle>{classData.name}</CardTitle>
+        <CardDescription>{classData.code}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <div>
-              <Button variant={"destructive"}>Batal Pilih Kelas</Button>
-            </div>
+            <Button variant="destructive">Batal Pilih Kelas</Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -45,7 +76,9 @@ export default async function CardClass() {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction className="bg-destructive">Continue</AlertDialogAction>
+              <AlertDialogAction className="bg-destructive" onClick={() => handleUpdateClass()}>
+                {loading ? "Processing..." : "Continue"}
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

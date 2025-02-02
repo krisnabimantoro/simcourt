@@ -5,6 +5,7 @@ import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
 import url_fetch from "@/constant/data-fetching";
 import { useToast } from "@/hooks/use-toast"; // Optional for better UI feedback
+import { useRouter } from "next/navigation";
 
 interface ClientSelectClassProps {
   classes: { id: string; name: string; code: string }[];
@@ -15,6 +16,7 @@ interface ClientSelectClassProps {
 export default function ClientSelectClass({ classes, token, userId }: ClientSelectClassProps) {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast(); // Optional: Use a toast for better feedback
+  const router = useRouter();
   const handleUpdateClass = async (classId: string) => {
     setLoading(true);
     try {
@@ -30,7 +32,7 @@ export default function ClientSelectClass({ classes, token, userId }: ClientSele
       if (!response.ok) {
         throw new Error("Failed to update class");
       }
-
+      router.refresh();
       toast({ title: "Class updated successfully", variant: "default" });
     } catch (error) {
       console.error("Error updating class:", error);
