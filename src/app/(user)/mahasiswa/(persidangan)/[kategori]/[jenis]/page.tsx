@@ -8,6 +8,7 @@ import { z } from "zod";
 import { taskSchema } from "@/data/schema";
 import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
+import DialogServer from "./components/dialog-server";
 
 async function getTasks() {
   const data = await fs.readFile(path.join(process.cwd(), "src/data/task.json"));
@@ -21,7 +22,7 @@ interface persidanganProps {
   params: { kategori: string; jenis: string };
 }
 export default async function PersidanganTable({ params }: persidanganProps) {
-  const { kategori, jenis } = params;
+  const { kategori, jenis } =await  params;
   const tasks = await getTasks();
 
   return (
@@ -35,7 +36,8 @@ export default async function PersidanganTable({ params }: persidanganProps) {
       <Separator />
 
       <BlurFade delay={0.05}>
-        <div className="px-4 mt-6 mb-6">
+        <div className="px-4 mt-6 space-y-2 mb-6">
+          <DialogServer />
           <DataTable data={tasks} columns={columns} />
           {/* <ComponentTablePersidangan /> */}
         </div>
