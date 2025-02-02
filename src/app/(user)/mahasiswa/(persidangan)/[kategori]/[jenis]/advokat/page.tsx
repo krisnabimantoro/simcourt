@@ -65,9 +65,15 @@ export default function Advokat() {
             <DialogDescription>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat ipsa eius incidunt. Rem repellendus maiores iusto quidem
             </DialogDescription>
-            <Form action={""} className="">
-              <div className="flex  gap-x-2">
-                <div className="w-1/2 gap-y-4 flex flex-col">
+            <Form action={""} className=" ">
+              <InputWithLabelReq
+                label={"No Pendaftaran"}
+                placeholder={"Input nomor pendaftaran/registrasi"}
+                name={"no-pendaftaran"}
+                type={"text"}
+              />
+              <div className="flex mt-2 gap-x-2">
+                <div className="w-1/2 gap-y-2 flex flex-col">
                   <SelectWithLabel label={"Status Pihak"} placeholder={"Pilih Status Pihak"} />
 
                   <InputWithLabelReq label={"Nama Lengkap"} placeholder={"Input nama lengkap pengacara"} name={"name"} type={"text"} />
@@ -76,7 +82,7 @@ export default function Advokat() {
                   <SelectWithLabel label={"Kabupaten"} placeholder={"Pilih Kabupaten"} />
                 </div>
 
-                <div className="w-1/2 gap-y-4 flex flex-col ">
+                <div className="w-1/2 gap-y-2 flex flex-col ">
                   <InputWithLabel label={"Email"} placeholder={"Input Email"} name={"email"} type={"email"} />
 
                   <InputWithLabel label={"Alamat"} placeholder={"Input Alamat Lengkap "} name={"alamat"} type={"text"} />
