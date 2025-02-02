@@ -36,23 +36,8 @@ export default function LoginForm() {
     } else {
       toast({ title: "Login gagal", description: data.message, variant: "destructive" });
     }
-    // if (user) {
-    //   router.push("/mahasiswa/dashboard");
-    // } else {
-    //   // Handle errors
-    //   toast({
-    //     title: "Error Login",
-    //     description: "NIM atau password anda salah",
-    //     variant: "destructive",
-    //   });
-    // }
   }
 
-  // if (response.ok) {
-  //   router.push('/mahasiswa/dashboard')
-  // } else {
-  //   // Handle errors
-  // }
 
   return (
     <Card className="w-96 ">
