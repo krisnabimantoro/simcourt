@@ -42,9 +42,6 @@ const kemahasiswaan = [
   },
 ];
 
-
-
-
 export function AppSidebar() {
   const { setTheme } = useTheme();
   return (
@@ -97,11 +94,12 @@ export function AppSidebar() {
                           <SidebarMenuSubItem key={subItem}>
                             <SidebarMenuSubButton asChild>
                               <a
-                                  href={`/mahasiswa/${item.title.toLowerCase().replace(/\s+/g, "-")}/${subItem.toLowerCase().replace(/\s+/g, "-")}`}
-                                >
-                                  <span>{subItem}</span>
-                                </a>
-                              
+                                href={`/mahasiswa/${item.title.toLowerCase().replace(/\s+/g, "-")}/${subItem
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")}`}
+                              >
+                                <span>{subItem}</span>
+                              </a>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}
@@ -120,7 +118,7 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem key={"faq"}>
                 <SidebarMenuButton>
-                  <a href="/faq" className="flex justify-center items-center gap-2">
+                  <a href="/mahasiswa/faq" className="flex justify-center items-center gap-2">
                     <CircleHelp width={16} height={16} />
                     FAQ
                   </a>
