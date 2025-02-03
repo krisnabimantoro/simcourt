@@ -1,7 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import GetFetchingData from "@/lib/fetching-component-get";
 
-export default function TableAnggota() {
+export default async function TableAnggota() {
+  const response = await GetFetchingData("v1/students");
+  
+
   return (
     <Table>
       <TableCaption>List Anggota</TableCaption>
@@ -14,14 +18,16 @@ export default function TableAnggota() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">1</TableCell>
-          <TableCell>Krisna Bimantoro</TableCell>
-          <TableCell>202210370311254</TableCell>
-          <TableCell className="text-right">
-            <Badge className="hover:cursor-pointer" >Pilih</Badge>
-          </TableCell>
-        </TableRow>
+        {response.data.map((item: any, index: number) => (
+          <TableRow key={index}>
+            <TableCell className="font-medium">{index + 1}</TableCell>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.nim}</TableCell>
+            <TableCell className="text-right">
+              <Badge className="hover:cursor-pointer">Pilih</Badge>
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
