@@ -107,8 +107,8 @@ export default function SectionPersidangan() {
                   <br />
                   <Separator />
 
-                  <div>
-                    <h2 className="text-lg font-semibold text-orange-600">📂 Dokumen Persidangan :</h2>
+                  <div className="mb-4">
+                    <h2 className="text-lg font-semibold ">📂 Dokumen Persidangan :</h2>
                     <div className="mt-2 text-gray-700">
                       <p>
                         <span className="font-semibold">1. Dokumen diupload oleh:</span>{" "}
@@ -140,7 +140,19 @@ export default function SectionPersidangan() {
                       </p>
                     </div>
                   </div>
-                  <br />
+
+                  <Separator />
+                  <div className="mt-4">
+                    <h2 className="text-lg font-semibold  flex items-center gap-2">📘 Catatan Persidangan</h2>
+                    <p className="mt-2 text-gray-700">
+                      Oleh karena Penggugat belum mengajukan kesimpulan, maka Majelis Hakim memberikan kesempatan sekali lagi kepada
+                      Penggugat untuk mengajukan kesimpulan. Sidang ditunda hari Selasa tanggal 23 Februari dengan acara kesimpulan.
+                    </p>
+                    <p className="mt-2 text-sm text-gray-500">
+                      ✍️ ditulis oleh: <span className="text-blue-700 font-semibold">MOHAMAD INDARTO, S.H., M.Hum</span> |{" "}
+                      <span className="text-gray-600">2021-02-16 14:30:43</span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
