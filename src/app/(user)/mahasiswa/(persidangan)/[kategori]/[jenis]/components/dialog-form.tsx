@@ -8,6 +8,7 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import FileInputFormReq from "./file-input";
+import { toast } from "@/hooks/use-toast";
 
 interface ClientSelectClassProps {
   token: string;
@@ -39,15 +40,15 @@ export default function DialogForm({ token, userId }: ClientSelectClassProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // const formDataToSend = new FormData();
-    // formDataToSend.append("nama_pengadilan", formData.nama_pengadilan);
-    // formDataToSend.append("mahasiswa_id", userId);
-    // formDataToSend.append("pembiayaan_id", formData.pembiayaan_id);
-    // formDataToSend.append("pembiayaan_status", formData.pembiayaan_status);
-    // if (formData.ktp) formDataToSend.append("ktp", formData.ktp);
-    // if (formData.sptm) formDataToSend.append("sptm", formData.sptm);
-    // if (formData.sktm) formDataToSend.append("sktm", formData.sktm);
-    // if (formData.skts) formDataToSend.append("skts", formData.skts);
+    const formDataToSend = new FormData();
+    formDataToSend.append("nama_pengadilan", formData.nama_pengadilan);
+    formDataToSend.append("mahasiswa_id", userId);
+    formDataToSend.append("pembiayaan_id", formData.pembiayaan_id);
+    formDataToSend.append("pembiayaan_status", formData.pembiayaan_status);
+    if (formData.ktp) formDataToSend.append("ktp", formData.ktp);
+    if (formData.sptm) formDataToSend.append("sptm", formData.sptm);
+    if (formData.sktm) formDataToSend.append("sktm", formData.sktm);
+    if (formData.skts) formDataToSend.append("skts", formData.skts);
 
     try {
       // const response = await fetch("http://127.0.0.1:8020/api/v1/pendaftaran-sidang", {
@@ -55,18 +56,19 @@ export default function DialogForm({ token, userId }: ClientSelectClassProps) {
       //   headers: {
       //     Authorization: `Bearer ${token}`,
       //     // "Content-Type": "application/json",
+      //     mode: "no-cors",
       //   },
 
-      //   body: JSON.stringify(formData),
+      //   body: formDataToSend,
       // });
 
       // if (!response.ok) throw new Error("Gagal mengirim data");
 
-      // alert("Data berhasil dikirim");
+      toast({ title: "Pendaftaran berhasil dibuat" });
       router.push("gugatan/advokat");
     } catch (error) {
-      console.error(error);
-      alert("Terjadi kesalahan saat mengirim data");
+      toast({ title: "Pendaftaran berhasil dibuat", variant: "destructive" });
+
     }
   };
 
