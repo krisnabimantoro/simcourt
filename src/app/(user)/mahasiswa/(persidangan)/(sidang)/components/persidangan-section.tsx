@@ -104,6 +104,43 @@ export default function SectionPersidangan() {
                       Alasan di tunda: <span className="font-normal">{item.agendaTunda}</span>
                     </p>
                   </div>
+                  <br />
+                  <Separator />
+
+                  <div>
+                    <h2 className="text-lg font-semibold text-orange-600">📂 Dokumen Persidangan :</h2>
+                    <div className="mt-2 text-gray-700">
+                      <p>
+                        <span className="font-semibold">1. Dokumen diupload oleh:</span>{" "}
+                        <span className="text-red-600 font-semibold">Tergugat</span> -{" "}
+                        <span className="text-blue-700">richboy_leo@yahoo.co.id</span>
+                      </p>
+                      <p>
+                        <span className="font-semibold">Upload pada:</span> Senin, 15 Februari 2021 Jam : 21:20 WIB
+                      </p>
+                      <p>
+                        <span className="font-semibold">Status Dokumen:</span>{" "}
+                        <span className="text-blue-600">Verifikasi Majelis Hakim</span> /{" "}
+                        <span className="text-red-500">Memerlukan Verifikasi Majelis Hakim</span>
+                      </p>
+                      <p>
+                        <span className="font-semibold">Jenis:</span> Kesimpulan
+                      </p>
+                      <p>
+                        <span className="font-semibold">Judul Dokumen:</span> Kesimpulan Tergugat
+                      </p>
+                      <p className="flex items-center gap-4 mt-2">
+                        <span className="font-semibold">Dokumen:</span>
+                        <button className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600">
+                          📄 Lihat Dokumen
+                        </button>
+                        <button className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                          📄 Lihat Dokumen
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                  <br />
                 </div>
               </div>
             </div>
