@@ -114,12 +114,6 @@ export default function CardPanggilanJuruSita() {
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter className="bg-transparent">
-            <TableRow className="hover:bg-transparent">
-              <TableCell colSpan={5}>Total</TableCell>
-              <TableCell className="text-right">$2,500.00</TableCell>
-            </TableRow>
-          </TableFooter>
         </Table>
       </CardFooter>
     </Card>
