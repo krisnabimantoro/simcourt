@@ -130,6 +130,12 @@ export default function SectionPersidangan() {
                         <span className="font-semibold">Judul Dokumen:</span> Kesimpulan Tergugat
                       </p>
                       <p className="flex items-center gap-4 mt-2">
+                        <span className="font-semibold">Upload Dokumen:</span>
+                        <button className="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg hover:bg-red-600">
+                          📄 Upload Dokumen
+                        </button>
+                      </p>
+                      <p className="flex items-center gap-4 mt-2">
                         <span className="font-semibold">Dokumen:</span>
                         <button className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600">
                           📄 Lihat Dokumen
