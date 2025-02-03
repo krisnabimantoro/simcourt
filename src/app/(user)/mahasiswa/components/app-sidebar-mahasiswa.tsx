@@ -74,7 +74,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {KategoriSidang.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <Collapsible defaultOpen={false} className="group/collapsible">
+                  <Collapsible defaultOpen={true} className="group/collapsible">
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton asChild>
                         <div className="flex items-center">
@@ -91,7 +91,7 @@ export function AppSidebar() {
                     <CollapsibleContent>
                       <SidebarMenuSub>
                         {item.items.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem}>
+                          <SidebarMenuSubItem  key={subItem}>
                             <SidebarMenuSubButton asChild>
                               <a
                                 href={`/mahasiswa/${item.title.toLowerCase().replace(/\s+/g, "-")}/${subItem
@@ -139,7 +139,7 @@ export function AppSidebar() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={"/profile"} className="flex gap-1 w-full">
+              <Link href={"/mahasiswa/profile"} className="flex gap-1 w-full">
                 <User /> Profle
               </Link>
             </DropdownMenuItem>
