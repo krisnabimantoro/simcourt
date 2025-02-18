@@ -13,14 +13,15 @@ import { toast } from "@/hooks/use-toast";
 interface ClientSelectClassProps {
   token: string;
   userId: string;
+  kategoriSidang: string;
+  jenisSidang: string;
 }
 
-export default function DialogForm({ token, userId }: ClientSelectClassProps) {
+export default function DialogForm({ token, userId, kategoriSidang, jenisSidang }: ClientSelectClassProps) {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
     nama_pengadilan: "",
-    mahasiswa_id: "",
     pembiayaan_id: "",
     pembiayaan_status: "",
     ktp: null as File | null,
@@ -44,7 +45,6 @@ export default function DialogForm({ token, userId }: ClientSelectClassProps) {
     formDataToSend.append("nama_pengadilan", formData.nama_pengadilan);
     formDataToSend.append("mahasiswa_id", userId);
     formDataToSend.append("pembiayaan_id", formData.pembiayaan_id);
-    formDataToSend.append("pembiayaan_status", formData.pembiayaan_status);
     if (formData.ktp) formDataToSend.append("ktp", formData.ktp);
     if (formData.sptm) formDataToSend.append("sptm", formData.sptm);
     if (formData.sktm) formDataToSend.append("sktm", formData.sktm);
@@ -54,19 +54,25 @@ export default function DialogForm({ token, userId }: ClientSelectClassProps) {
       const response = await fetch("http://127.0.0.1:8020/api/v1/pendaftaran-sidang", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
-          // "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // ✅ Keep only Authorization header
         },
         credentials: "include",
         body: formDataToSend,
       });
 
-      if (!response.ok) throw new Error("Gagal mengirim data");
+      if (!response.ok) {
+        const errorData = await response.json(); // Try getting error details
+        throw new Error(errorData?.message || "Gagal mengirim data");
+      }
 
       toast({ title: "Pendaftaran berhasil dibuat" });
-      router.push("gugatan/advokat");
-    } catch (error) {
-      toast({ title: "Pendaftaran berhasil dibuat", variant: "destructive" });
+      console.log(response)
+      console.log(jenisSidang)
+      const data = await response.json();
+      const pendaftaranId = data.data.id
+      router.push(`${jenisSidang}/advokat/${pendaftaranId}`); // ✅ Fixed missing `/`
+    } catch (error: any) {
+      toast({ title: error.message, variant: "destructive" });
     }
   };
 
@@ -82,32 +88,32 @@ export default function DialogForm({ token, userId }: ClientSelectClassProps) {
           <DialogTitle>MEMILIH PENGADILAN TUJUAN MENDAFTAR PERKARA</DialogTitle>
           <form onSubmit={handleSubmit}>
             <Label>Mendaftar pada Pengadilan (Ketik Nama Kota)</Label>
-            <Input name="nama_pengadilan" placeholder="Pilih Pengadilan" onChange={handleInputChange} />
+            <Input name="nama_pengadilan" placeholder="Pilih Pengadilan" onChange={handleInputChange} required />
 
             <Label>Pembiayaan Perkara</Label>
-            <Select onValueChange={(value) => setFormData({ ...formData, pembiayaan_status: value })}>
+            <Select onValueChange={(value) => setFormData({ ...formData, pembiayaan_id: value })}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Pilih Status Pembayaran" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="nonProdeo">Sudah Membayar</SelectItem>
-                <SelectItem value="prodeo">Prodeo</SelectItem>
+                <SelectItem value="1">Sudah Membayar</SelectItem>
+                <SelectItem value="2">Prodeo</SelectItem>
               </SelectContent>
             </Select>
 
-            {formData.pembiayaan_status === "prodeo" && (
+            {formData.pembiayaan_id === "2" && (
               <div className="gap-2 flex flex-col">
-                <FileInputFormReq label="KTP Pemohon" onChange={(file) => handleFileChange("ktp", file)} name={"ktp"} />
-                <FileInputFormReq label="Surat Pernyataan Tidak Mampu" onChange={(file) => handleFileChange("sptm", file)} name={"sptm"} />
+                <FileInputFormReq label="KTP Pemohon" onChange={(file) => handleFileChange("ktp", file)} name="ktp" />
+                <FileInputFormReq label="Surat Pernyataan Tidak Mampu" onChange={(file) => handleFileChange("sptm", file)} name="sptm" />
                 <FileInputFormReq
                   label="Surat Keterangan Tidak Mampu (SKTM)"
                   onChange={(file) => handleFileChange("sktm", file)}
-                  name={"sktm"}
+                  name="sktm"
                 />
                 <FileInputFormReq
                   label="Surat Keterangan Tunjangan Sosial Lainnya (bila ada)"
                   onChange={(file) => handleFileChange("skts", file)}
-                  name={"skts"}
+                  name="skts"
                 />
               </div>
             )}
