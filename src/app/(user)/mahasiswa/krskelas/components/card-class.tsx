@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import url_fetch from "@/constant/data-fetching";
-import { revalidatePath } from 'next/cache'
+import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 
 interface CardClassClientProps {
@@ -39,6 +39,7 @@ export default function CardClassClient({ classData, token, userId }: CardClassC
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ kelas_id: null }),
       });
 
