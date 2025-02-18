@@ -38,7 +38,8 @@ const SignUpForm = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8020/api/v1/auth/register", {
+      const url = process.env.URL_FETCH
+      const response = await fetch(`${url}/api/v1/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
