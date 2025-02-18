@@ -3,7 +3,7 @@ import GetToken  from "@/lib/get-token";
 
 import { redirect } from "next/navigation";
 export default async function GetFetchingDataSelected(url: string, id: number) {
-  const token = await GetToken;
+  const token = await GetToken();
 
   const response = await fetch(`${url_fetch}/${url}/${id}`, {
     method: "GET",

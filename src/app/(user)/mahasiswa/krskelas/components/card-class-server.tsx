@@ -6,7 +6,7 @@ import GetToken from "@/lib/get-token";
 import { GetIdUser } from "@/lib/get-id-user";
 
 export default async function CardClassServer() {
-  const token = (await GetToken) ?? "";
+  const token = (await GetToken()) ?? "";
   const userId = (await GetIdUser()) ?? "";
   const getUser = await GetFetchingData("v1/auth/me");
   const classId = getUser?.data?.kelas_id ?? null;

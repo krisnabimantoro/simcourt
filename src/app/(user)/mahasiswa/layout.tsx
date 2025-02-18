@@ -3,11 +3,12 @@ import { AppSidebar } from "@/app/(user)/mahasiswa/components/app-sidebar-mahasi
 import GetToken from "@/lib/get-token";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
+  const token = await GetToken()
   return (
     <SidebarProvider>
       <AppSidebar
         token={{
-          token: GetToken || "",
+          token: token || "",
         }}
       />
       <main>

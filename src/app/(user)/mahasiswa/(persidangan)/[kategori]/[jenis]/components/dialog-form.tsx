@@ -51,24 +51,22 @@ export default function DialogForm({ token, userId }: ClientSelectClassProps) {
     if (formData.skts) formDataToSend.append("skts", formData.skts);
 
     try {
-      // const response = await fetch("http://127.0.0.1:8020/api/v1/pendaftaran-sidang", {
-      //   method: "POST",
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //     // "Content-Type": "application/json",
-      //     mode: "no-cors",
-      //   },
+      const response = await fetch("http://127.0.0.1:8020/api/v1/pendaftaran-sidang", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: formDataToSend,
+      });
 
-      //   body: formDataToSend,
-      // });
-
-      // if (!response.ok) throw new Error("Gagal mengirim data");
+      if (!response.ok) throw new Error("Gagal mengirim data");
 
       toast({ title: "Pendaftaran berhasil dibuat" });
       router.push("gugatan/advokat");
     } catch (error) {
       toast({ title: "Pendaftaran berhasil dibuat", variant: "destructive" });
-
     }
   };
 

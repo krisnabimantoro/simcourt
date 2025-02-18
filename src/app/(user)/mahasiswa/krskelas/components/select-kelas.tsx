@@ -4,7 +4,7 @@ import { GetIdUser } from "@/lib/get-id-user";
 import ClientSelectClass from "./client-select-class";
 
 export default async function ComponentSelectClass() {
-  const token = (await GetToken) ?? "";
+  const token = (await GetToken()) ?? "";
   const datas = await GetFetchingData("v1/classes");
   const userId = (await GetIdUser()) ?? "";
 

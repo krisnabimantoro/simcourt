@@ -1,3 +1,6 @@
 import { Token } from "./token";
-const GetToken = await Token();
-export default GetToken;
+
+export default async function GetToken() {
+  const GetToken = await Token();
+  return GetToken;
+}

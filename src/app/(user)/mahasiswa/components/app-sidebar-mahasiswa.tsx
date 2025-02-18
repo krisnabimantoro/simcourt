@@ -67,7 +67,7 @@ type AppSidebarProps = {
 };
 export function AppSidebar({ token }: AppSidebarProps) {
   const { setTheme } = useTheme();
-  return (
+  return (  
     <Sidebar>
       <SidebarHeader>
         <CardHeaderSidebar />

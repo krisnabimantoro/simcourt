@@ -9,6 +9,8 @@ import { taskSchema } from "@/data/schema";
 import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
 import DialogServer from "./components/dialog-server";
+import GetToken from "@/lib/get-token";
+import { GetIdUser } from "@/lib/get-id-user";
 
 async function getTasks() {
   const data = await fs.readFile(path.join(process.cwd(), "src/data/task.json"));
@@ -24,6 +26,8 @@ interface persidanganProps {
 export default async function PersidanganTable({ params }: persidanganProps) {
   const { kategori, jenis } =await  params;
   const tasks = await getTasks();
+  const token = (await GetToken()) ?? "";
+  const userId = (await GetIdUser()) ?? "";
 
   return (
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-3">
@@ -37,7 +41,7 @@ export default async function PersidanganTable({ params }: persidanganProps) {
 
       <BlurFade delay={0.05}>
         <div className="px-4 mt-6 space-y-2 mb-6">
-          <DialogServer />
+          <DialogServer token={token} userId={userId} />
           <DataTable data={tasks} columns={columns} />
           {/* <ComponentTablePersidangan /> */}
         </div>
