@@ -1,10 +1,15 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/app/(user)/mahasiswa/components/app-sidebar-mahasiswa";
+import GetToken from "@/lib/get-token";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar
+        token={{
+          token: GetToken || "",
+        }}
+      />
       <main>
         {/* <SidebarTrigger /> */}
         <div className="p-2"></div>
