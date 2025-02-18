@@ -1,7 +1,3 @@
-import { cookies } from "next/headers";
-
-export async function GetToken() {
-  const session = (await cookies()).get("session")?.value;
-
-  return session;
-}
+import { Token } from "./token";
+const GetToken = await Token();
+export default GetToken;
