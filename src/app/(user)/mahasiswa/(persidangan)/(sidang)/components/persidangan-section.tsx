@@ -143,6 +143,9 @@ export default function SectionPersidangan() {
                         <button className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
                           📄 Lihat Dokumen
                         </button>
+                        <button className="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                           Verifikasi Dokumen
+                        </button>
                       </p>
                     </div>
                   </div>
@@ -164,9 +167,6 @@ export default function SectionPersidangan() {
             </div>
           ))}
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
       </Card>
     </div>
   );
