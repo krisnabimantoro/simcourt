@@ -42,7 +42,30 @@ const kemahasiswaan = [
   },
 ];
 
-export function AppSidebar() {
+const onLogout = async (token: string): Promise<void> => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8020/api/v1/auth/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Ensure cookies/session data are included
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to log out");
+    }
+
+    window.location.href = "/auth"; // Redirect to login page
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+};
+type AppSidebarProps = {
+  token: { token: string };
+};
+export function AppSidebar({ token }: AppSidebarProps) {
   const { setTheme } = useTheme();
   return (
     <Sidebar>
@@ -91,7 +114,7 @@ export function AppSidebar() {
                     <CollapsibleContent>
                       <SidebarMenuSub>
                         {item.items.map((subItem) => (
-                          <SidebarMenuSubItem  key={subItem}>
+                          <SidebarMenuSubItem key={subItem}>
                             <SidebarMenuSubButton asChild>
                               <a
                                 href={`/mahasiswa/${item.title.toLowerCase().replace(/\s+/g, "-")}/${subItem
@@ -151,8 +174,7 @@ export function AppSidebar() {
               <Moon /> Dark
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex gap-1">
-              {" "}
+            <DropdownMenuItem className="flex gap-1" onClick={async () => await onLogout(token.token)}>
               <LogOut />
               Log Out
             </DropdownMenuItem>
