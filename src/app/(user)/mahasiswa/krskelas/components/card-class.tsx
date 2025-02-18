@@ -15,8 +15,6 @@ import {
 } from "./alert-dialog-kelas";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import url_fetch from "@/constant/data-fetching";
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 
 interface CardClassClientProps {
