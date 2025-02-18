@@ -7,9 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import { useEffect } from "react";
+import { delSession } from "@/lib/del-session";
 
 export default function LoginForm() {
+  useEffect(() => {
+    delSession(); // ✅ Call the Server Action inside useEffect()
+  }, []);
+  
   const router = useRouter();
   const { toast } = useToast();
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
@@ -28,10 +33,10 @@ export default function LoginForm() {
     });
 
     const data = await response.json();
-   
+
     if (response.ok) {
       toast({ title: "Login Berhasil", description: "Anda akan dialihkan ke dashboard.", variant: "default" });
-      
+
       router.push(`/mahasiswa/dashboard`);
     } else {
       toast({ title: "Login gagal", description: data.message, variant: "destructive" });
