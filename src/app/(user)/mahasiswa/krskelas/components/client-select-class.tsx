@@ -16,6 +16,7 @@ export default function ClientSelectClass({ classes, token, userId }: ClientSele
   const [loading, setLoading] = useState(false);
   const { toast } = useToast(); // Optional: Use a toast for better feedback
   const router = useRouter();
+  
   const handleUpdateClass = async (classId: string) => {
     setLoading(true);
     try {
@@ -25,6 +26,7 @@ export default function ClientSelectClass({ classes, token, userId }: ClientSele
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ kelas_id: classId }),
       });
 
