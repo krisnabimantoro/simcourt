@@ -14,7 +14,7 @@ export default function LoginForm() {
   useEffect(() => {
     delSession(); // ✅ Call the Server Action inside useEffect()
   }, []);
-  
+
   const router = useRouter();
   const { toast } = useToast();
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
@@ -26,21 +26,28 @@ export default function LoginForm() {
 
     // const user = await data.find((user) => user.nim === nim && user.password === password);
 
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nim, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      toast({ title: "Login Berhasil", description: "Anda akan dialihkan ke dashboard.", variant: "default" });
-
-      router.push(`/mahasiswa/dashboard`);
-    } else {
-      toast({ title: "Login gagal", description: data.message, variant: "destructive" });
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nim, password }),
+      });
+  
+      const data = await response.json();
+      console.log(data)
+      if (response.ok) {
+        toast({ title: "Login Berhasil", description: "Anda akan dialihkan ke dashboard.", variant: "default" });
+  
+        router.push(`/mahasiswa/dashboard`);
+      } else {
+        toast({ title: "Login gagal", description: data.message, variant: "destructive" });
+      }
+    } catch (error) {
+      console.log(error)
     }
+   
+
+  
   }
 
 

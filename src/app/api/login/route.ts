@@ -17,14 +17,14 @@ export async function POST(req: Request) {
 
     
   const data = await response.json();
-
+  console.log(data)
   if (!response.ok) {
     return NextResponse.json({ message: "Login gagal, periksa kembali NIM atau password!" }, { status: 401 });
   }
 
   await createSession(data.token);
 
-  
+
   } catch (error) {
     console.error(error);
   }
