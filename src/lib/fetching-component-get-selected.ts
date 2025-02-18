@@ -1,9 +1,9 @@
 import url_fetch from "@/constant/data-fetching";
-import { GetToken } from "@/lib/get-token";
+import GetToken  from "@/lib/get-token";
 
 import { redirect } from "next/navigation";
 export default async function GetFetchingDataSelected(url: string, id: number) {
-  const token = await GetToken();
+  const token = await GetToken;
 
   const response = await fetch(`${url_fetch}/${url}/${id}`, {
     method: "GET",
@@ -11,6 +11,7 @@ export default async function GetFetchingDataSelected(url: string, id: number) {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
+    credentials: "include",
   });
 
   if (response.status === 401) {
