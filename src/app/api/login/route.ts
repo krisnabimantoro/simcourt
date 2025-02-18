@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
   // const user = data.find((user) => user.nim === nim && user.password === password);
 
-  const response = await fetch(`${url_fetch}/v1/auth/login`, {
+  const response = await fetch(`http://127.0.0.1:8020/api/v1/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ nim, password }),
