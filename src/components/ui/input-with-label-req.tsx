@@ -6,16 +6,17 @@ interface InputProps {
   placeholder: string;
   name: string;
   type: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function InputWithLabelReq({ label, placeholder, name, type }: InputProps) {
+export default function InputWithLabelReq({ label, placeholder, name, type, onChange }: InputProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor="input-02">
+      <Label htmlFor={name}>
         {label}
         <span className="text-destructive">*</span>
       </Label>
-      <Input id="input-02" placeholder={placeholder} type={type} required name={name} />
+      <Input id={name} placeholder={placeholder} type={type} required name={name} onChange={onChange} />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import FileInputFormReq from "./file-input";
 import { toast } from "@/hooks/use-toast";
+import Link from "next/link";
 
 interface ClientSelectClassProps {
   token: string;
@@ -66,10 +67,10 @@ export default function DialogForm({ token, userId, kategoriSidang, jenisSidang 
       }
 
       toast({ title: "Pendaftaran berhasil dibuat" });
-      console.log(response)
-      console.log(jenisSidang)
+      console.log(response);
+      console.log(jenisSidang);
       const data = await response.json();
-      const pendaftaranId = data.data.id
+      const pendaftaranId = data.data.id;
       router.push(`${jenisSidang}/advokat/${pendaftaranId}`); // ✅ Fixed missing `/`
     } catch (error: any) {
       toast({ title: error.message, variant: "destructive" });
@@ -119,6 +120,7 @@ export default function DialogForm({ token, userId, kategoriSidang, jenisSidang 
             )}
 
             <br />
+
             <Button type="submit">Lanjut Pendaftaran</Button>
           </form>
         </DialogHeader>
