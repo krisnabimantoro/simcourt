@@ -15,8 +15,26 @@ export const labels = [
   },
 ];
 
-
-
+export const statusPihak = [
+  {
+    value: "penggugat/pemohon",
+    label: "Penggugat/Pemohon",
+  },
+  {
+    value: "tergugat/termohon",
+    label: "Tergugat/Termohon",
+  },
+];
+export const statusAlamat = [
+  {
+    value: "diketahui",
+    label: "Diketahui Alamatnya",
+  },
+  {
+    value: "tidak_diketahui",
+    label: "Tidak Diketahui Alamatnya",
+  },
+];
 
 export const statusPendaftaran = [
   {
