@@ -32,24 +32,19 @@ export default function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nim, password }),
       });
-  
+
       const data = await response.json();
-      console.log(data)
       if (response.ok) {
         toast({ title: "Login Berhasil", description: "Anda akan dialihkan ke dashboard.", variant: "default" });
-  
+
         router.push(`/mahasiswa/dashboard`);
       } else {
         toast({ title: "Login gagal", description: data.message, variant: "destructive" });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-   
-
-  
   }
-
 
   return (
     <Card className="w-96 ">
