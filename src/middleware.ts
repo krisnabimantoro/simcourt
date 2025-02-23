@@ -21,5 +21,5 @@ export default function middleware(req: NextRequest) {
 
 // Protect all routes except login, register, public, and static files
 export const config = {
-  matcher: ["/((?!/api/|auth|register|public|_next/static|_next/image|favicon.ico|mahkamah.jpg).*)"],
+  matcher: ["/((?!api/|auth|register|public|_next/static|_next/image|favicon.ico|mahkamah.jpg).*)"],
 };
