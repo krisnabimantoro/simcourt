@@ -4,23 +4,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface InputProps {
   label: string;
   placeholder: string;
+  options: { value: string; label: string }[];
+  name?: string;
 }
-export default function SelectWithLabelReq({ label, placeholder }: InputProps) {
+
+export default function SelectWithLabelReq({ label, placeholder, options, name }: InputProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor="select-16">
+      <Label htmlFor={name}>
         {label}
         <span className="text-destructive">*</span>
       </Label>
-      <Select>
-        <SelectTrigger id="select-16">
+      <Select name={name}>
+        <SelectTrigger id={name}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="s1">1</SelectItem>
-          <SelectItem value="s2">2</SelectItem>
-          <SelectItem value="s3">3</SelectItem>
-          <SelectItem value="s4">4</SelectItem>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>
