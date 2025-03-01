@@ -47,7 +47,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
     console.log("FormData as JSON:", formDataJson);
 
     try {
-      const response = await fetch("http://127.0.0.1:8020/api/v1/advokats", {
+      const responsePendaftaran = await fetch("http://127.0.0.1:8020/api/v1/advokats", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
@@ -56,14 +56,41 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
         body: formData, // Correctly send FormData without JSON.stringify
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (!responsePendaftaran.ok) {
+        const errorData = await responsePendaftaran.json();
         throw new Error(errorData?.message || "Failed to submit");
       }
 
-      const data = await response.json();
-      toast({ title: "Pendaftaran berhasil dibuat" });
-      console.log("Response:", data);
+      const dataPendaftaran = await responsePendaftaran.json();
+
+      console.log("Response:", dataPendaftaran);
+
+      // Redirect after success
+      //   router.push(`/advokat/${data.data.id}`);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      // toast({ title: error.message, variant: "destructive" });
+      console.error("Error:", error);
+    }
+
+    try {
+      const responsePihak = await fetch("http://127.0.0.1:8020/api/v1/pihaks", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
+        },
+        credentials: "include",
+        body: formData, // Correctly send FormData without JSON.stringify
+      });
+
+      if (!responsePihak.ok) {
+        const errorData = await responsePihak.json();
+        throw new Error(errorData?.message || "Failed to submit");
+      }
+
+      const dataPihak = await responsePihak.json();
+      // toast({ title: "Pihak berhasil dibuat" });
+      console.log("Response:", dataPihak);
 
       // Redirect after success
       //   router.push(`/advokat/${data.data.id}`);
@@ -72,16 +99,9 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       toast({ title: error.message, variant: "destructive" });
       console.error("Error:", error);
     }
-  }
 
-  async function onSubmitPihak(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const formDataJson = Object.fromEntries(formData.entries());
-    formData.append("pendaftaran_sidang_id", projectId.toString());
-    console.log("FormData as JSON:", formDataJson);
     try {
-      const response = await fetch("http://127.0.0.1:8020/api/v1/pihaks", {
+      const responseDaftar = await fetch("http://127.0.0.1:8020/api/v1/detail-pendaftarans", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
@@ -90,14 +110,14 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
         body: formData, // Correctly send FormData without JSON.stringify
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (!responseDaftar.ok) {
+        const errorData = await responseDaftar.json();
         throw new Error(errorData?.message || "Failed to submit");
       }
 
-      const data = await response.json();
-      toast({ title: "Pihak berhasil dibuat" });
-      console.log("Response:", data);
+      const dataDaftar = await responseDaftar.json();
+      toast({ title: "Pendaftaran Sidang berhasil dibuat" });
+      console.log("Response:", dataDaftar);
 
       // Redirect after success
       //   router.push(`/advokat/${data.data.id}`);
@@ -121,14 +141,14 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       <br />
       <Typography.H3>Form data</Typography.H3>
 
-      <form className="mt-2" onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className=" ">
         <div className="flex">
           <div className="w-1/2 gap-y-4 flex flex-col">
             <InputWithLabelReq label="Nama Lengkap" placeholder="Input nama lengkap" name="nama_lengkap" type="text" />
             <InputWithLabelReq label="Alamat Kantor" placeholder="Input alamat kantor" name="alamat_kantor" type="text" />
-            <InputWithLabel label="No Handphone" placeholder="Input nomor handphone" name="no_handphone" type="text" />
-            <InputWithLabel label="Telp./Fax Kantor" placeholder="Input nomor telp/fax kantor" name="telp_kantor" type="text" />
-            <InputWithLabelReq label="Nomor Induk (KTA)" placeholder="Input Nomor Induk" name="no_induk" type="text" />
+            <InputWithLabel label="No Handphone" placeholder="Input nomor handphone" name="no_handphone" type="number" />
+            <InputWithLabel label="Telp./Fax Kantor" placeholder="Input nomor telp/fax kantor" name="telp_kantor" type="number" />
+            <InputWithLabelReq label="Nomor Induk (KTA)" placeholder="Input Nomor Induk" name="no_induk" type="number" />
             <InputWithLabelReq label="Organisasi" placeholder="Input asal organisasi" name="organisasi" type="text" />
 
             <InputWithLabelReq label="BANK" placeholder="Input nama bank" name="bank" type="text" />
@@ -140,8 +160,8 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
             <InputDateWIthLabel label="Tanggal Penyumpahan" name="tanggal_penyumpahan" />
             <InputDateWIthLabel label="Tanggal Habis Berlaku" name="tanggal_habis_berlaku" />
             <InputWithLabelReq label="Tempat Penyumpahan" placeholder="Input tempat penyumpahan" name="tempat_penyumpahan" type="text" />
-            <InputWithLabelReq label="Nomor BA Sumpah" placeholder="Input nomor BA sumpah" name="no_ba_sumpah" type="text" />
-            <InputWithLabelReq label="Nomor KTP" placeholder="Input Nomor KTP" name="no_ktp" type="text" />
+            <InputWithLabelReq label="Nomor BA Sumpah" placeholder="Input nomor BA sumpah" name="no_ba_sumpah" type="number" />
+            <InputWithLabelReq label="Nomor KTP" placeholder="Input Nomor KTP" name="no_ktp" type="number" />
 
             <InputWithLabelReq label="Nama Akun Bank" placeholder="Input nama akun bank" name="nama_akun_bank" type="text" />
           </div>
@@ -154,14 +174,10 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
         <FileInputForm label="Dokumen Penyumpahan" name="file_dokumen_penyumpahan" />
         <FileInputForm label="Dokumen KTP" name="file_dokumen_ktp" />
 
-        <button type="submit" className="mt-4 p-2 bg-blue-500 text-white rounded">
-          Lanjut Pendaftaran
-        </button>
-      </form>
-      <Separator className="my-4" />
+        <Separator className="my-4" />
 
-      <Typography.H3>Tambah Pihak</Typography.H3>
-      <form onSubmit={onSubmitPihak} className=" ">
+        <Typography.H3>Tambah Pihak</Typography.H3>
+
         <InputWithLabelReq
           label={"No Pendaftaran"}
           placeholder={"Input nomor pendaftaran/registrasi"}

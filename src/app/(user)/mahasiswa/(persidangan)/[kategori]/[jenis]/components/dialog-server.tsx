@@ -2,7 +2,7 @@ import DialogForm from "./dialog-form";
 
 interface DialogServerProps {
   token: string;
-  userId: string;
+  userId: number;
   kategoriSidang: string;
   jenisSidang: string;
 }

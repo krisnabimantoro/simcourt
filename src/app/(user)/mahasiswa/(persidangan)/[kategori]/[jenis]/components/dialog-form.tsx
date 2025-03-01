@@ -13,7 +13,7 @@ import Link from "next/link";
 
 interface ClientSelectClassProps {
   token: string;
-  userId: string;
+  userId: number;
   kategoriSidang: string;
   jenisSidang: string;
 }

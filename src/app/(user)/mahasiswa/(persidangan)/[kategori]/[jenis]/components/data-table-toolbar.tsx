@@ -29,8 +29,8 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Cari Persidangan berdasarkan Kode Register"
-          value={(table.getColumn("kode_register")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("kode_register")?.setFilterValue(event.target.value)}
+          value={(table.getColumn("no_pendaftaran")?.getFilterValue() as string) ?? ""}
+          onChange={(event) => table.getColumn("no_pendaftaran")?.setFilterValue(event.target.value)}
           className="h-8 w-full"
         />
         {table.getColumn("status_pendaftaran") && (

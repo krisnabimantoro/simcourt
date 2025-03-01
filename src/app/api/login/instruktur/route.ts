@@ -16,14 +16,14 @@ export async function POST(req: Request) {
   });
 
   const data = await response.json();
-  
+
   if (!response.ok) {
     return NextResponse.json({ message: "Login gagal, periksa kembali NIP atau password!" }, { status: 401 });
   }
 
   await createSession(data.token);
 
-  return NextResponse.json({ message: "Login berhasil",}, { status: 200 });
+  return NextResponse.json({ message: "Login berhasil" }, { status: 200 });
 }
 
 // Simpan token di cookies (HttpOnly lebih aman)

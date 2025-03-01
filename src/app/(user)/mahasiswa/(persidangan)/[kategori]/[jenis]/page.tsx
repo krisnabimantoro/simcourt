@@ -11,23 +11,28 @@ import { columns } from "./components/columns";
 import DialogServer from "./components/dialog-server";
 import GetToken from "@/lib/get-token";
 import { GetIdUser } from "@/lib/get-id-user";
+import GetFetchingData from "@/lib/fetching-component-get";
 
 async function getTasks() {
-  const data = await fs.readFile(path.join(process.cwd(), "src/data/task.json"));
+  // const data = await fs.readFile(path.join(process.cwd(), "src/data/task.json"));
 
-  const tasks = JSON.parse(data.toString());
+  const data = await GetFetchingData("v1/detail-pendaftarans");
 
-  return z.array(taskSchema).parse(tasks);
+  console.log(data.data);
+  // const tasks = JSON.parse(data.toString());
+  // console.log(z.array(taskSchema).parse(data.data));
+
+  return data.data;
 }
 
 interface persidanganProps {
   params: { kategori: string; jenis: string };
 }
 export default async function PersidanganTable({ params }: persidanganProps) {
-  const { kategori, jenis } =await  params;
+  const { kategori, jenis } = await params;
   const tasks = await getTasks();
   const token = (await GetToken()) ?? "";
-  const userId = (await GetIdUser()) ?? "";
+  const userId = (await GetIdUser()) ?? 0;
 
   return (
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-3">
