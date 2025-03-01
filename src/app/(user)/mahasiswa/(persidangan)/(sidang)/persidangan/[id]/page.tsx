@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import Typography from "@/components/ui/typhography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PendaftaranSection from "../components/pendaftaran-section";
-import DokumenSection from "../components/dokumen-section";
-import PutusanSidang from "../components/putusan-section";
-import SectionPersidangan from "../components/persidangan-section";
+import PendaftaranSection from "../../components/pendaftaran-section";
+import DokumenSection from "../../components/dokumen-section";
+import PutusanSidang from "../../components/putusan-section";
+import SectionPersidangan from "../../components/persidangan-section";
 
 export default function PendaftaranSidang() {
   const [selectedTab, setSelectedTab] = useState("pendaftaran");
@@ -32,9 +32,7 @@ export default function PendaftaranSidang() {
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-2 mb-10">
       <Typography.H2 className="flex flex-col">
         Persidangan Perdata
-        <p className="text-sm font-normal">
-          Berikut adalah detail dari perkara online yang saudara daftarkan
-        </p>
+        <p className="text-sm font-normal">Berikut adalah detail dari perkara online yang saudara daftarkan</p>
       </Typography.H2>
       <Separator />
 
