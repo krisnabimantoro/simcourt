@@ -1,10 +1,51 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Typography from "@/components/ui/typhography";
+import url_fetch from "@/constant/data-fetching";
+import TokenSession from "@/hooks/token-session";
+import GetFetchingDataSelected from "@/lib/fetching-component-get-selected";
+import GetToken from "@/lib/get-token";
 import { cn } from "@/lib/utils";
+import { url } from "inspector";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
-export default function CardPendaftaran() {
+// async function fetching(id: string) {
+//   const token = GetToken();
+
+//   const response = await fetch(`${url_fetch}/v1/detail-pendaftarans/${id}`, {
+//     method: "GET",
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       "Content-Type": "application/json",
+//     },
+//     credentials: "include",
+//   });
+
+//   const data = await response.json();
+//   return data;
+// }
+
+interface CardPendaftaranProps {
+  token: string;
+  id: string;
+  data: any;
+}
+export default function CardPendaftaran({ token, id, data }: CardPendaftaranProps) {
+  // const url_fetch = process.env.URL_FETCH;
+
+  // const response = await fetch(`${url_fetch}/v1/detail-pendaftarans/${id}`, {
+  //   method: "GET",
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //     "Content-Type": "application/json",
+  //   },
+  //   credentials: "include",
+  // });
+
+  // const data = await response.json();
+  // console.log(data);
+
   return (
     <Card className="w-full mt-6">
       <CardHeader>
