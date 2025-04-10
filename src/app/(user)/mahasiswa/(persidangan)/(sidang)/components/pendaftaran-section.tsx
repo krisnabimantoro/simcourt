@@ -37,10 +37,12 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
         setDataPendaftaran(data);
       } catch (err: any) {
         setError(err.message);
+        
       } finally {
         setLoading(false);
       }
     }
+    
 
     fetchData();
   }, [id, token]);
@@ -53,13 +55,13 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
     return <div>Error: {error}</div>;
   }
 
-  console.log("Data Pendaftaran:", dataPendaftaran);
+  // console.log("Data Pendaftaran:", dataPendaftaran);
   return (
     <div className="w-full pb-6">
       <br />
       <Typography.H2>Detail Pendaftaran Perkara</Typography.H2>
       <Separator />
-      <CardPendaftaran token={token} id={id} data={dataPendaftaran} />
+      <CardPendaftaran  data={dataPendaftaran} />
       <CardPembayaran />
       <CardSaluranElektronik />
       <CardPembayaranJuruSita />
