@@ -1,48 +1,109 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { InputDateWIthLabel } from "@/components/ui/input-date-req";
 import InputWithLabelReq from "@/components/ui/input-with-label-req";
-import Form from "next/form";
-
-import { useState } from "react";
 import InputWithLabelReqPembayaran from "../input-with-label-pembayaan";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil } from "lucide-react";
-const items = [
-  {
-    id: 1,
-    tanggal: "2023-10-01",
-    uraian: "Biaya administrasi",
-    pemasukan: "Rp. 500,000",
-    pengeluaran: "Rp. 0",
-  },
-  {
-    id: 2,
-    tanggal: "2023-10-01",
-    uraian: "Biaya administrasi",
-    pemasukan: "Rp. 500,000",
-    pengeluaran: "Rp. 0",
-  },
-];
+import { useState } from "react";
 
-export default function PembayaranJuruSita() {
+interface PendaftaranSectionProps {
+  token: string;
+  id: string;
+}
+
+export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProps) {
+  const [tanggalPerkara, setTanggalPerkara] = useState("");
+  const [uraian, setUraian] = useState("");
   const [pemasukan, setPemasukan] = useState("");
   const [pengeluaran, setPengeluaran] = useState("");
+  const [items, setItems] = useState<any[]>([]);
+  const [totalItems, setTotalItems] = useState("");
 
   const handlePemasukanChange = (e: any) => {
     setPemasukan(e.target.value);
-    if (e.target.value) {
-      setPengeluaran("");
-    }
+    if (e.target.value) setPengeluaran("");
   };
 
   const handlePengeluaranChange = (e: any) => {
     setPengeluaran(e.target.value);
-    if (e.target.value) {
+    if (e.target.value) setPemasukan("");
+  };
+
+  const fetchPembayaranData = async (): Promise<any> => {
+    const response = await fetch(`http://127.0.0.1:8020/api/v1/pembayaran/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return response.json();
+  };
+
+  const fetchData = async () => {
+    try {
+      const result = await fetchPembayaranData();
+      console.log("Fetched Data:", result);
+      setItems(result.data);
+      setTotalItems(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Call fetchData when the component is rendered
+  useState(() => {
+    fetchData();
+  },);
+
+  console.log("Items:", items);
+  console.log("Total Items:", totalItems);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const pemasukanValue = parseInt(pemasukan) || 0;
+    const pengeluaranValue = parseInt(pengeluaran) || 0;
+    // const sisa = pemasukanValue - pengeluaranValue;
+
+    const payload = {
+      detail_pendaftaran_id: parseInt(id),
+      tanggal_perkara: tanggalPerkara,
+      uraian,
+      pemasukan: pemasukanValue,
+      pengeluaran: pengeluaranValue,
+      // sisa,
+    };
+
+    console.log("Payload:", payload);
+    try {
+      const response = await fetch("http://127.0.0.1:8020/api/v1/pembayaran", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(payload), // Correctly send FormData without JSON.stringify
+      });
+
+
+      if (!response.ok) throw new Error("Failed to submit");
+
+      const result = await response.json();
+      console.log("Success:", result);
+      fetchData(); // Revalidate the data after successful submission
+      // Optionally reset form
+      setTanggalPerkara("");
+      setUraian("");
       setPemasukan("");
+      setPengeluaran("");
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
   };
 
@@ -53,12 +114,22 @@ export default function PembayaranJuruSita() {
         <CardDescription>Juru Sita</CardDescription>
       </CardHeader>
       <CardContent>
-        <Form action="" className="w-full space-y-2">
-          {/* On submission, the input value will be appended to 
-            the URL, e.g. /search?query=abc */}
+        <form onSubmit={handleSubmit} className="w-full space-y-2">
           <div className="grid grid-cols-4 space-x-4 items-end">
-            <InputDateWIthLabel label={"Tanggal Perkara"}/>
-            <InputWithLabelReq label={"Uraian"} placeholder={"Uraikan biaya perkara"} name={"uraian"} type={"text"} />
+            <InputDateWIthLabel
+              name={"input"}
+              label={"Tanggal Perkara"}
+              value={tanggalPerkara}
+              onChange={(e: any) => setTanggalPerkara(e.target.value)}
+            />
+            <InputWithLabelReq
+              label={"Uraian"}
+              placeholder={"Uraikan biaya perkara"}
+              name={"uraian"}
+              type={"text"}
+              value={uraian}
+              onChange={(e: any) => setUraian(e.target.value)}
+            />
             <InputWithLabelReqPembayaran
               label={"Pemasukan"}
               placeholder={"Rp. 0"}
@@ -83,7 +154,7 @@ export default function PembayaranJuruSita() {
               Submit
             </Button>
           </div>
-        </Form>
+        </form> 
       </CardContent>
       <CardFooter>
         <Table>
@@ -99,19 +170,20 @@ export default function PembayaranJuruSita() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className="font-medium">{item.id}</TableCell>
-                <TableCell>{item.tanggal}</TableCell>
-                <TableCell>{item.uraian}</TableCell>
-                <TableCell>{item.pemasukan}</TableCell>
-                <TableCell>{item.pengeluaran}</TableCell>
-                <TableCell>0</TableCell>
-                <TableCell>
-                  <Pencil className="hover:cursor-pointer" />
-                </TableCell>
+            {items?.map((item) => (
+              <TableRow key={item?.id}>
+              <TableCell className="font-medium">{item?.id || "-"}</TableCell>
+              <TableCell>{item?.tanggal_perkara || "-"}</TableCell>
+              <TableCell>{item?.uraian || "-"}</TableCell>
+              <TableCell>{item?.pemasukan || "-"}</TableCell>
+              <TableCell>{item?.pengeluaran || "-"}</TableCell>
+              <TableCell>{item?.sisa || "-"}</TableCell>
+              <TableCell>
+                <Pencil className="hover:cursor-pointer" />
+              </TableCell>
               </TableRow>
             ))}
+          
           </TableBody>
           <TableFooter className="bg-transparent">
             <TableRow className="hover:bg-transparent">
