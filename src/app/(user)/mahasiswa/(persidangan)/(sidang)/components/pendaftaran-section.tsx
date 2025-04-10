@@ -64,7 +64,7 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
       <CardPendaftaran  data={dataPendaftaran} />
       <CardPembayaran />
       <CardSaluranElektronik />
-      <CardPembayaranJuruSita />
+      <CardPembayaranJuruSita token={token} id={id} />
       <CardPanggilanJuruSita />
     </div>
   );
