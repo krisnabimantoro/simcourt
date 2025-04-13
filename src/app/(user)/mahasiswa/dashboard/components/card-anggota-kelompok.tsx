@@ -11,15 +11,16 @@ import GetToken from "@/lib/get-token";
 
 export default async function CardAnggota() {
   const responseMe = await GetFetchingData("v1/auth/me");
-  const classId = responseMe.data.kelas_id;
-  const mahasiswaId = responseMe.data.id;
+  const classId = responseMe?.data?.kelas_id;
+  const mahasiswaId = responseMe?.data?.id;
   const response = await GetFetchingData(`v1/list-students/${classId}`);
-  const idUser = responseMe.data.id;
+  const idUser = responseMe?.data?.id;
   const responseListGroups = await GetFetchingData(`v1/list-groups/${mahasiswaId}`);
   const userToken = await GetToken();
 
-  const dataListGroups = responseListGroups.data[0];
+  const dataListGroups = responseListGroups?.data?.[0];
   console.log("responseListGroups", dataListGroups);
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -36,21 +37,23 @@ export default async function CardAnggota() {
                   <DialogDescription>
                     This action cannot be undone. This will permanently delete your account and remove your data from our servers.
                   </DialogDescription>
-                  <TableAnggota response={response} userToken={userToken} listGroups={responseListGroups} />
+                  {response && userToken && responseListGroups && (
+                    <TableAnggota response={response} userToken={userToken} listGroups={responseListGroups} />
+                  )}
                 </DialogHeader>
               </DialogContent>
             </Dialog>
           </div>
         </CardTitle>
-        <CardDescription>{dataListGroups.name} </CardDescription>
+        <CardDescription>{dataListGroups?.name || "No group name available"} </CardDescription>
       </CardHeader>
       <CardContent>
         <Typography.H5>Koordinator</Typography.H5>
-        {dataListGroups.students.map((item: any) =>
+        {dataListGroups?.students?.map((item: any) =>
           item.status === "koordinator" ? (
             <div key={item.id} className="flex justify-between items-center text-sm">
               <p>{item.name}</p>
-              <ComponentComboboxDemo />
+              {userToken && <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} />}
             </div>
           ) : null
         )}
@@ -58,11 +61,11 @@ export default async function CardAnggota() {
       <CardFooter>
         <div className="flex flex-col w-full">
           <Typography.H5>Anggota Kelompok</Typography.H5>
-          {dataListGroups.students.map((item: any) =>
+          {dataListGroups?.students?.map((item: any) =>
             item.status === "anggota" ? (
               <div key={item.id} className="flex justify-between items-center text-sm">
                 <p>{item.name}</p>
-                <ComponentComboboxDemo />
+                {userToken && <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} />}
               </div>
             ) : null
           )}
