@@ -12,9 +12,13 @@ import GetToken from "@/lib/get-token";
 export default async function CardAnggota() {
   const responseMe = await GetFetchingData("v1/auth/me");
   const classId = responseMe.data.kelas_id;
+  const mahasiswaId = responseMe.data.id;
   const response = await GetFetchingData(`v1/list-students/${classId}`);
+  const idUser = responseMe.data.id;
+  const responseListGroups = await GetFetchingData(`v1/list-groups/${mahasiswaId}`);
   const userToken = await GetToken();
 
+  // console.log("responseListGroups", responseListGroups.data[0].students);
   return (
     <Card className="h-full">
       <CardHeader>
@@ -31,7 +35,7 @@ export default async function CardAnggota() {
                   <DialogDescription>
                     This action cannot be undone. This will permanently delete your account and remove your data from our servers.
                   </DialogDescription>
-                  <TableAnggota response={response} userToken={userToken} />
+                  <TableAnggota response={response} userToken={userToken} listGroups={responseListGroups} />
                 </DialogHeader>
               </DialogContent>
             </Dialog>
