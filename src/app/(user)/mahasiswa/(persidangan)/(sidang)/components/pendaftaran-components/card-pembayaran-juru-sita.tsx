@@ -82,6 +82,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
       const url = editingItemId ? `http://127.0.0.1:8020/api/v1/pembayaran/${editingItemId}` : "http://127.0.0.1:8020/api/v1/pembayaran";
 
       const method = editingItemId ? "PUT" : "POST";
+      console.log(editingItemId)
 
       const response = await fetch(url, {
         method,

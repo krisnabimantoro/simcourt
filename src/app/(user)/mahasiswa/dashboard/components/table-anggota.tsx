@@ -3,9 +3,14 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import GetFetchingData from "@/lib/fetching-component-get";
 
 export default async function TableAnggota() {
-  const response = await GetFetchingData("v1/students");
   
-
+  
+  const responseMe = await GetFetchingData("v1/auth/me");
+  const classId = responseMe.data.kelas_id;
+  
+  const response = await GetFetchingData(`v1/list-students/${classId}`);
+  console.log("Response:", response);
+  
   return (
     <Table>
       <TableCaption>List Anggota</TableCaption>
