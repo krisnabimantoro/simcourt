@@ -1,43 +1,114 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Separator } from "@/components/ui/separator";
 import Typography from "@/components/ui/typhography";
-
-
-import { Card, CardContent, CardDescription,CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import url_fetch from "@/constant/data-fetching";
+import { Skeleton } from "@/components/ui/skeleton"
 
-export default function CardPembayaran() {
-    return (
-        <Card className="w-full mt-6">
-        <CardHeader>
-          <CardTitle>Pembayaran (e-Payment)</CardTitle>
-          <CardDescription>Card Description</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Separator />
 
-          <div className="grid grid-cols-2 gap-2 justify-self-center mt-4">
-            <Typography.H4 className={cn("text-lg text-right")}>Diterima Dari</Typography.H4>
-            <Typography.P className={cn("text-muted-foreground")}>
-              {" "}
-              <div>
-                <p>Andar Nugroho, SH. CIL.</p>
-                <p>Nomor Rekening Advokat: 0300 612 652 A.n: Andar Nugroho Pada Bank: BCA</p>
-              </div>
-            </Typography.P>
+export default function CardPembayaran({
+  id,
+  token,
+}: {
+  id: string;
+  token: string;
+}) {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-            <Typography.H4 className={cn("text-lg text-right")}>Panjar Perkara</Typography.H4>
-            <Typography.P className={cn("text-muted-foreground w-80")}>Rp. 2.221.000,00</Typography.P>
+  const router = useRouter();
 
-            <Typography.H4 className={cn("text-lg text-right")}>Status Pembayaran</Typography.H4>
-            <Typography.P className={cn("text-muted-foreground w-80")}>Sudah dibayar</Typography.P>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8020/api/v1/detail-pembayaran?detail_pendaftaran_id=${id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
-            <Typography.H4 className={cn("text-lg text-right")}>Tanggal Pembayaran</Typography.H4>
-            <Typography.P className={cn("text-muted-foreground w-80")}>Selasa, 05 Maret 2019</Typography.P>
+        console.log("Response:", response);
+        if (response.status === 401) {
+          router.push("/auth");
+          return;
+        }
 
-            <Typography.H4 className={cn("text-lg text-right")}>Jam Pembayaran</Typography.H4>
-            <Typography.P className={cn("text-muted-foreground w-80")}>08:00:59 WIB</Typography.P>
-          </div>
-        </CardContent>
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
 
-      </Card>
-    )}
+        const json = await response.json();
+        const pembayaran = json.data?.[0]; // Access the first item
+        setData(pembayaran);
+      } catch (err: any) {
+        setError(err.message || "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id, token, router]);
+
+  
+  if (loading) return <Skeleton className="w-full h-100 rounded-full" />
+  ;
+  if (error || !data) return <p className="text-red-500">Error: {error}</p>;
+
+  return (
+    <Card className="w-full mt-6">
+      <CardHeader>
+        <CardTitle>Pembayaran (e-Payment)</CardTitle>
+        <CardDescription>Detail pembayaran perkara</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Separator />
+
+        <div className="grid grid-cols-2 gap-2 justify-self-center mt-4">
+          <Typography.H4 className="text-lg text-right">Diterima Dari</Typography.H4>
+          <Typography.P className="text-muted-foreground">
+            {data.diterima_dari}
+          </Typography.P>
+
+          <Typography.H4 className="text-lg text-right">Panjar Perkara</Typography.H4>
+          <Typography.P className="text-muted-foreground w-80">
+            Rp. {Number(data.panjar_perkara).toLocaleString("id-ID")}
+          </Typography.P>
+
+          <Typography.H4 className="text-lg text-right">Status Pembayaran</Typography.H4>
+          <Typography.P className="text-muted-foreground w-80">
+            {data.status_pembayaran}
+          </Typography.P>
+
+          <Typography.H4 className="text-lg text-right">Tanggal Pembayaran</Typography.H4>
+          <Typography.P className="text-muted-foreground w-80">
+            {data.tanggal_pembayaran}
+          </Typography.P>
+
+          <Typography.H4 className="text-lg text-right">Jam Pembayaran</Typography.H4>
+          <Typography.P className="text-muted-foreground w-80">
+            {new Date(data.jam_pembayaran).toLocaleTimeString("id-ID")} WIB
+          </Typography.P>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

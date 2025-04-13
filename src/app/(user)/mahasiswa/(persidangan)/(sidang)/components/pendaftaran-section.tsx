@@ -62,7 +62,7 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
       <Typography.H2>Detail Pendaftaran Perkara</Typography.H2>
       <Separator />
       <CardPendaftaran  data={dataPendaftaran} />
-      <CardPembayaran />
+      <CardPembayaran id={id} token={token}/>
       <CardSaluranElektronik />
       <CardPembayaranJuruSita token={token} id={id} />
       <CardPanggilanJuruSita />
