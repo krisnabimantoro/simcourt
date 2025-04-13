@@ -6,7 +6,7 @@ import InputWithLabelReq from "@/components/ui/input-with-label-req";
 import InputWithLabelReqPembayaran from "../input-with-label-pembayaan";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface PendaftaranSectionProps {
@@ -21,6 +21,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
   const [pengeluaran, setPengeluaran] = useState("");
   const [items, setItems] = useState<any[]>([]);
   const [totalItems, setTotalItems] = useState("");
+  const [editingItemId, setEditingItemId] = useState<number | null>(null);
 
   const handlePemasukanChange = (e: any) => {
     setPemasukan(e.target.value);
@@ -49,7 +50,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
       const result = await fetchPembayaranData();
       console.log("Fetched Data:", result);
       setItems(result.data);
-      setTotalItems(result);
+      setTotalItems(result.total_pembayaran);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -58,7 +59,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
   // Call fetchData when the component is rendered
   useState(() => {
     fetchData();
-  },);
+  });
 
   console.log("Items:", items);
   console.log("Total Items:", totalItems);
@@ -68,7 +69,6 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
 
     const pemasukanValue = parseInt(pemasukan) || 0;
     const pengeluaranValue = parseInt(pengeluaran) || 0;
-    // const sisa = pemasukanValue - pengeluaranValue;
 
     const payload = {
       detail_pendaftaran_id: parseInt(id),
@@ -76,34 +76,59 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
       uraian,
       pemasukan: pemasukanValue,
       pengeluaran: pengeluaranValue,
-      // sisa,
     };
 
-    console.log("Payload:", payload);
     try {
-      const response = await fetch("http://127.0.0.1:8020/api/v1/pembayaran", {
-        method: "POST",
+      const url = editingItemId ? `http://127.0.0.1:8020/api/v1/pembayaran/${editingItemId}` : "http://127.0.0.1:8020/api/v1/pembayaran";
+
+      const method = editingItemId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: {
-          Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(payload), // Correctly send FormData without JSON.stringify
+        body: JSON.stringify(payload),
       });
-
 
       if (!response.ok) throw new Error("Failed to submit");
 
       const result = await response.json();
       console.log("Success:", result);
-      fetchData(); // Revalidate the data after successful submission
-      // Optionally reset form
+      fetchData();
+
+      // Reset form and edit mode
       setTanggalPerkara("");
       setUraian("");
       setPemasukan("");
       setPengeluaran("");
+      setEditingItemId(null);
     } catch (error) {
       console.error("Error submitting form:", error);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Yakin ingin menghapus data ini?")) return;
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8020/api/v1/pembayaran/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Gagal menghapus data");
+
+      console.log("Berhasil menghapus");
+      fetchData();
+    } catch (error) {
+      console.error("Gagal menghapus:", error);
     }
   };
 
@@ -137,7 +162,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
               type={"number"}
               value={pemasukan}
               onChange={handlePemasukanChange}
-              disabled={!!pengeluaran}
+              disabled={!!pengeluaran && pengeluaran !== "0"}
             />
             <InputWithLabelReqPembayaran
               label={"Pengeluaran"}
@@ -146,7 +171,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
               type={"number"}
               value={pengeluaran}
               onChange={handlePengeluaranChange}
-              disabled={!!pemasukan}
+              disabled={!!pemasukan && pemasukan !== "0"}
             />
           </div>
           <div className="flex justify-end mt-4">
@@ -154,7 +179,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
               Submit
             </Button>
           </div>
-        </form> 
+        </form>
       </CardContent>
       <CardFooter>
         <Table>
@@ -172,23 +197,32 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
           <TableBody>
             {items?.map((item) => (
               <TableRow key={item?.id}>
-              <TableCell className="font-medium">{item?.id || "-"}</TableCell>
-              <TableCell>{item?.tanggal_perkara || "-"}</TableCell>
-              <TableCell>{item?.uraian || "-"}</TableCell>
-              <TableCell>{item?.pemasukan || "-"}</TableCell>
-              <TableCell>{item?.pengeluaran || "-"}</TableCell>
-              <TableCell>{item?.sisa || "-"}</TableCell>
-              <TableCell>
-                <Pencil className="hover:cursor-pointer" />
-              </TableCell>
+                <TableCell className="font-medium">{item?.id || "-"}</TableCell>
+                <TableCell>{item?.tanggal_perkara || "-"}</TableCell>
+                <TableCell>{item?.uraian || "-"}</TableCell>
+                <TableCell>{item?.pemasukan || "-"}</TableCell>
+                <TableCell>{item?.pengeluaran || "-"}</TableCell>
+                <TableCell>{item?.sisa || "-"}</TableCell>
+                <TableCell className="flex gap-x-2">
+                  <Pencil
+                    className="hover:cursor-pointer "
+                    onClick={() => {
+                      setEditingItemId(item.id);
+                      setTanggalPerkara(item.tanggal_perkara);
+                      setUraian(item.uraian);
+                      setPemasukan(item.pemasukan?.toString() || "");
+                      setPengeluaran(item.pengeluaran?.toString() || "");
+                    }}
+                  />
+                  <Trash2 className="hover:cursor-pointer text-red-500" onClick={() => handleDelete(item.id)} />
+                </TableCell>
               </TableRow>
             ))}
-          
           </TableBody>
           <TableFooter className="bg-transparent">
             <TableRow className="hover:bg-transparent">
               <TableCell colSpan={5}>Total</TableCell>
-              <TableCell className="text-right">$2,500.00</TableCell>
+              <TableCell className="text-right">Rp. {totalItems}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>

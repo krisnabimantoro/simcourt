@@ -28,9 +28,9 @@ export default function ModalPersidanganPertama() {
         <Separator className="mb-4" />
 
         <div className="space-y-4">
-          <InputDateWIthLabel label={"Tanggal Panggilan"} />
-          <InputDateWIthLabel label={"Tanggal Sidang"} />
-          <InputDateWIthLabel label={"Tanggal Sidang"} />
+          <InputDateWIthLabel label={"Tanggal Panggilan"} name={"tanggal-panggilan"} />
+          <InputDateWIthLabel label={"Tanggal Sidang"} name={"tanggal-sidang"} />
+         
         </div>
         <ComponentTimeField />
 
