@@ -29,7 +29,7 @@ interface AdvokatFormProps {
 
 export default function ClientAdvokat({ token, userId, classId }: AdvokatFormProps) {
   const projectId = useParams().id ?? "";
-
+  const router = useRouter();
   // const provinsi = DataProvinsi();
 
   // console.log(provinsi);
@@ -38,10 +38,18 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
     const formData = new FormData(event.currentTarget);
     // const ktaFile = formData.get("kta") as File;
     // console.log(ktaFile);
-
-    formData.append("kelas_id", classId.toString());
-    formData.append("mahasiswa_id", userId.toString());
-    formData.append("pendaftaran_sidang_id", projectId.toString());
+    try {
+      formData.append("kelas_id", classId.toString());
+      formData.append("mahasiswa_id", userId.toString());
+      formData.append("pendaftaran_sidang_id", projectId.toString());
+    } catch (error: any) {
+      console.error("Error appending data to FormData:", error.message);
+      if (!classId) {
+        toast({ title: "Kelas ID tidak ditemukan", variant: "destructive" });
+        router.push("/mahasiswa/krskelas");
+      }
+      return;
+    }
 
     const formDataJson = Object.fromEntries(formData.entries());
     console.log("FormData as JSON:", formDataJson);
@@ -119,6 +127,8 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       toast({ title: "Pendaftaran Sidang berhasil dibuat" });
       console.log("Response:", dataDaftar);
 
+      router.push("/mahasiswa/perdata/gugatan");
+
       // Redirect after success
       //   router.push(`/advokat/${data.data.id}`);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -152,7 +162,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
             <InputWithLabelReq label="Organisasi" placeholder="Input asal organisasi" name="organisasi" type="text" />
 
             <InputWithLabelReq label="BANK" placeholder="Input nama bank" name="bank" type="text" />
-            <InputWithLabelReq label="Nomor Rekening" placeholder="Input Nomor Rekening" name="no_rekening" type="text" />
+            <InputWithLabelReq label="Nomor Rekening" placeholder="Input Nomor Rekening" name="no_rekening" type="number" />
           </div>
 
           <div className="w-1/2 ml-8 gap-y-4 flex flex-col">
