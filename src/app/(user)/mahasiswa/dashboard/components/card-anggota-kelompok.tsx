@@ -6,8 +6,15 @@ import TableAnggota from "./table-anggota";
 import Typography from "@/components/ui/typhography";
 import InputSearchAnggota from "./input-search";
 import { ComponentComboboxDemo } from "./role-combobox";
+import GetFetchingData from "@/lib/fetching-component-get";
+import GetToken from "@/lib/get-token";
 
-export default function CardAnggota() {
+export default async function CardAnggota() {
+  const responseMe = await GetFetchingData("v1/auth/me");
+  const classId = responseMe.data.kelas_id;
+  const response = await GetFetchingData(`v1/list-students/${classId}`);
+  const userToken = await GetToken();
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -24,8 +31,7 @@ export default function CardAnggota() {
                   <DialogDescription>
                     This action cannot be undone. This will permanently delete your account and remove your data from our servers.
                   </DialogDescription>
-                  <InputSearchAnggota />
-                  <TableAnggota />
+                  <TableAnggota response={response} userToken={userToken} />
                 </DialogHeader>
               </DialogContent>
             </Dialog>
