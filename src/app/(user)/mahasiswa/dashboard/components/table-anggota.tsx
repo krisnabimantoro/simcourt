@@ -17,13 +17,17 @@ export default function TableAnggota({ response, userToken, listGroups }: { resp
   const [listGroupsStudents, setListGroupsStudents] = useState<any[]>([]);
   const [tab, setTab] = useState("all");
   const [token, setToken] = useState("");
+  const [dataStudentGroups, setDataStudentGroups] = useState<any[]>([]);
+  const [groupId, setGroupId] = useState<any | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setStudents(response.data);
       setFilteredStudents(response.data);
-      setListGroupsStudents(listGroups.data[0].students);
+      setListGroupsStudents(listGroups.data[0]?.students ?? []); // Handle undefined case
+      setDataStudentGroups(listGroups.data[0] ?? []); // Handle undefined case
       setToken(userToken || "");
+      setGroupId(listGroups.data[0]?.pivot.group_id ?? null); // Handle undefined case
     };
 
     fetchData();
@@ -48,6 +52,14 @@ export default function TableAnggota({ response, userToken, listGroups }: { resp
   }, [search, tab, students]);
 
   console.log("listGroupsStudents", listGroupsStudents);
+  console.log("dataStudentGroups", dataStudentGroups);
+  console.log("groupId", groupId);
+
+
+  if (listGroupsStudents.some((student) => student.nim)) {
+    console.log("NIM exists in listGroupsStudents");
+    
+  }
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -73,10 +85,9 @@ export default function TableAnggota({ response, userToken, listGroups }: { resp
             </TableRow>
           ) : (
             filteredStudents.map((item, index) => {
-              const isDuplicateNIM = listGroupsStudents.some((student) => student.nim === item.nim);
-              const datanim = listGroupsStudents.find((student) => student.nim === item.nim);
+              const isDuplicateNIM = (listGroupsStudents ?? []).some((student) => student.nim === item.nim);
+              const datanim = (listGroupsStudents ?? []).find((student) => student.nim === item.nim);
               console.log("datanim", isDuplicateNIM);
-              // console.log("listGroupsStudents", listGroupsStudents);
 
               return (
                 <TableRow key={index}>
@@ -86,10 +97,10 @@ export default function TableAnggota({ response, userToken, listGroups }: { resp
                   <TableCell className="text-right">
                     <SelectButtonGroup
                       mahasiswa_id={item.mahasiswa_id}
-                      group_id={1}
+                      group_id={groupId}
                       token={token}
-                      listGroups={listGroupsStudents}
-                      duplicated={isDuplicateNIM }
+                      listGroups={listGroupsStudents ?? []}
+                      duplicated={isDuplicateNIM}
                     />
                   </TableCell>
                 </TableRow>
