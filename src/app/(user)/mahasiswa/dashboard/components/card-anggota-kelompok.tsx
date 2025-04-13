@@ -18,7 +18,8 @@ export default async function CardAnggota() {
   const responseListGroups = await GetFetchingData(`v1/list-groups/${mahasiswaId}`);
   const userToken = await GetToken();
 
-  // console.log("responseListGroups", responseListGroups.data[0].students);
+  const dataListGroups = responseListGroups.data[0];
+  console.log("responseListGroups", dataListGroups);
   return (
     <Card className="h-full">
       <CardHeader>
@@ -41,23 +42,30 @@ export default async function CardAnggota() {
             </Dialog>
           </div>
         </CardTitle>
-        <CardDescription>Kelompok A </CardDescription>
+        <CardDescription>{dataListGroups.name} </CardDescription>
       </CardHeader>
       <CardContent>
         <Typography.H5>Koordinator</Typography.H5>
-        <div className="flex justify-between items-center text-sm">
-          <p>Krisna Bimantoro</p>
-
-          <ComponentComboboxDemo />
-        </div>
+        {dataListGroups.students.map((item: any) =>
+          item.status === "koordinator" ? (
+            <div key={item.id} className="flex justify-between items-center text-sm">
+              <p>{item.name}</p>
+              <ComponentComboboxDemo />
+            </div>
+          ) : null
+        )}
       </CardContent>
       <CardFooter>
         <div className="flex flex-col w-full">
           <Typography.H5>Anggota Kelompok</Typography.H5>
-          <div className="flex justify-between items-center text-sm">
-            <p>Krisna Bimantoro</p>
-            <ComponentComboboxDemo />
-          </div>
+          {dataListGroups.students.map((item: any) =>
+            item.status === "anggota" ? (
+              <div key={item.id} className="flex justify-between items-center text-sm">
+                <p>{item.name}</p>
+                <ComponentComboboxDemo />
+              </div>
+            ) : null
+          )}
         </div>
       </CardFooter>
     </Card>
