@@ -11,7 +11,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => <DataTableColumnHeader column={column} title="No" />,
-    cell: ({ row }) => <div className="w-fit">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="w-fit">{row.getValue("id") ?? "N/A"}</div>,
     enableSorting: true,
     enableHiding: false,
   },
@@ -19,10 +19,9 @@ export const columns: ColumnDef<Task>[] = [
     accessorKey: "no_pendaftaran",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Kode & Tanggal Register" />,
     cell: ({ row }) => {
-      const kodeRegister = row.getValue("no_pendaftaran");
-      const tanggalRegister = (row.original as { created_at?: string }).created_at;
-      const detailPendaftaranId = row.getValue("id");
-      console.log(detailPendaftaranId);
+      const kodeRegister = row.getValue("no_pendaftaran") ?? "N/A";
+      const tanggalRegister = (row.original as { created_at?: string }).created_at ?? null;
+      const detailPendaftaranId = row.getValue("id") ?? "N/A";
 
       return (
         <div className="flex flex-col space-x-2">
@@ -52,9 +51,6 @@ export const columns: ColumnDef<Task>[] = [
       const statusPembayaran =
         (row.original as { pendaftaran_sidang?: { pihak?: { status_pihak?: string }[] } }).pendaftaran_sidang?.pihak?.[0]?.status_pihak ??
         "Tidak tersedia";
-      if (!statusPembayaran) {
-        return null;
-      }
 
       return (
         <div className="flex flex-col space-x-2">
@@ -68,18 +64,14 @@ export const columns: ColumnDef<Task>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes(row.getValue(id) ?? "");
     },
   },
   {
-    accessorKey: "no_pendaftaran",
+    accessorKey: "dokumen_id",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Status Pendaftaran" />,
     cell: ({ row }) => {
       const statusPendaftaran = "Terdaftar";
-
-      if (!statusPendaftaran) {
-        return null;
-      }
 
       return (
         <div className="flex flex-col space-x-2">
@@ -90,31 +82,27 @@ export const columns: ColumnDef<Task>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes(row.getValue(id) ?? "");
     },
   },
   {
     accessorKey: "jumlah_panjar",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Jumlah Panjar Perkara" />,
     cell: ({ row }) => {
-      const panjar = row.getValue("jumlah_panjar");
-
-      if (!panjar) {
-        return null;
-      }
+      const panjar = row.getValue("jumlah_panjar") ?? "N/A";
 
       return <div className="flex flex-col space-x-2">Rp. {panjar as string}</div>;
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes(row.getValue(id) ?? "");
     },
   },
   {
     accessorKey: "nomor_perkara",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Kode Perkara & Tanggal Pendaftaran" />,
     cell: ({ row }) => {
-      const nomorPerkara = row.getValue("nomor_perkara");
-      const tanggalPendaftaran = row.original.tanggal_pendaftaran;
+      const nomorPerkara = row.getValue("nomor_perkara") ?? "N/A";
+      const tanggalPendaftaran = row.original.tanggal_pendaftaran ?? "Tanggal tidak tersedia";
 
       return (
         <div className="flex flex-col space-x-2">

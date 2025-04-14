@@ -33,9 +33,9 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
           onChange={(event) => table.getColumn("no_pendaftaran")?.setFilterValue(event.target.value)}
           className="h-8 w-full"
         />
-        {table.getColumn("status_pendaftaran") && (
+        {/* {table.getColumn("status_pendaftaran") && (
           <DataTableFacetedFilter column={table.getColumn("status_pendaftaran")} title="Filter Pendaftaran" options={statusPendaftaran} />
-        )}
+        )} */}
         {isFiltered && (
           <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="h-8 px-2 lg:px-3">
             Reset
