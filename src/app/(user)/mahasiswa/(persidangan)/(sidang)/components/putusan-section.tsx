@@ -4,7 +4,7 @@ import CardPutusanSela from "./putusan-components/card-putusan-sela";
 export default function PutusanSidang() {
   return (
     <div>
-      <CardPutusanSela />
+      {/* <CardPutusanSela /> */}
       <CardPutusanAkhir/>
     </div>
   );
