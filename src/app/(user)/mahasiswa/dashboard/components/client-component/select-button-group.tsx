@@ -3,6 +3,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { set } from "date-fns";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,6 +22,8 @@ export default function SelectButtonGroup({
 }) {
   const [selected, setSelected] = useState(false);
   const [duplicatedState, setDuplicatedState] = useState(duplicated);
+  const router = useRouter();
+  
   const handleClick = async () => {
     const postData = { mahasiswa_id, group_id };
     console.log("Post data:", postData);
@@ -39,6 +42,7 @@ export default function SelectButtonGroup({
         setSelected(false);
         setDuplicatedState(false);
         console.log("Post result:", result);
+        router.refresh();
       } else {
         const res = await fetch("http://127.0.0.1:8020/api/v1/student-groups", {
           method: "POST",
@@ -54,6 +58,7 @@ export default function SelectButtonGroup({
         setSelected(true);
         setDuplicatedState(true);
         console.log("Post result:", result);
+        router.refresh();
       }
     } catch (err) {
       console.error(`${duplicated ? "Delete" : "Post"} error:`, err);
