@@ -1,6 +1,8 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import GetFetchingDataSelected from "@/lib/fetching-component-get-selected";
 
-export default function CardKelompok() {
+export default async function CardKelompok() {
+  // const response = await GetFetchingDataSelected
   return (
     <Card className="h-full">
       <CardHeader>
