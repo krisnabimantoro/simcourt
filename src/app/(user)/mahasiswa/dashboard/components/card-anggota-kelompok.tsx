@@ -13,7 +13,8 @@ export default async function CardAnggota() {
   const responseMe = await GetFetchingData("v1/auth/me");
   const classId = responseMe?.data?.kelas_id;
   const mahasiswaId = responseMe?.data?.id;
-  const response = await GetFetchingData(`v1/list-students/${classId}`);
+
+  const response = classId ? await GetFetchingData(`v1/list-students/${classId}`) : null;
   const idUser = responseMe?.data?.id;
   const responseListGroups = await GetFetchingData(`v1/list-groups/${mahasiswaId}`);
   const userToken = await GetToken();
@@ -53,7 +54,7 @@ export default async function CardAnggota() {
           item.status === "koordinator" ? (
             <div key={item.id} className="flex justify-between items-center text-sm">
               <p>{item.name}</p>
-              {userToken && <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} />}
+              {userToken && <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups} />}
             </div>
           ) : null
         )}
@@ -65,7 +66,9 @@ export default async function CardAnggota() {
             item.status === "anggota" ? (
               <div key={item.id} className="flex justify-between items-center text-sm">
                 <p>{item.name}</p>
-                {userToken && <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} />}
+                {userToken && (
+                  <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups?.data[0] ?? ""} />
+                )}
               </div>
             ) : null
           )}
