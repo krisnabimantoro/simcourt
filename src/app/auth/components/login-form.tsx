@@ -27,7 +27,7 @@ export default function LoginForm() {
     // const user = await data.find((user) => user.nim === nim && user.password === password);
 
     try {
-      const response = await fetch("https://simcourt-krisna-bimantoros-projects.vercel.app/api/login", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nim, password }),

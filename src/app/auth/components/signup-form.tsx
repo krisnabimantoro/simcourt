@@ -11,7 +11,6 @@ import { useToast } from "@/hooks/use-toast";
 const SignUpForm = () => {
   const router = useRouter();
   const { toast } = useToast();
-  const url_fetch = process.env.URL_FETCH;
   // State untuk form input
   const [formData, setFormData] = useState({
     nim: "",
@@ -38,6 +37,8 @@ const SignUpForm = () => {
     }
     console.log("Form Data:", formData);
     try {
+      const url_fetch = process.env.URL_FETCH;
+      console.log("URL Fetch:", `${url_fetch}/api/v1/auth/register`);
       const response = await fetch(`${url_fetch}/api/v1/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

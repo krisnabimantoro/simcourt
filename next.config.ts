@@ -16,7 +16,8 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   env: {
-    API_KEY_DAERAH: process.env.API_KEY_DAERAH,
+    API_KEY_DAERAH: process.env.API_KEY_DAERA,
+    URL_FETCH: process.env.URL_FETCH,
   },
 
   async headers() {
@@ -26,7 +27,7 @@ const nextConfig: NextConfig = {
         source: "/api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "*" }, // replace this your actual origin
+          { key: "Access-Control-Allow-Origin", value: "http://127.0.0.1:3031" }, // replace this your actual origin
           { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
           {
             key: "Access-Control-Allow-Headers",
