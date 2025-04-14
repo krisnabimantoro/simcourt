@@ -36,28 +36,29 @@ const SignUpForm = () => {
       toast({ title: "Error", description: "Konfirmasi password tidak cocok", variant: "destructive" });
       return;
     }
-
+    console.log("Form Data:", formData);
     try {
-      const url = process.env.URL_FETCH
+     
       const response = await fetch(`http://127.0.0.1:8020/api/v1/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
         credentials: "include",
       });
+      console.log("Response:", response);
 
       const result = await response.json();
 
       if (response.ok) {
         toast({ title: "Pendaftaran Berhasil", description: "Silakan login!", variant: "default" });
         // Redirect ke halaman login dan trigger tab login
-        router.push("/auth?tab=login");
 
       } else {
         toast({ title: "Pendaftaran Gagal", description: result.message || "Terjadi kesalahan", variant: "destructive" });
       }
-    } catch {
+    } catch(error) {
       toast({ title: "Error", description: "Gagal menghubungi server", variant: "destructive" });
+      console.error("Error:", error);
     }
   };
 
