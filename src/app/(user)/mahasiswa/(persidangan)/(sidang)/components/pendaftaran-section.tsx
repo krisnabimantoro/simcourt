@@ -6,6 +6,7 @@ import CardPembayaran from "./pendaftaran-components/card-pembayaran";
 import CardSaluranElektronik from "./pendaftaran-components/card-saluran-elektronik";
 import CardPembayaranJuruSita from "./pendaftaran-components/card-pembayaran-juru-sita";
 import CardPanggilanJuruSita from "./pendaftaran-components/card-panggilan-e-summon";
+import router from "next/router";
 
 interface PendaftaranSectionProps {
   token: string;
@@ -31,6 +32,11 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
 
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
+        }
+
+        if (response.status === 401) {
+          router.push("/auth");
+          return;
         }
 
         const data = await response.json();
