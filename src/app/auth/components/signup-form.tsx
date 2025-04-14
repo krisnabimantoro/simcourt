@@ -43,13 +43,16 @@ const SignUpForm = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
 
       const result = await response.json();
 
       if (response.ok) {
         toast({ title: "Pendaftaran Berhasil", description: "Silakan login!", variant: "default" });
-        router.push("/auth"); // Redirect ke halaman login
+        // Redirect ke halaman login dan trigger tab login
+        router.push("/auth?tab=login");
+
       } else {
         toast({ title: "Pendaftaran Gagal", description: result.message || "Terjadi kesalahan", variant: "destructive" });
       }
