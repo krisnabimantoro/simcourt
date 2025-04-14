@@ -3,9 +3,9 @@ import { createSession } from "@/lib/session";
 
 export async function POST(req: Request) {
   const { nim, password } = await req.json();
+  const url_fetch = process.env.URL_FETCH;
 
   try {
-    const url_fetch = process.env.URL_FETCH;
     const response = await fetch(`${url_fetch}/api/v1/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
