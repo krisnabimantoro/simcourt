@@ -16,7 +16,7 @@ const frameworks = [
   { value: "saksi", label: "Saksi" },
 ];
 
-export function ComponentComboboxDemo({ mahasiswa_id, token }: { mahasiswa_id: number; token: any }) {
+export function ComponentComboboxDemo({ mahasiswa_id, token, listGroups }: { mahasiswa_id: number; token: any; listGroups: any }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -47,12 +47,14 @@ export function ComponentComboboxDemo({ mahasiswa_id, token }: { mahasiswa_id: n
       console.error("Error updating role:", error);
     }
   };
+  console.log("List Groups card:", listGroups);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-fit justify-between my-1">
           {value ? frameworks.find((framework) => framework.value === value)?.label : "Pilih Role"}
+
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-fit p-0">
