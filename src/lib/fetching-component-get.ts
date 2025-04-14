@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export default async function GetFetchingData(url: string) {
   const token = await GetToken() ?? "";
 
-  const response = await fetch(`${url_fetch}/${url}`, {
+  const response = await fetch(`${url_fetch}/api/${url}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
