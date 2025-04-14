@@ -6,7 +6,7 @@ export async function POST(req: Request) {
 
   try {
     const url_fetch = process.env.URL_FETCH;
-    const response = await fetch(`${url_fetch}/v1/auth/login`, {
+    const response = await fetch(`${url_fetch}/api/v1/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nim, password }),
