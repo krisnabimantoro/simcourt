@@ -6,6 +6,7 @@ export async function POST(req: Request) {
   const url_fetch = process.env.URL_FETCH;
 
   try {
+    console.log("Request body:", { nim, password }); // Log the request body for debugging
     const response = await fetch(`${url_fetch}/api/v1/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
