@@ -7,7 +7,7 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./ 
 
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -20,11 +20,9 @@ RUN \
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . . 
+COPY . .
 
-# Optional: disable telemetry
-# ENV NEXT_TELEMETRY_DISABLED=1
-
+# Pastikan config standalone aktif (di next.config.js → output: 'standalone')
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
   elif [ -f package-lock.json ]; then npm run build; \
@@ -33,7 +31,7 @@ RUN \
   fi
 
 # Production image
-FROM base AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -41,13 +39,14 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy required files for standalone server
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./  
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# ✅ Copy dari folder standalone hasil build
+COPY --from=builder /app/.next/standalone ./
 
-# Ensure the `src` folder is also copied (in case it's not included in previous `COPY` command)
-COPY --from=builder /app/src ./src  
+# ✅ Static assets dari build
+COPY --from=builder /app/.next/static ./.next/static
+
+# ✅ Public assets
+COPY --from=builder /app/public ./public
 
 USER nextjs
 
@@ -55,5 +54,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start the standalone Next.js server
+# ✅ Jalankan server.js dari standalone output
 CMD ["node", "server.js"]
