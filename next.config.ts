@@ -17,8 +17,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   env: {
-    API_KEY_DAERAH: process.env.API_KEY_DAERA,
-    URL_FETCH: process.env.URL_FETCH,
+    API_KEY_DAERAH: process.env.API_KEY_DAERAH,
   },
 
   async headers() {
