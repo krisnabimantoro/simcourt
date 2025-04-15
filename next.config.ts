@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
   env: {
     API_KEY_DAERAH: process.env.API_KEY_DAERAH,
     SESSION_SECRET: process.env.SESSION_SECRET,
-    NEXT_PUBLIC_URL_FETCH: process.env.NEXT_PUBLIC_URL_FETCH,
+    URL_AUTH: process.env.URL_AUTH,
   },
 
   async headers() {
