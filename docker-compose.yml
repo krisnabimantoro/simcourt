@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      - URL_AUTH=https://ecourt.umm.ac.id/api/v1/auth/login
+      - API_KEY_DAERAH=003df8f0c8ef95c8f4b0cb659cc04fdd027db504b5e84120ab2f675617cf8114
+      - SESSION_SECRET=guQEr2xwJestWGoOZO0ByfHtVMGBynJh2JekkR662oCfCdOSFvChzNIxkKvVPlvz
+      - NEXT_PUBLIC_URL_FETCH=http://simcourt-api:8020
+      - URL_AUTH=https://ecourt.umm.ac.id
+# NEXT_PUBLIC_URL_FETCH=http://127.0.0.1:8020
