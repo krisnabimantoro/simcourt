@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
   },
   env: {
     API_KEY_DAERAH: process.env.API_KEY_DAERAH,
+    SESSION_SECRET: process.env.SESSION_SECRET,
   },
 
   async headers() {
