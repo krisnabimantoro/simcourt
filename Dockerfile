@@ -1,7 +1,7 @@
 # syntax=docker.io/docker/dockerfile:1
 
 FROM node:18-alpine AS base
-RUN apk add --no-cache libc6-compat ca-certificates
+
 # Install dependencies only when needed
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
@@ -21,7 +21,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY .env .env
+
 # Pastikan config standalone aktif (di next.config.js → output: 'standalone')
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
@@ -32,7 +32,6 @@ RUN \
 
 # Production image
 FROM node:18-alpine AS runner
-RUN apk add --no-cache ca-certificates
 WORKDIR /app
 
 ENV NODE_ENV=production
