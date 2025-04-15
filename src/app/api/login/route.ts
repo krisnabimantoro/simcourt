@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   console.log("URL_AUTH:", url); // Log the URL for debugging
   try {
     console.log("Request body:", { nim, password }); // Log the request body for debugging
-    const response = await fetch(`${url}/api/v1/auth/login`, {
+    const response = await fetch(`https://ecourt.umm.ac.id/api/v1/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nim, password }),
