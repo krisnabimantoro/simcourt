@@ -21,7 +21,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
+COPY .env .env
 # Pastikan config standalone aktif (di next.config.js → output: 'standalone')
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
