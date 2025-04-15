@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Typography from "@/components/ui/typhography";
-import url_fetch from "@/constant/data-fetching";
+import NEXT_PUBLIC_URL_FETCH from "@/constant/data-fetching";
 import TokenSession from "@/hooks/token-session";
 import GetFetchingDataSelected from "@/lib/fetching-component-get-selected";
 import GetToken from "@/lib/get-token";
@@ -10,16 +10,11 @@ import { url } from "inspector";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-
-
 interface CardPendaftaranProps {
   data: any;
 }
 export default function CardPendaftaran({ data }: CardPendaftaranProps) {
-
-
   console.log("Data Pendaftaran:", data);
- 
 
   function fileUrl(filePath: string) {
     const url = `http://localhost:8020/storage/${filePath?.replace("public/", "")}`;

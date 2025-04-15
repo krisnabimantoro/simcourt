@@ -1,11 +1,11 @@
-import url_fetch from "@/constant/data-fetching";
-import GetToken  from "@/lib/get-token";
+import NEXT_PUBLIC_URL_FETCH from "@/constant/data-fetching";
+import GetToken from "@/lib/get-token";
 
 import { redirect } from "next/navigation";
 export default async function GetFetchingDataSelected(url: string, id: string) {
   const token = await GetToken();
 
-  const response = await fetch(`${url_fetch}/api/${url}/${id}`, {
+  const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/${url}/${id}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

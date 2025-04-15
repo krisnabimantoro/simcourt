@@ -37,9 +37,9 @@ const SignUpForm = () => {
     }
     console.log("Form Data:", formData);
     try {
-      const url_fetch = process.env.URL_FETCH;
-      console.log("URL Fetch:", `${url_fetch}/api/v1/auth/register`);
-      const response = await fetch(`${url_fetch}/api/v1/auth/register`, {
+      const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+      console.log("URL Fetch:", `${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/register`);
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

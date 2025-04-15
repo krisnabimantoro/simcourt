@@ -3,11 +3,11 @@ import { createSession } from "@/lib/session";
 export const runtime = "nodejs";
 export async function POST(req: Request) {
   const { nim, password } = await req.json();
-  const url_fetch = process.env.URL_FETCH;
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
 
   try {
     console.log("Request body:", { nim, password }); // Log the request body for debugging
-    const response = await fetch(`${url_fetch}/api/v1/auth/login`, {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nim, password }),

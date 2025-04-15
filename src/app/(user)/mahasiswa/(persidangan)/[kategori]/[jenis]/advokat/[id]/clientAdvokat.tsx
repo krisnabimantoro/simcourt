@@ -19,7 +19,7 @@ import { useCookies } from "next-client-cookies";
 import { useParams } from "next/navigation";
 import { statusAlamat, statusPihak } from "@/data/data";
 import DataProvinsi from "@/hooks/data-provinsi";
-import url_fetch, { apiKeyDaerah } from "@/constant/data-fetching";
+import NEXT_PUBLIC_URL_FETCH, { apiKeyDaerah } from "@/constant/data-fetching";
 
 interface AdvokatFormProps {
   token: string;
