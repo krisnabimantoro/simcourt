@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSession } from "@/lib/session";
-
+export const runtime = "nodejs";
 export async function POST(req: Request) {
   const { nim, password } = await req.json();
   const url_fetch = process.env.URL_FETCH;
