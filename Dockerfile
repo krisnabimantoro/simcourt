@@ -1,7 +1,7 @@
 # syntax=docker.io/docker/dockerfile:1
 
 FROM node:18-alpine AS base
-
+RUN apk add --no-cache libc6-compat ca-certificates
 # Install dependencies only when needed
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
@@ -32,6 +32,7 @@ RUN \
 
 # Production image
 FROM node:18-alpine AS runner
+RUN apk add --no-cache ca-certificates
 WORKDIR /app
 
 ENV NODE_ENV=production
