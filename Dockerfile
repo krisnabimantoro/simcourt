@@ -20,7 +20,7 @@ RUN \
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY . . 
 
 # Optional: disable telemetry
 # ENV NEXT_TELEMETRY_DISABLED=1
@@ -43,8 +43,11 @@ RUN adduser --system --uid 1001 nextjs
 
 # Copy required files for standalone server
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./  
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Ensure the `src` folder is also copied (in case it's not included in previous `COPY` command)
+COPY --from=builder /app/src ./src  
 
 USER nextjs
 
