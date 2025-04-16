@@ -16,11 +16,12 @@ export default function ClientSelectClass({ classes, token, userId }: ClientSele
   const [loading, setLoading] = useState(false);
   const { toast } = useToast(); // Optional: Use a toast for better feedback
   const router = useRouter();
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   
   const handleUpdateClass = async (classId: string) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:8020/api/v1/students/${userId}`, {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/students/${userId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

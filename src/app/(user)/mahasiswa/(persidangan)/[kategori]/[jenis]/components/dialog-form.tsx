@@ -43,6 +43,7 @@ export default function DialogForm({ token, userId, kategoriSidang, jenisSidang 
     e.preventDefault();
 
     const formDataToSend = new FormData();
+    const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
     formDataToSend.append("nama_pengadilan", formData.nama_pengadilan);
     formDataToSend.append("mahasiswa_id", userId);
     formDataToSend.append("pembiayaan_id", formData.pembiayaan_id);
@@ -52,7 +53,7 @@ export default function DialogForm({ token, userId, kategoriSidang, jenisSidang 
     if (formData.skts) formDataToSend.append("skts", formData.skts);
 
     try {
-      const response = await fetch("http://127.0.0.1:8020/api/v1/pendaftaran-sidang", {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pendaftaran-sidang`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // ✅ Keep only Authorization header

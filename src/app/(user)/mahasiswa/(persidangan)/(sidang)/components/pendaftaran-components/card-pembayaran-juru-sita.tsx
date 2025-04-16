@@ -22,7 +22,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
   const [items, setItems] = useState<any[]>([]);
   const [totalItems, setTotalItems] = useState("");
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
-
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const handlePemasukanChange = (e: any) => {
     setPemasukan(e.target.value);
     if (e.target.value) setPengeluaran("");
@@ -34,7 +34,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
   };
 
   const fetchPembayaranData = async (): Promise<any> => {
-    const response = await fetch(`http://127.0.0.1:8020/api/v1/pembayaran/${id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pembayaran/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -79,7 +79,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
     };
 
     try {
-      const url = editingItemId ? `http://127.0.0.1:8020/api/v1/pembayaran/${editingItemId}` : "http://127.0.0.1:8020/api/v1/pembayaran";
+      const url = editingItemId ? `${NEXT_PUBLIC_URL_FETCH}/api/v1/pembayaran/${editingItemId}` : `${NEXT_PUBLIC_URL_FETCH}/api/v1/pembayaran`;
 
       const method = editingItemId ? "PUT" : "POST";
       console.log(editingItemId)
@@ -115,7 +115,7 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
     if (!confirm("Yakin ingin menghapus data ini?")) return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:8020/api/v1/pembayaran/${id}`, {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pembayaran/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

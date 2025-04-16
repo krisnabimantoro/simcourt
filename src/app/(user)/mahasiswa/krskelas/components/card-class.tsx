@@ -26,12 +26,13 @@ interface CardClassClientProps {
 export default function CardClassClient({ classData, token, userId }: CardClassClientProps) {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const url = process.env.NEXT_PUBLIC_URL_FETCH;
 
   const router = useRouter();
   const handleUpdateClass = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:8020/api/v1/students/${userId}`, {
+      const response = await fetch(`${url}/api/v1/students/${userId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

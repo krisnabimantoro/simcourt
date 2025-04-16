@@ -41,10 +41,10 @@ const kemahasiswaan = [
     icon: Book,
   },
 ];
-
+const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
 const onLogout = async (token: string): Promise<void> => {
   try {
-    const response = await fetch(`http://127.0.0.1:8020/api/v1/auth/logout`, {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/logout`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

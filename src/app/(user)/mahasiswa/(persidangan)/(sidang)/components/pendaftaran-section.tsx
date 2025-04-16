@@ -17,11 +17,12 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
   const [dataPendaftaran, setDataPendaftaran] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`http://127.0.0.1:8020/api/v1/detail-pendaftarans/${id}`, {
+        const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/detail-pendaftarans/${id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

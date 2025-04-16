@@ -19,13 +19,13 @@ const frameworks = [
 export function ComponentComboboxDemo({ mahasiswa_id, token, listGroups }: { mahasiswa_id: number; token: any; listGroups: any }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const handleSelect = async (selectedRole: string) => {
     setValue(selectedRole);
     setOpen(false);
 
     try {
-      const res = await fetch(`http://127.0.0.1:8020/api/v1/students/${mahasiswa_id}`, {
+      const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/students/${mahasiswa_id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,6 @@ export function ComponentComboboxDemo({ mahasiswa_id, token, listGroups }: { mah
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-fit justify-between my-1">
           {value ? frameworks.find((framework) => framework.value === value)?.label : "Pilih Role"}
-
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-fit p-0">

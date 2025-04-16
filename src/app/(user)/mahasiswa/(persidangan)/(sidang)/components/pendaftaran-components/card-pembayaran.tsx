@@ -20,7 +20,7 @@ export default function CardPembayaran({ id, token }: { id: string; token: strin
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8020/api/v1/detail-pembayaran?detail_pendaftaran_id=${id}`, {
+        const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/detail-pembayaran?detail_pendaftaran_id=${id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

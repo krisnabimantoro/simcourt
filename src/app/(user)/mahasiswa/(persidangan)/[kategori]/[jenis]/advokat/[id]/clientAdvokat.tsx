@@ -31,7 +31,8 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   const projectId = useParams().id ?? "";
   const router = useRouter();
   // const provinsi = DataProvinsi();
-
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  const url = process.env.URL_AUTH;
   // console.log(provinsi);
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -55,7 +56,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
     console.log("FormData as JSON:", formDataJson);
 
     try {
-      const responsePendaftaran = await fetch("http://127.0.0.1:8020/api/v1/advokats", {
+      const responsePendaftaran = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/advokats`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
@@ -82,7 +83,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
     }
 
     try {
-      const responsePihak = await fetch("http://127.0.0.1:8020/api/v1/pihaks", {
+      const responsePihak = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
@@ -109,7 +110,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
     }
 
     try {
-      const responseDaftar = await fetch("http://127.0.0.1:8020/api/v1/detail-pendaftarans", {
+      const responseDaftar = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/detail-pendaftarans`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData

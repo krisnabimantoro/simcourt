@@ -27,9 +27,10 @@ export default function SelectButtonGroup({
   const handleClick = async () => {
     const postData = { mahasiswa_id, group_id };
     console.log("Post data:", postData);
+    const url = process.env.URL_AUTH;
     try {
       if (duplicatedState) {
-        const res = await fetch(`http://127.0.0.1:8020/api/v1/student-groups/${mahasiswa_id}`, {
+        const res = await fetch(`${url}/api/v1/student-groups/${mahasiswa_id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -44,7 +45,7 @@ export default function SelectButtonGroup({
         console.log("Post result:", result);
         router.refresh();
       } else {
-        const res = await fetch("http://127.0.0.1:8020/api/v1/student-groups", {
+        const res = await fetch(`${url}/api/v1/student-groups`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
