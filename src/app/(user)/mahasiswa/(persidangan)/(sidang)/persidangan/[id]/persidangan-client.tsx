@@ -65,7 +65,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
           <SectionPersidangan />
         </TabsContent>
         <TabsContent value="dokumen">
-          <DokumenSection />
+          <DokumenSection id_pendaftaratan={id} token={token} />
         </TabsContent>
         <TabsContent value="putusan">
           <PutusanSidang />

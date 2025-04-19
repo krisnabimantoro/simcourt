@@ -1,71 +1,55 @@
+"use client";
+
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileText } from "lucide-react";
+
 const items = [
-  {
-    id: 1,
-    nama_dokumen: "Surat Gugatan",
-    dokumen_elektronik: {
-      judul: "Dokumen Gugatan",
-      diinput_oleh: "Nama Lengkap User (peran)",
-      tanggal: "03-01-2024 14:07 WIB",
-      file: "PDF",
-    },
-    verifikasi: "Belum Verifikasi",
-    keterangan: "Keterangan ditulis apabila Instruktur ingin memberikan catatan revisi, dll untuk berkasnya.",
-  },
-  {
-    id: 2,
-    nama_dokumen: "Perbaikan Gugatan",
-    dokumen_elektronik: {
-      judul: "Gugatan",
-      diinput_oleh: "Nama Lengkap User (peran)",
-      tanggal: "14-03-2024 12:37 WIB",
-      file: "dokumen_persidangan_1710394679_724120.docx",
-    },
-    verifikasi: "Belum Verifikasi",
-    keterangan: "",
-  },
-  {
-    id: 3,
-    nama_dokumen: "Penetapan Hakim/Majelis Hakim",
-    dokumen_elektronik: {
-      judul: "Penetapan Hakim Majelis Hakim",
-      diinput_oleh: "Nama Lengkap User (peran)",
-      tanggal: "08-08-2024 09:07 WIB",
-      file: "PDF",
-    },
-    verifikasi: "Verifikasi",
-    keterangan: "",
-  },
-  {
-    id: 4,
-    nama_dokumen: "Penunjukan Panitera Pengganti",
-    dokumen_elektronik: {
-      judul: "Penunjukan Panitera Pengganti",
-      diinput_oleh: "Nama Lengkap User (peran)",
-      tanggal: "12-08-2024 07:08 WIB",
-      file: "PDF",
-    },
-    verifikasi: "Tidak Valid",
-    keterangan: "",
-  },
-  {
-    id: 5,
-    nama_dokumen: "Penunjukan Jurusita/JSP",
-    dokumen_elektronik: {
-      judul: "Penunjukan Jurusita JSP",
-      diinput_oleh: "Nama Lengkap User (peran)",
-      file: "PDF",
-    },
-    verifikasi: "Belum Verifikasi",
-    keterangan: "",
-  },
+  { id: 1, nama_dokumen: "Surat Gugatan" },
+  { id: 2, nama_dokumen: "Perbaikan Gugatan" },
+  { id: 3, nama_dokumen: "Penetapan Hakim/Majelis Hakim" },
+  { id: 4, nama_dokumen: "Penunjukan Panitera Pengganti" },
+  { id: 5, nama_dokumen: "Penunjukan Jurusita/JSP" },
 ];
 
-export default function DokumenSection() {
+export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaftaratan: any; token: any }) {
+  const [selectedDokumenId, setSelectedDokumenId] = useState<number | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  const handleUpload = async (item: (typeof items)[0]) => {
+    if (!file) return alert("Silakan pilih file terlebih dahulu");
+
+    const formData = new FormData();
+    formData.append("detail_pendaftaran_id", id_pendaftaratan);
+    formData.append("nama_dokumen", item.nama_dokumen);
+    formData.append("diupload_oleh", "John Doe");
+    formData.append("peran", "Kuasa Hukum");
+    formData.append("status", "Belum terverifikasi");
+    formData.append("keterangan", `Dokumen ${item.nama_dokumen} terkait perkara No. 123/PDT/2024`);
+    formData.append("file", file);
+
+    try {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/dokumen-permohonan`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
+        body: formData,
+      });
+
+      const result = await response.json();
+      console.log(result);
+      alert("Upload berhasil!");
+      setSelectedDokumenId(null); // reset
+      setFile(null);
+    } catch (error) {
+      console.error(error);
+      alert("Gagal mengupload dokumen");
+    }
+  };
+
   return (
     <div>
       <Card>
@@ -90,24 +74,35 @@ export default function DokumenSection() {
                   <TableCell className="font-medium">{item.id}</TableCell>
                   <TableCell className="font-medium">{item.nama_dokumen}</TableCell>
                   <TableCell>
-                    <div className="">
-                      <p>{item.dokumen_elektronik.judul}</p>
-                      <p>{item.dokumen_elektronik.diinput_oleh}</p>
-                      <p>{item.dokumen_elektronik.tanggal}</p>
-                      <p className="py-2"><FileText /></p>
-                      <Button className="">Tambah</Button>
+                    <div>
+                      <p>{item.dokumen_elektronik?.judul || "N/A"}</p>
+                      <p>{item.dokumen_elektronik?.diinput_oleh || "N/A"}</p>
+                      <p>{item.dokumen_elektronik?.tanggal || "N/A"}</p>
+                      <p className="py-2">
+                        <FileText />
+                      </p>
+                      <Button onClick={() => setSelectedDokumenId(item.id)}>Tambah</Button>
+
+                      {selectedDokumenId === item.id && (
+                        <div className="mt-2">
+                          <input type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+                          <Button className="mt-2" onClick={() => handleUpload(item)}>
+                            Upload
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
                     {item.verifikasi === "Verifikasi" ? (
                       <Badge>Verifikasi</Badge>
                     ) : item.verifikasi === "Tidak Valid" ? (
-                      <Badge variant={"destructive"}>Tidak Valid</Badge>
+                      <Badge variant="destructive">Tidak Valid</Badge>
                     ) : (
-                      <Badge variant={"outline"}>Belum Verifikasi</Badge>
+                      <Badge variant="outline">Belum Verifikasi</Badge>
                     )}
                   </TableCell>
-                  <TableCell className="w-60">{item.keterangan}</TableCell>
+                  <TableCell className="w-60">{item.keterangan || "N/A"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
