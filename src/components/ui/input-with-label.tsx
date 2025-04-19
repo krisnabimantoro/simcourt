@@ -7,13 +7,14 @@ interface InputProps {
   name: string;
   type: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string | number;
 }
 
-export default function InputWithLabel({ label, placeholder, name, type, onChange }: InputProps) {
+export default function InputWithLabel({ label, placeholder, name, type, onChange, value }: InputProps) {
   return (
     <div className="space-y-2">
       <Label htmlFor="input-02">{label}</Label>
-      <Input id="input-02" placeholder={placeholder} type={type} name={name} onChange={onChange} />
+      <Input id="input-02" placeholder={placeholder} type={type} name={name} onChange={onChange} value={value} />
     </div>
   );
 }

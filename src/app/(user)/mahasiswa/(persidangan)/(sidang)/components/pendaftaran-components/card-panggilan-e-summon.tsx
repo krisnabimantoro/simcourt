@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil } from "lucide-react";
 
-import { Dialog, DialogContent,  DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ModalPersidanganPertama from "./modal/summons-persidangan-pertama";
 
 const items = [
@@ -30,7 +30,10 @@ const items = [
       "Sidang pertama, saat persidangan harap membawa bukti-bukti surat asli dan menghadirkan 2 (dua) orang saksi yang salah satu saksi dari pihak keluarga.",
   },
 ];
-export default function CardPanggilanJuruSita() {
+
+export default function CardPanggilanJuruSita({ id_pendaftaratan, data, token }: { id_pendaftaratan: any; data: any; token: any }) {
+  console.log("Data Panggilan:", data?.data?.pendaftaran_sidang?.pihak);
+
   return (
     <Card className="mt-6">
       <CardHeader>
@@ -46,7 +49,7 @@ export default function CardPanggilanJuruSita() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Kirim Panggilan/Pemberitahuan</DialogTitle>
-                <ModalPersidanganPertama/>
+                <ModalPersidanganPertama id_pendaftaratan={id_pendaftaratan} data={data} token={token} />
               </DialogHeader>
             </DialogContent>
           </Dialog>

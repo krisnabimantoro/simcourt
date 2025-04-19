@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface InputProps {
   label: string;
   placeholder: string;
-  options: { value: string; label: string }[];
+  options?: { value: string; label: string }[];
   name?: string;
 }
 
