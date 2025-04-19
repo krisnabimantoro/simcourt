@@ -5,6 +5,8 @@ import { Pencil } from "lucide-react";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ModalPersidanganPertama from "./modal/summons-persidangan-pertama";
+import { useEffect, useState } from "react";
+import { Result } from "postcss";
 
 const items = [
   {
@@ -31,9 +33,38 @@ const items = [
   },
 ];
 
-export default function CardPanggilanJuruSita({ id_pendaftaratan, data, token }: { id_pendaftaratan: any; data: any; token: any }) {
-  console.log("Data Panggilan:", data?.data?.pendaftaran_sidang?.pihak);
+export default function CardPanggilanJuruSita({ id, data, token }: { id: any; data: any; token: any }) {
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  const [dataPanggilan, setDataPanggilan] = useState<any>([]);
 
+  const fetchPembayaranData = async (): Promise<any> => {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/panggilan-sidang/detail_pendaftaran:${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return response.json();
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const result = await fetchPembayaranData();
+        setDataPanggilan(result.data);
+        console.log("Data panggilan:", result);
+      } catch (error) {
+        console.error("Gagal ambil data pembayaran:", error);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  
+console.log("Data Panggilan:", dataPanggilan.panggilan_sidangs);
   return (
     <Card className="mt-6">
       <CardHeader>
@@ -49,7 +80,7 @@ export default function CardPanggilanJuruSita({ id_pendaftaratan, data, token }:
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Kirim Panggilan/Pemberitahuan</DialogTitle>
-                <ModalPersidanganPertama id_pendaftaratan={id_pendaftaratan} data={data} token={token} />
+                <ModalPersidanganPertama id_pendaftaratan={id} data={data} token={token} />
               </DialogHeader>
             </DialogContent>
           </Dialog>
@@ -69,46 +100,46 @@ export default function CardPanggilanJuruSita({ id_pendaftaratan, data, token }:
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map((item) => (
+            {dataPanggilan?.panggilan_sidangs?.map((item) => (
               <TableRow key={item.id}>
                 <TableCell className="font-medium">{item.id}</TableCell>
                 <TableCell>
                   <div className="items-start">
                     <p>Panggilan Sidang</p>
-                    <p>Nomor: {item.panggilan_sidang.nomor}</p>
-                    <p className="text-green-70000">Tanggal Sidang: {item.panggilan_sidang.tanggal_sidang}</p>
-                    <p>Jam Sidang: {item.panggilan_sidang.jam_sidang}</p>
+                    <p>Nomor: {item.nomor}</p>
+                    <p className="text-green-70000">Tanggal Sidang: {item.tanggal_sidang}</p>
+                    <p>Jam Sidang: {item.jam_sidang}</p>
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="items-start">
                     <p>
                       <span className="font-bold">Nama: </span>
-                      {item.penggugat.nama}
+                      {item.pihak.nama}
                     </p>
                     <p>
                       <span className="font-bold">Email: </span>
-                      {item.penggugat.email}
+                      {item.pihak.email}
                     </p>
                   </div>
                 </TableCell>
                 <TableCell>
                   <div>
-                    <p>
-                      <span className="font-bold">Judul:</span>
-                      {item.dokumen.judul}
-                    </p>
-                    <p>
-                      <span className="font-bold">Pengiriman: </span>
-                      <span>Tanggal: {item.dokumen.pengiriman.tanggal}</span>
-                      <span>, Jam: {item.dokumen.pengiriman.jam}</span>
-                    </p>
-                    <p> Dikirim Oleh: {item.dokumen.pengiriman.dikirim_oleh}</p>
-                    <br />
-                    <p>
-                      <span className="font-bold">Catatan Panggilan:</span>
-                      <span>{item.catatan_panggilan}</span>
-                    </p>
+                  <p>
+                    <span className="font-bold">Judul:</span>
+                    {item.dokumen?.judul || "N/A"}
+                  </p>
+                  <p>
+                    <span className="font-bold">Pengiriman: </span>
+                    <span>Tanggal: {item.dokumen?.pengiriman?.tanggal || "N/A"}</span>
+                    <span>, Jam: {item.dokumen?.pengiriman?.jam || "N/A"}</span>
+                  </p>
+                  <p> Dikirim Oleh: {item.dokumen?.pengiriman?.dikirim_oleh || "N/A"}</p>
+                  <br />
+                  <p>
+                    <span className="font-bold">Catatan Panggilan:</span>
+                    <span>{item.catatan_panggilan || "N/A"}</span>
+                  </p>
                   </div>
                 </TableCell>
                 <TableCell>
