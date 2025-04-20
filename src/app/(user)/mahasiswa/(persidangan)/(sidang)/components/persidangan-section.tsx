@@ -28,7 +28,7 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-
+  const [dataSidang, setDataSidang] = useState<any>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -63,6 +63,32 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
 
     fetchDataUser();
   }, [token]);
+
+  const fetchJadwalSidang = async (): Promise<any> => {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return response.json();
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const result = await fetchJadwalSidang();
+        setDataSidang(result.data.jadwal_sidang);
+        console.log("Data sidang", dataSidang);
+      } catch (error) {
+        console.error("Gagal ambil data pembayaran:", error);
+      }
+    };
+
+    loadData();
+  }, []);
 
   return (
     <div className="w-full space-y-6">
@@ -101,16 +127,11 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
               </TableRow>
             </TableHeader>
             <TableBody>
-              {items.map((item) => (
+              {dataSidang.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.id}</TableCell>
-                  <TableCell>
-                    {item.tanggal_jam.split(" ")[0]}
-                    {item.tanggal_jam.split(" ")[1]}
-                  </TableCell>
-                  <TableCell>
-                    {item.tanggal_jam.split(" ")[2]} {item.tanggal_jam.split(" ")[3]}
-                  </TableCell>
+                  <TableCell>{item.hari_tanggal}</TableCell>
+                  <TableCell>{item.jam}</TableCell>
                   <TableCell>{item.agenda}</TableCell>
                   <TableCell>{item.keterangan}</TableCell>
                   <TableCell>
@@ -121,9 +142,6 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
             </TableBody>
           </Table>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
       </Card>
 
       <Card>
