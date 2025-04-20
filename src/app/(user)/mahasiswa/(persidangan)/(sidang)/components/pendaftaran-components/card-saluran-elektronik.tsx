@@ -10,6 +10,7 @@ import InputWithLabel from "@/components/ui/input-with-label";
 import InputWithLabelReq from "@/components/ui/input-with-label-req";
 import Form from "next/form";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 const items = [
   {
@@ -21,7 +22,76 @@ const items = [
   },
 ];
 
-export default function CardSaluranElektronik() {
+export const statusPihak = [
+  {
+    value: "setuju",
+    label: "Setuju",
+  },
+  {
+    value: "tidak_setuju",
+    label: "Tidak Setuju",
+  },
+];
+
+export default function CardSaluranElektronik({ id, token }: { id: any; token: any }) {
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  const [pihak, setPihak] = useState<any[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState("");
+
+  const fetchPihak = async (): Promise<any> => {
+    try {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/detail_pendaftaran:${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setPihak(data.data.pihaks); // store it in state
+    } catch (error) {
+      console.error("Failed to fetch pihak:", error);
+    }
+  };
+
+  const patchStatusPihak = async (status: string): Promise<void> => {
+    try {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          persetujuan: status,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Gagal mengubah status pihak: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Berhasil mengubah status pihak:", data);
+    } catch (error) {
+      console.error("Error saat update status pihak:", error);
+    }
+  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await patchStatusPihak(selectedStatus);
+  };
+
+  useEffect(() => {
+    fetchPihak();
+  }, []); // Run only once on mount
+
   return (
     <Card className="mt-6">
       <CardHeader>
@@ -48,16 +118,16 @@ export default function CardSaluranElektronik() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map((item) => (
+            {pihak?.map((item) => (
               <TableRow key={item.id}>
                 <TableCell className="font-medium">{item.id}</TableCell>
-                <TableCell className="font-medium">{item.nama}</TableCell>
+                <TableCell className="font-medium">{item.nama_lengkap}</TableCell>
                 <TableCell>{item.alamat}</TableCell>
-                <TableCell>{item.telp_email}</TableCell>
+                <TableCell>{item.email}</TableCell>
                 <TableCell>
-                  {item.persetujuan === "Accepted" ? (
+                  {item.persetujuan === "setuju" ? (
                     <CircleCheck size={24} />
-                  ) : item.persetujuan === "Not Accepted" ? (
+                  ) : item.persetujuan === "tidak_disetujui" ? (
                     <CircleAlert size={24} />
                   ) : (
                     <CircleHelp />
@@ -70,39 +140,24 @@ export default function CardSaluranElektronik() {
                     </DialogTrigger>
                     <DialogContent className="w-[800px]">
                       <DialogHeader>
-                        <DialogTitle>Tambah Pihak</DialogTitle>
+                        <DialogTitle>Status Pihak</DialogTitle>
                         <DialogDescription>
-                          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat ipsa eius incidunt. Rem repellendus maiores iusto
-                          quidem
+                          Silakan ubah status pihak sesuai dengan persetujuan yang telah diberikan. Pastikan untuk memilih status yang
+                          sesuai sebelum mengirimkan formulir.
                         </DialogDescription>
-                        <Form action={""} className="">
+                        <form onSubmit={handleSubmit} className="">
                           <div className="flex  gap-x-2">
-                            <div className="w-1/2 gap-y-4 flex flex-col">
-                              <SelectWithLabel label={"Status Pihak"} placeholder={"Pilih Status Pihak"} />
-
-                              <InputWithLabelReq
-                                label={"Nama Lengkap"}
-                                placeholder={"Input nama lengkap pengacara"}
-                                name={"name"}
-                                type={"text"}
+                            <div className="w-full gap-y-4 flex flex-col">
+                              <SelectWithLabel
+                                label={"Status Pihak"}
+                                placeholder={"Pilih Status Pihak"}
+                                options={statusPihak}
+                                onChange={(val) => setSelectedStatus(val)}
                               />
-                              <SelectWithLabel label={"Status Alamat"} placeholder={"Pilih Status Alamat"} />
-                              <SelectWithLabel label={"Provinsi"} placeholder={"Pilih Provinsi"} />
-                              <SelectWithLabel label={"Kabupaten"} placeholder={"Pilih Kabupaten"} />
-                            </div>
-
-                            <div className="w-1/2 gap-y-4 flex flex-col ">
-                              <InputWithLabel label={"Email"} placeholder={"Input Email"} name={"email"} type={"email"} />
-
-                              <InputWithLabel label={"Alamat"} placeholder={"Input Alamat Lengkap "} name={"alamat"} type={"text"} />
-                              <InputWithLabel label={"Telepon"} placeholder={"Input No Telepon "} name={"notelp"} type={"text"} />
-
-                              <SelectWithLabel label={"Status Kecamatan"} placeholder={"Pilih Kecamatan"} />
-                              <SelectWithLabel label={"Status Kelurahan"} placeholder={"Pilih Kelurahan"} />
                             </div>
                           </div>
                           <Button className="w-full mt-4">Submit</Button>
-                        </Form>
+                        </form>
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>

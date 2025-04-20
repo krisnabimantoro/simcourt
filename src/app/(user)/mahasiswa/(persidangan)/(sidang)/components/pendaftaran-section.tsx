@@ -19,7 +19,7 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
-  
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -46,17 +46,13 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
         setIdPendaftaranSidang(data.data.pendaftaran_sidang_id);
       } catch (err: any) {
         setError(err.message);
-        
       } finally {
         setLoading(false);
       }
     }
-    
 
     fetchData();
   }, [id, token]);
-
-  
 
   console.log("Data Pendaftaranasd:", idPendaftaranSidang);
 
@@ -74,9 +70,9 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
       <br />
       <Typography.H2>Detail Pendaftaran Perkara</Typography.H2>
       <Separator />
-      <CardPendaftaran  data={dataPendaftaran} />
-      <CardPembayaran id={id} token={token}/>
-      <CardSaluranElektronik />
+      <CardPendaftaran data={dataPendaftaran} />
+      <CardPembayaran id={id} token={token} />
+      <CardSaluranElektronik id={id} token={token} />
       <CardPembayaranJuruSita token={token} id={id} />
       <CardPanggilanJuruSita id={id} data={dataPendaftaran} token={token} />
     </div>
