@@ -43,6 +43,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       formData.append("kelas_id", classId.toString());
       formData.append("mahasiswa_id", userId.toString());
       formData.append("pendaftaran_sidang_id", projectId.toString());
+      formData.append("persetujuan", "belum_membuat");
     } catch (error: any) {
       console.error("Error appending data to FormData:", error.message);
       if (!classId) {
