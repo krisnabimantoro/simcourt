@@ -33,7 +33,7 @@ const items = [
   },
 ];
 
-export default function CardPanggilanJuruSita({ id, data, token }: { id: any; data: any; token: any }) {
+export default function CardPanggilanJuruSita({ id, data, token, user }: { id: any; data: any; token: any; user: any }) {
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [dataPanggilan, setDataPanggilan] = useState<any>([]);
 
@@ -63,8 +63,7 @@ export default function CardPanggilanJuruSita({ id, data, token }: { id: any; da
     loadData();
   }, []);
 
-  
-console.log("Data Panggilan:", dataPanggilan.panggilan_sidangs);
+  console.log("Data Panggilan:", dataPanggilan.panggilan_sidangs);
   return (
     <Card className="mt-6">
       <CardHeader>
@@ -80,7 +79,7 @@ console.log("Data Panggilan:", dataPanggilan.panggilan_sidangs);
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Kirim Panggilan/Pemberitahuan</DialogTitle>
-                <ModalPersidanganPertama id_pendaftaratan={id} data={data} token={token} />
+                <ModalPersidanganPertama id_pendaftaratan={id} data={data} token={token} user={user} />
               </DialogHeader>
             </DialogContent>
           </Dialog>
@@ -125,21 +124,21 @@ console.log("Data Panggilan:", dataPanggilan.panggilan_sidangs);
                 </TableCell>
                 <TableCell>
                   <div>
-                  <p>
-                    <span className="font-bold">Judul:</span>
-                    {item.dokumen?.judul || "N/A"}
-                  </p>
-                  <p>
-                    <span className="font-bold">Pengiriman: </span>
-                    <span>Tanggal: {item.dokumen?.pengiriman?.tanggal || "N/A"}</span>
-                    <span>, Jam: {item.dokumen?.pengiriman?.jam || "N/A"}</span>
-                  </p>
-                  <p> Dikirim Oleh: {item.dokumen?.pengiriman?.dikirim_oleh || "N/A"}</p>
-                  <br />
-                  <p>
-                    <span className="font-bold">Catatan Panggilan:</span>
-                    <span>{item.catatan_panggilan || "N/A"}</span>
-                  </p>
+                    <p>
+                      <span className="font-bold">Judul:</span>
+                      {item.dokumen?.judul || "N/A"}
+                    </p>
+                    <p>
+                      <span className="font-bold">Pengiriman: </span>
+                      <span>Tanggal: {item.dokumen?.pengiriman?.tanggal || "N/A"}</span>
+                      <span>, Jam: {item.dokumen?.pengiriman?.jam || "N/A"}</span>
+                    </p>
+                    <p> Dikirim Oleh: {item.dokumen?.pengiriman?.dikirim_oleh || "N/A"}</p>
+                    <br />
+                    <p>
+                      <span className="font-bold">Catatan Panggilan:</span>
+                      <span>{item.catatan_panggilan || "N/A"}</span>
+                    </p>
                   </div>
                 </TableCell>
                 <TableCell>
