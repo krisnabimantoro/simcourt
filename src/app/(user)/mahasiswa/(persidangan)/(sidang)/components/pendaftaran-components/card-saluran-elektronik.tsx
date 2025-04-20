@@ -37,7 +37,7 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [pihak, setPihak] = useState<any[]>([]);
   const [selectedStatus, setSelectedStatus] = useState("");
-
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const fetchPihak = async (): Promise<any> => {
     try {
       const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/detail_pendaftaran:${id}`, {
@@ -60,9 +60,9 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
     }
   };
 
-  const patchStatusPihak = async (status: string): Promise<void> => {
+  const patchStatusPihak = async (id_pihak: number, status: string): Promise<void> => {
     try {
-      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/${id}`, {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/${id_pihak}/persetujuan`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,7 +85,11 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await patchStatusPihak(selectedStatus);
+    if (selectedId !== null) {
+      await patchStatusPihak(selectedId, selectedStatus);
+    } else {
+      console.error("Selected ID is null. Cannot update status.");
+    }
   };
 
   useEffect(() => {
@@ -136,7 +140,7 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
                 <TableCell className="text-right">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <UserPen className={cn("hover:cursor-pointer")} />
+                      <UserPen onClick={() => setSelectedId(item.id)} className={cn("hover:cursor-pointer")} />
                     </DialogTrigger>
                     <DialogContent className="w-[800px]">
                       <DialogHeader>
