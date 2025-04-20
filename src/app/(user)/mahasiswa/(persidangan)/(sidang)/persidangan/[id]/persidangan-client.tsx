@@ -12,8 +12,8 @@ import PutusanSidang from "../../components/putusan-section";
 import { useParams } from "next/navigation";
 
 interface PendaftaranProps {
-    token: string;
-    params: { id: string };
+  token: string;
+  params: { id: string };
 }
 export default function PendaftaranSidangClient({ token, params }: PendaftaranProps) {
   const { id } = params; // Get the ID from the URL parameters
@@ -50,7 +50,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
       </Typography.H2>
       <Separator />
 
-      <Tabs defaultValue={"pendaftaran"}  className="mt-4">
+      <Tabs defaultValue={"pendaftaran"} className="mt-4">
         <Separator />
         <TabsList>
           <TabsTrigger value="pendaftaran">Pendaftaran</TabsTrigger>
@@ -62,7 +62,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
           <PendaftaranSection token={token} id={id} />
         </TabsContent>
         <TabsContent value="persidangan">
-          <SectionPersidangan />
+          <SectionPersidangan token={token} id={id} />
         </TabsContent>
         <TabsContent value="dokumen">
           <DokumenSection id_pendaftaratan={id} token={token} />

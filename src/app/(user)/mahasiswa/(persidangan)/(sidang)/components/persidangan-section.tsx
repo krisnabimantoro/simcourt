@@ -3,6 +3,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Calendar, Pencil, PlusCircle } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import ModalCourtCalendar from "./persidangan-components/modal-court-calendar";
+import { useEffect, useState } from "react";
+import router from "next/router";
 
 const items = [
   {
@@ -15,7 +19,51 @@ const items = [
   },
 ];
 
-export default function SectionPersidangan() {
+interface PersidanganSectionProps {
+  token: string;
+  id: string;
+}
+
+export default function SectionPersidangan({ token, id }: PersidanganSectionProps) {
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  const [user, setUser] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchDataUser() {
+      try {
+        const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/me`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        if (response.status === 401) {
+          router.push("/auth");
+          return;
+        }
+
+        const data = await response.json();
+        setUser(data.data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchDataUser();
+  }, [token]);
+
   return (
     <div className="w-full space-y-6">
       <Card>
@@ -24,10 +72,23 @@ export default function SectionPersidangan() {
           <CardDescription>PERSIDANGAN NOMOR: 625/Pdt.P/2024/PN Mlg</CardDescription>
         </CardHeader>
         <CardContent>
-          <Button>
-            <PlusCircle />
-            Tambah Jadwal Persidangan
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant={"default"}>
+                <PlusCircle />
+                Tambah Jadwal Persidangan
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>COURT CALENDAR/RENCANA</DialogTitle>
+
+                <DialogDescription>Tambah Jadwal Persidangan</DialogDescription>
+                <br />
+                <ModalCourtCalendar id_persidangan={id} token={token} user={user} />
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
@@ -144,7 +205,7 @@ export default function SectionPersidangan() {
                           📄 Lihat Dokumen
                         </button>
                         <button className="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg hover:bg-blue-600">
-                           Verifikasi Dokumen
+                          Verifikasi Dokumen
                         </button>
                       </p>
                     </div>
