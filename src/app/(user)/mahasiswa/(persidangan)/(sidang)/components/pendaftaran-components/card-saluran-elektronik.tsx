@@ -79,6 +79,8 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
 
       const data = await response.json();
       console.log("Berhasil mengubah status pihak:", data);
+      alert("Status pihak berhasil diubah!");
+      window.location.reload();
     } catch (error) {
       console.error("Error saat update status pihak:", error);
     }
