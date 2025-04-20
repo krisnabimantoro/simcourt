@@ -6,16 +6,17 @@ interface InputProps {
   placeholder: string;
   options?: { value: string; label: string }[];
   name?: string;
+  onChange?: (value: string) => void;
 }
 
-export default function SelectWithLabelReq({ label, placeholder, options, name }: InputProps) {
+export default function SelectWithLabelReq({ label, placeholder, options, name, onChange }: InputProps) {
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>
         {label}
         <span className="text-destructive">*</span>
       </Label>
-      <Select name={name}>
+      <Select name={name} onValueChange={onChange}>
         <SelectTrigger id={name}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
