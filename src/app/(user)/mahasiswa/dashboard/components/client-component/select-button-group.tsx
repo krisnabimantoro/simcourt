@@ -23,14 +23,14 @@ export default function SelectButtonGroup({
   const [selected, setSelected] = useState(false);
   const [duplicatedState, setDuplicatedState] = useState(duplicated);
   const router = useRouter();
-  
+
   const handleClick = async () => {
     const postData = { mahasiswa_id, group_id };
     console.log("Post data:", postData);
-    const url = process.env.URL_AUTH;
+    const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
     try {
       if (duplicatedState) {
-        const res = await fetch(`${url}/api/v1/student-groups/${mahasiswa_id}`, {
+        const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/student-groups/${mahasiswa_id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
