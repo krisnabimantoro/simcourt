@@ -16,25 +16,29 @@ export default function ModalPersidanganPertama({
   id_pendaftaratan,
   data,
   token,
- 
+  user,
 }: {
   id_pendaftaratan: any;
   data: any;
   token: any;
- 
+  user: any;
 }) {
- 
   const pihak = data?.data?.pendaftaran_sidang?.pihak;
   console.log("ID Pendaftaraasdn:", pihak);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [form, setForm] = useState({
-    kategori: "panggilan",
+    kategori: "",
     tanggal_panggilan: "",
     tanggal_sidang: "",
-    jam_sidang: "12:00",
+    jam_sidang: "",
     nomor: "",
     catatan_panggilan: "",
     pihak_id: "",
+    nama_dokumen: "",
+    diupload_oleh: user?.name,
+    peran: user?.role,
+    status: user?.status,
+    keterangan: "",
   });
 
   const handleChange = (name: string, value: string) => {
@@ -43,14 +47,19 @@ export default function ModalPersidanganPertama({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload = {
-      nomor: form.nomor,
-      tanggal_sidang: form.tanggal_sidang,
-      jam_sidang: form.jam_sidang,
-      detail_pendaftaran_id: parseInt(id_pendaftaratan),
-      catatan_panggilan: form.catatan_panggilan,
       kategori: form.kategori,
       tanggal_panggilan: form.tanggal_panggilan,
+      tanggal_sidang: form.tanggal_sidang,
+      jam_sidang: form.jam_sidang || "12:00",
+      nomor: form.nomor,
+      catatan_panggilan: form.catatan_panggilan,
+      detail_pendaftaran_id: parseInt(id_pendaftaratan),
       pihak_id: parseInt(form.pihak_id),
+      nama_dokumen: form.nama_dokumen || "",
+      diupload_oleh: user?.name || "",
+      peran: user?.role || "",
+      status: "",
+      keterangan: form.keterangan || "",
     };
 
     console.log("Payload:", JSON.stringify(payload));
@@ -74,10 +83,10 @@ export default function ModalPersidanganPertama({
     }
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="space-y-4" >
+    <div className="max-h-[600px] overflow-y-auto">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <Label>Kategori</Label>
-        <RadioGroup defaultValue="panggilan" onValueChange={(v) => handleChange("kategori", v)}>
+        <RadioGroup value={form.kategori} onValueChange={(v) => handleChange("kategori", v)}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="panggilan" id="panggilan" />
             <Label htmlFor="panggilan">Panggilan</Label>
@@ -131,6 +140,22 @@ export default function ModalPersidanganPertama({
           type="text"
           value={form.nomor}
           onChange={(e) => handleChange("nomor", e.target.value)}
+        />
+        <InputWithLabel
+          label="Nama Dokumen"
+          placeholder="Ketik nama dokumen"
+          name="nama_dokumen"
+          type="text"
+          value={form.nama_dokumen}
+          onChange={(e) => handleChange("nama_dokumen", e.target.value)}
+        />
+        <InputWithLabel
+          label="Keterangan Dokumen"
+          placeholder="Ketik keterangan dokumen"
+          name="keterangan"
+          type="text"
+          value={form.keterangan}
+          onChange={(e) => handleChange("keterangan", e.target.value)}
         />
 
         <div className="grid w-full gap-1.5">
