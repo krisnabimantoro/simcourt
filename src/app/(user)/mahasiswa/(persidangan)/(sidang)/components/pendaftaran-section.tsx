@@ -19,6 +19,7 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -54,6 +55,40 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
     fetchData();
   }, [id, token]);
 
+  useEffect(() => {
+    async function fetchDataUser() {
+      try {
+        const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/me`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        if (response.status === 401) {
+          router.push("/auth");
+          return;
+        }
+
+        const data = await response.json();
+        setUser(data.data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchDataUser();
+  }, [token]);
+
+  console.log("Data Pendaftaran:", user);
   console.log("Data Pendaftaranasd:", idPendaftaranSidang);
 
   if (loading) {
@@ -74,7 +109,7 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
       <CardPembayaran id={id} token={token} />
       <CardSaluranElektronik id={id} token={token} />
       <CardPembayaranJuruSita token={token} id={id} />
-      <CardPanggilanJuruSita id={id} data={dataPendaftaran} token={token} />
+      <CardPanggilanJuruSita id={id} data={dataPendaftaran} token={token} user={user} />
     </div>
   );
 }
