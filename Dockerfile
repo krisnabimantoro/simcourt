@@ -22,6 +22,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+RUN mkdir -p .next/cache && chmod -R 777 .next
+
 # Pastikan config standalone aktif (di next.config.js → output: 'standalone')
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
