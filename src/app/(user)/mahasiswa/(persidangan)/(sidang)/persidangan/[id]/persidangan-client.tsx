@@ -33,7 +33,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
   console.log("tes");
 
   useEffect(() => {
-    async function fetchDataUser() {
+    const fetchDataUser = async (): Promise<any> => {
       try {
         const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/me`, {
           method: "GET",
@@ -54,6 +54,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
         }
 
         const data = await response.json();
+        
         setUser(data.data);
       } catch (err: any) {
         setError(err.message);
@@ -104,6 +105,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
 
     loadData();
   }, [id, token]);
+  console.log("Data user", user);
   console.log("Data persidangan", dataPersidangan);
 
   return (

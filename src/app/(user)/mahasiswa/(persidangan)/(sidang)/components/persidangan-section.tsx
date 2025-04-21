@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, Pencil, PlusCircle } from "lucide-react";
+import { Calendar, FilePlus, Pencil, PlusCircle } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ModalCourtCalendar from "./persidangan-components/modal-court-calendar";
 import { useEffect, useState } from "react";
 import router from "next/router";
+import ModalDokumenPersidangan from "./persidangan-components/modal-dokumen-persidangan";
 
 const items = [
   {
@@ -29,12 +30,12 @@ interface PersidanganSectionProps {
 
 export default function SectionPersidangan({ token, id, data_jadwal_sidang, data_persidangan, data_user }: PersidanganSectionProps) {
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
-  const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [dataSidang, setDataSidang] = useState<any>([]);
   const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
 
+  console.log("asdadas",data_user)
   return (
     <div className="w-full space-y-6">
       <Card>
@@ -56,7 +57,7 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
 
                 <DialogDescription>Tambah Jadwal Persidangan</DialogDescription>
                 <br />
-                <ModalCourtCalendar id_persidangan={id} token={token} user={user} />
+                <ModalCourtCalendar id_persidangan={id} token={token} user={data_user} />
               </DialogHeader>
             </DialogContent>
           </Dialog>
@@ -151,9 +152,24 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
                       </p>
                       <p className="flex items-center gap-4 mt-2">
                         <span className="font-semibold">Upload Dokumen:</span>
-                        <button className="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg hover:bg-red-600">
-                          📄 Upload Dokumen
-                        </button>
+
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant={"default"}>
+                              <FilePlus />
+                              Upload dokumen persidangan
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Upload dokumen persidangan</DialogTitle>
+
+                              <DialogDescription>Tambah data dokumen</DialogDescription>
+                              <br />
+                              <ModalDokumenPersidangan id_persidangan={item.persidangan_id} token={token} user={data_user} />
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
                       </p>
                       <p className="flex items-center gap-4 mt-2">
                         <span className="font-semibold">Dokumen:</span>
