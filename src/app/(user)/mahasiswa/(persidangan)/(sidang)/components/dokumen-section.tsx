@@ -22,8 +22,9 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [dokumenData, setDokumenData] = useState<any[]>([]);
   const [detailPendaftaran, setDetailPendaftaran] = useState<any>(null);
+  
   function fileUrl(filePath: string) {
-    const url = `http://localhost:8020/storage/${filePath?.replace("public/", "")}`;
+    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath?.replace("public/", "")}`;
     return url;
   }
   const router = useRouter();

@@ -17,7 +17,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
   console.log("Data Pendaftaran:", data);
 
   function fileUrl(filePath: string) {
-    const url = `http://localhost:8020/storage/${filePath?.replace("public/", "")}`;
+    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath?.replace("public/", "")}`;
     return url;
   }
 

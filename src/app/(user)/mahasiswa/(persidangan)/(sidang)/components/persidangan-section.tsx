@@ -213,7 +213,25 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
           ))}
         </CardContent>
       </Card>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant={"default"}>
+            <PlusCircle />
+            Tambah Jadwal Persidangan
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>COURT CALENDAR/RENCANA</DialogTitle>
+
+            <DialogDescription>Tambah Jadwal Persidangan</DialogDescription>
+            <br />
+            <ModalCourtCalendar id_persidangan={id} token={token} user={data_user} />
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
       <Separator />
+      
     </div>
   );
 }
