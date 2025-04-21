@@ -217,7 +217,7 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
       </Card>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={"default"}>
+          <Button variant={"default"} className="w-full">
             <Gavel />
             Putusan Akhir
           </Button>
