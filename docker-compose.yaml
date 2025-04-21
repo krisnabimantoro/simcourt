@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: simcourt-client
+    ports:
+      - "3031:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_URL_FETCH=${NEXT_PUBLIC_API_URL}
+      - URL_AUTH=${URL_AUTH}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - API_KEY_DAERAH=${API_KEY_DAERAH}
+    volumes:
+      - .:/app
+    restart: unless-stopped
