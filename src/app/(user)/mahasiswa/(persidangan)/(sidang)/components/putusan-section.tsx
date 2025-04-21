@@ -1,11 +1,17 @@
 import CardPutusanAkhir from "./putusan-components/card-putusan-akhir";
 import CardPutusanSela from "./putusan-components/card-putusan-sela";
 
-export default function PutusanSidang() {
+interface PutusanSectionProps {
+  token: string;
+  id: string;
+  data_user: any;
+}
+
+export default function PutusanSidang({ token, id, data_user }: PutusanSectionProps) {
   return (
     <div>
       {/* <CardPutusanSela /> */}
-      <CardPutusanAkhir/>
+      <CardPutusanAkhir token={token} id={id} data_user={data_user} />
     </div>
   );
 }
