@@ -8,15 +8,23 @@ import DokumenSection from "../../components/dokumen-section";
 import PendaftaranSection from "../../components/pendaftaran-section";
 import SectionPersidangan from "../../components/persidangan-section";
 import PutusanSidang from "../../components/putusan-section";
-
+import router from "next/router";
 import { useParams } from "next/navigation";
 
 interface PendaftaranProps {
   token: string;
   params: { id: string };
 }
+
 export default function PendaftaranSidangClient({ token, params }: PendaftaranProps) {
   const { id } = params; // Get the ID from the URL parameters
+  const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  const [user, setUser] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [dataSidang, setDataSidang] = useState<any>([]);
+  const [dataPersidangan, setDataPersidangan] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+
   if (!id || Array.isArray(id)) {
     throw new Error("Invalid or missing 'id' parameter");
   }
@@ -24,23 +32,79 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
   console.log(token); // Log the token to the console for debugging purposes
   console.log("tes");
 
-  //   const [selectedTab, setSelectedTab] = useState("pendaftaran");
+  useEffect(() => {
+    async function fetchDataUser() {
+      try {
+        const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/me`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
 
-  //   useEffect(() => {
-  //     if (typeof window !== "undefined") {
-  //       const savedTab = localStorage.getItem("lastOpenedTab");
-  //       if (savedTab) {
-  //         setSelectedTab(savedTab);
-  //       }
-  //     }
-  //   }, []);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
 
-  //   const handleTabChange = (value: string) => {
-  //     setSelectedTab(value);
-  //     if (typeof window !== "undefined") {
-  //       localStorage.setItem("lastOpenedTab", value);
-  //     }
-  //   };
+        if (response.status === 401) {
+          router.push("/auth");
+          return;
+        }
+
+        const data = await response.json();
+        setUser(data.data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchDataUser();
+  }, [token]);
+
+  const fetchJadwalSidang = async (): Promise<any> => {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return response.json();
+  };
+
+  useEffect(() => {
+    const fetchPersidangan = async (): Promise<any> => {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/detail_pendaftaran:${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      console.log("Data persidangan", response);
+      return response.json();
+    };
+
+    const loadData = async () => {
+      try {
+        const result = await fetchJadwalSidang();
+        setDataSidang(result.data.jadwal_sidang);
+        const persidangan = await fetchPersidangan();
+        setDataPersidangan(persidangan.data.persidangan);
+      } catch (error) {
+        console.error("Gagal ambil data pembayaran:", error);
+      }
+    };
+
+    loadData();
+  }, [id, token]);
+  console.log("Data persidangan", dataPersidangan);
 
   return (
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-2 mb-10">
@@ -62,7 +126,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
           <PendaftaranSection token={token} id={id} />
         </TabsContent>
         <TabsContent value="persidangan">
-          <SectionPersidangan token={token} id={id} />
+          <SectionPersidangan token={token} id={id} data_jadwal_sidang={dataSidang} data_persidangan={dataPersidangan} data_user={user} />
         </TabsContent>
         <TabsContent value="dokumen">
           <DokumenSection id_pendaftaratan={id} token={token} />

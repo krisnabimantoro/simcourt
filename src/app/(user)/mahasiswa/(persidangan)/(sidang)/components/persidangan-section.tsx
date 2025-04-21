@@ -22,89 +22,18 @@ const items = [
 interface PersidanganSectionProps {
   token: string;
   id: string;
+  data_jadwal_sidang: any;
+  data_persidangan: any;
+  data_user: any;
 }
 
-export default function SectionPersidangan({ token, id }: PersidanganSectionProps) {
+export default function SectionPersidangan({ token, id, data_jadwal_sidang, data_persidangan, data_user }: PersidanganSectionProps) {
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [dataSidang, setDataSidang] = useState<any>([]);
   const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchDataUser() {
-      try {
-        const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/auth/me`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-
-        if (response.status === 401) {
-          router.push("/auth");
-          return;
-        }
-
-        const data = await response.json();
-        setUser(data.data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchDataUser();
-  }, [token]);
-
-  const fetchJadwalSidang = async (): Promise<any> => {
-    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    return response.json();
-  };
-
-  useEffect(() => {
-    const fetchPersidangan = async (): Promise<any> => {
-      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/detail_pendaftaran:${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      console.log("Data persidangan", response);
-      return response.json();
-    };
-
-    const loadData = async () => {
-      try {
-        const result = await fetchJadwalSidang();
-        setDataSidang(result.data.jadwal_sidang);
-        const persidangan = await fetchPersidangan();
-        setDataPersidangan(persidangan.data.persidangan);
-      } catch (error) {
-        console.error("Gagal ambil data pembayaran:", error);
-      }
-    };
-
-    loadData();
-  }, [id, token]);
-  console.log("Data persidangan", dataPersidangan);
 
   return (
     <div className="w-full space-y-6">
@@ -143,7 +72,7 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dataSidang.map((item) => (
+              {data_jadwal_sidang.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.id}</TableCell>
                   <TableCell>{item.hari_tanggal}</TableCell>
@@ -167,8 +96,8 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
         </CardHeader>
         <CardContent>
           <Separator className="mb-4" />
-          {dataPersidangan.map((item) => (
-            <div key={item.persidangan_id} className={index > 0 ? "mt-8" : ""}>
+          {data_persidangan.map((item) => (
+            <div key={item.persidangan_id} className={"mt-8"}>
               <div className="flex gap-10">
                 <div className="w-1/4">
                   {
