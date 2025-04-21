@@ -133,7 +133,7 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
                         <p>{item.dokumen_elektronik.peran}</p>
                         <p>{new Date(item.dokumen_elektronik.created_at).toLocaleDateString()}</p>
                         <p className="py-2">
-                          <a href={fileUrl(item.dokumen_elektronik.file_path)} target="_blank" rel="noopener noreferrer">
+                          <a href={fileUrl(item?.dokumen_elektronik?.file_path)} target="_blank" rel="noopener noreferrer">
                             <FileText className="text-blue-600 cursor-pointer" />
                           </a>
                         </p>

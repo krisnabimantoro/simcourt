@@ -54,14 +54,14 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
         }
 
         const data = await response.json();
-        
+
         setUser(data.data);
       } catch (err: any) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchDataUser();
   }, [token]);
@@ -105,6 +105,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
 
     loadData();
   }, [id, token]);
+
   console.log("Data user", user);
   console.log("Data persidangan", dataPersidangan);
 
@@ -134,7 +135,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
           <DokumenSection id_pendaftaratan={id} token={token} />
         </TabsContent>
         <TabsContent value="putusan">
-          <PutusanSidang />
+          <PutusanSidang token={token} id={id} data_user={user} />
         </TabsContent>
       </Tabs>
     </div>
