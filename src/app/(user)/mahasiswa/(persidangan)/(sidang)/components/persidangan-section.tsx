@@ -34,8 +34,9 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
   const [dataSidang, setDataSidang] = useState<any>([]);
   const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
-  function fileUrl(filePath: string) {
-    const url = `http://localhost:8020/storage/${filePath?.replace("public/", "")}`;
+  function fileUrl(filePath: string | null) {
+    if (!filePath) return null;
+    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath?.replace("public/", "")}`;
     return url;
   }
   console.log("asdadas", data_user);
