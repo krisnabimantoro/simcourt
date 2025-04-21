@@ -34,8 +34,11 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
   const [dataSidang, setDataSidang] = useState<any>([]);
   const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
-
-  console.log("asdadas",data_user)
+  function fileUrl(filePath: string) {
+    const url = `http://localhost:8020/storage/${filePath?.replace("public/", "")}`;
+    return url;
+  }
+  console.log("asdadas", data_user);
   return (
     <div className="w-full space-y-6">
       <Card>
@@ -173,10 +176,16 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
                       </p>
                       <p className="flex items-center gap-4 mt-2">
                         <span className="font-semibold">Dokumen:</span>
-                        <button className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600">
+                        <button
+                          className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+                          onClick={() => window.open(fileUrl(item.dokumen_persidangan?.upload_dokumen || ""), "_blank")}
+                        >
                           📄 Lihat Dokumen
                         </button>
-                        <button className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                        <button
+                          className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
+                          onClick={() => window.open(fileUrl(item.dokumen_persidangan?.upload_dokumen || ""), "_blank")}
+                        >
                           📄 Lihat Dokumen
                         </button>
                         <button className="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg hover:bg-blue-600">
@@ -204,6 +213,7 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
           ))}
         </CardContent>
       </Card>
+      <Separator />
     </div>
   );
 }
