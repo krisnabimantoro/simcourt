@@ -23,8 +23,3 @@ services:
 
 volumes:
   next-cache:
-    driver: local
-    driver_opts:
-      type: none
-      device: /app/.next/cache/images
-      o: bind
