@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, FilePlus, Pencil, PlusCircle } from "lucide-react";
+import { Calendar, FilePlus, Gavel, Pencil, PlusCircle } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -8,6 +8,7 @@ import ModalCourtCalendar from "./persidangan-components/modal-court-calendar";
 import { useEffect, useState } from "react";
 import router from "next/router";
 import ModalDokumenPersidangan from "./persidangan-components/modal-dokumen-persidangan";
+import ModalPutusanPersidangan from "./persidangan-components/modal-putusan-persidangan";
 
 const items = [
   {
@@ -34,9 +35,9 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
   const [dataSidang, setDataSidang] = useState<any>([]);
   const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
-  function fileUrl(filePath: string | null) {
-    if (!filePath) return null;
-    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath?.replace("public/", "")}`;
+  function fileUrl(filePath: string | null): string | undefined {
+    if (!filePath) return undefined;
+    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath.replace("public/", "")}`;
     return url;
   }
   console.log("asdadas", data_user);
@@ -217,22 +218,22 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
       <Dialog>
         <DialogTrigger asChild>
           <Button variant={"default"}>
-            <PlusCircle />
-            Tambah Jadwal Persidangan
+            <Gavel />
+            Putusan Akhir
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>COURT CALENDAR/RENCANA</DialogTitle>
+            <DialogTitle>Buat putusan akhir</DialogTitle>
 
-            <DialogDescription>Tambah Jadwal Persidangan</DialogDescription>
+            <DialogDescription>Pastikan data terinput dengan benar, aksi ini hanya bisa dilakukan sekali</DialogDescription>
             <br />
-            <ModalCourtCalendar id_persidangan={id} token={token} user={data_user} />
+
+            <ModalPutusanPersidangan id_persidangan={id} token={token} user={data_user} />
           </DialogHeader>
         </DialogContent>
       </Dialog>
       <Separator />
-      
     </div>
   );
 }

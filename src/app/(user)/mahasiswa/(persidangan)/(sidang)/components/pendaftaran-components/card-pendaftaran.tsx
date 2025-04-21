@@ -16,11 +16,11 @@ interface CardPendaftaranProps {
 export default function CardPendaftaran({ data }: CardPendaftaranProps) {
   console.log("Data Pendaftaran:", data);
 
-  function fileUrl(filePath: string) {
-    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath?.replace("public/", "")}`;
+  function fileUrl(filePath: string | null): string | undefined {
+    if (!filePath) return undefined;
+    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath.replace("public/", "")}`;
     return url;
   }
-
   return (
     <Card className="w-full mt-6">
       <CardHeader>

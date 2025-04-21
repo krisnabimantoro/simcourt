@@ -23,9 +23,9 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
   const [dokumenData, setDokumenData] = useState<any[]>([]);
   const [detailPendaftaran, setDetailPendaftaran] = useState<any>(null);
   
-  function fileUrl(filePath: string | null) {
-    if (!filePath) return null;
-    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath?.replace("public/", "")}`;
+  function fileUrl(filePath: string | null): string | undefined {
+    if (!filePath) return undefined;
+    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath.replace("public/", "")}`;
     return url;
   }
   const router = useRouter();
