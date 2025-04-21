@@ -41,19 +41,50 @@ export default function ModalCourtCalendar({ id_persidangan, token, user }: { id
     try {
       const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         credentials: "include",
         body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
-        alert("Data berhasil dikirim");
-      } else {
-        console.error(await res.text());
-        alert("Gagal mengirim");
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Gagal membuat jadwal sidang:", errorText);
+        alert("Gagal mengirim jadwal sidang");
+        return;
       }
+
+      const data = await res.json();
+      console.log("Response data:", data);
+
+      if (!data?.data?.id) {
+        console.error("ID dari jadwal sidang tidak ditemukan:", data);
+        alert("Gagal mendapatkan ID jadwal sidang");
+        return;
+      }
+
+      const resPersidangan = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ jadwal_sidang_id: data.data.id }),
+      });
+
+      if (!resPersidangan.ok) {
+        const persidanganError = await resPersidangan.text();
+        console.error("Gagal mengirim data persidangan:", persidanganError);
+        alert("Gagal mengirim data persidangan");
+        return;
+      }
+
+      alert("Data berhasil dikirim");
     } catch (err) {
-      console.error(err);
+      console.error("Terjadi kesalahan:", err);
       alert("Terjadi kesalahan");
     }
   };
