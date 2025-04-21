@@ -29,6 +29,7 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [dataSidang, setDataSidang] = useState<any>([]);
+  const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -77,18 +78,33 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
   };
 
   useEffect(() => {
+    const fetchPersidangan = async (): Promise<any> => {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/detail_pendaftaran:${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      console.log("Data persidangan", response);
+      return response.json();
+    };
+
     const loadData = async () => {
       try {
         const result = await fetchJadwalSidang();
         setDataSidang(result.data.jadwal_sidang);
-        console.log("Data sidang", dataSidang);
+        const persidangan = await fetchPersidangan();
+        setDataPersidangan(persidangan.data.persidangan);
       } catch (error) {
         console.error("Gagal ambil data pembayaran:", error);
       }
     };
 
     loadData();
-  }, []);
+  }, [id, token]);
+  console.log("Data persidangan", dataPersidangan);
 
   return (
     <div className="w-full space-y-6">
@@ -151,21 +167,14 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
         </CardHeader>
         <CardContent>
           <Separator className="mb-4" />
-          {items.map((item) => (
-            <div key={item.id}>
+          {dataPersidangan.map((item) => (
+            <div key={item.persidangan_id} className={index > 0 ? "mt-8" : ""}>
               <div className="flex gap-10">
                 <div className="w-1/4">
                   {
                     <div className="flex justify-end flex-col text-right">
-                      <p className="">
-                        {" "}
-                        {item.tanggal_jam.split(" ")[0]}
-                        {item.tanggal_jam.split(" ")[1]}
-                      </p>
-                      <p className="text-2xl">
-                        {" "}
-                        {item.tanggal_jam.split(" ")[2]} {item.tanggal_jam.split(" ")[3]}
-                      </p>
+                      <p className="">{item.hari_tanggal}</p>
+                      <p className="text-2xl">{item.jam}</p>
                       <p className="text-red-600 text-sm">keterangan: {item.keterangan}</p>
                     </div>
                   }
@@ -180,7 +189,7 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
                   <div className="flex gap-2">
                     <Calendar width={20} />
                     <p className="font-semibold">
-                      Alasan di tunda: <span className="font-normal">{item.agendaTunda}</span>
+                      Alasan di tunda: <span className="font-normal">{item.agendaTunda || "N/A"}</span>
                     </p>
                   </div>
                   <br />
@@ -191,22 +200,25 @@ export default function SectionPersidangan({ token, id }: PersidanganSectionProp
                     <div className="mt-2 text-gray-700">
                       <p>
                         <span className="font-semibold">1. Dokumen diupload oleh:</span>{" "}
-                        <span className="text-red-600 font-semibold">Tergugat</span> -{" "}
-                        <span className="text-blue-700">richboy_leo@yahoo.co.id</span>
+                        <span className="text-red-600 font-semibold">{item.dokumen_persidangan?.diupload_oleh?.status || "N/A"}</span> -{" "}
+                        <span className="text-blue-700">{item.dokumen_persidangan?.diupload_oleh?.email || "N/A"}</span>
                       </p>
                       <p>
-                        <span className="font-semibold">Upload pada:</span> Senin, 15 Februari 2021 Jam : 21:20 WIB
+                        <span className="font-semibold">Upload pada:</span>{" "}
+                        {item.dokumen_persidangan?.diupload_pada?.tanggal_upload || "N/A"}{" "}
+                        {item.dokumen_persidangan?.diupload_pada?.jam_upload || "N/A"}
                       </p>
                       <p>
                         <span className="font-semibold">Status Dokumen:</span>{" "}
                         <span className="text-blue-600">Verifikasi Majelis Hakim</span> /{" "}
-                        <span className="text-red-500">Memerlukan Verifikasi Majelis Hakim</span>
+                        <span className="text-red-500">{item.dokumen_persidangan?.status || "N/A"}</span>
                       </p>
                       <p>
-                        <span className="font-semibold">Jenis:</span> Kesimpulan
+                        <span className="font-semibold">Jenis:</span> {item.dokumen_persidangan?.jenis || "N/A"}
                       </p>
                       <p>
-                        <span className="font-semibold">Judul Dokumen:</span> Kesimpulan Tergugat
+                        <span className="font-semibold">Judul Dokumen:</span>
+                        {item.dokumen_persidangan?.judul_dokumen || "N/A"}
                       </p>
                       <p className="flex items-center gap-4 mt-2">
                         <span className="font-semibold">Upload Dokumen:</span>
