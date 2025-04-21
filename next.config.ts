@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  images: {
+    unoptimized: true, // ✅ disables image optimization
+  },
+
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
