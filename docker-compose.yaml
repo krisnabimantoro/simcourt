@@ -20,3 +20,11 @@ services:
       - .:/app
       - next-cache:/app/.next/cache/images
     restart: unless-stopped
+
+volumes:
+  next-cache:
+    driver: local
+    driver_opts:
+      type: none
+      device: /app/.next/cache/images
+      o: bind
