@@ -84,16 +84,14 @@ export default function CardPutusanAkhir({ token, id, data_user }: PutusanSectio
               <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
                 <TableCell className="bg-muted/50 py-2 font-medium">Salinan Putusan</TableCell>
                 <TableCell className="py-2">
-                  <a href="#">
-                    <div className="flex space-x-2 items-center">
-                      <p className="py-2">
-                        <a href={fileUrl(dataPutusan?.file)} target="_blank" rel="noopener noreferrer" className="flex space-x-2">
-                          <FileText className="text-blue-600 cursor-pointer" />
-                          <span className="text-sm text-muted-foreground">File salinan putusan akhir</span>
-                        </a>
-                      </p>
-                    </div>
-                  </a>
+                  {dataPutusan?.file ? (
+                    <a href={fileUrl(dataPutusan?.file)} target="_blank" rel="noopener noreferrer" className="flex space-x-2 items-center">
+                      <FileText className="text-blue-600 cursor-pointer" />
+                      <span className="text-sm text-muted-foreground">File salinan putusan akhir</span>
+                    </a>
+                  ) : (
+                    <div className="text-sm italic text-muted-foreground">File salinan putusan belum tersedia</div>
+                  )}
                 </TableCell>
               </TableRow>
             </TableBody>
