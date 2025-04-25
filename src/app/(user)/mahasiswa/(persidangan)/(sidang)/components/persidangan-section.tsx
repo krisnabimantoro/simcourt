@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, FilePlus, Gavel, Pencil, PlusCircle } from "lucide-react";
+import { Calendar, FilePlus, Gavel, Pen, Pencil, PlusCircle } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import router from "next/router";
 import ModalDokumenPersidangan from "./persidangan-components/modal-dokumen-persidangan";
 import ModalPutusanPersidangan from "./persidangan-components/modal-putusan-persidangan";
+import TambahCatatanPersidangan from "./persidangan-components/tambah-catatan-persidangan";
 
 const items = [
   {
@@ -197,17 +198,42 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
                     </div>
                   </div>
 
-                  <Separator />
                   <div className="mt-4">
+                    <Separator />
                     <h2 className="text-lg font-semibold  flex items-center gap-2">📘 Catatan Persidangan</h2>
-                    <p className="mt-2 text-gray-700">
-                      Oleh karena Penggugat belum mengajukan kesimpulan, maka Majelis Hakim memberikan kesempatan sekali lagi kepada
-                      Penggugat untuk mengajukan kesimpulan. Sidang ditunda hari Selasa tanggal 23 Februari dengan acara kesimpulan.
-                    </p>
-                    <p className="mt-2 text-sm text-gray-500">
-                      ✍️ ditulis oleh: <span className="text-blue-700 font-semibold">MOHAMAD INDARTO, S.H., M.Hum</span> |{" "}
-                      <span className="text-gray-600">2021-02-16 14:30:43</span>
-                    </p>
+                    {item.catatan_persidangan?.map((catatan) => (
+                      <div key={catatan.id}>
+                        <p className="mt-2 text-gray-700">
+                          {catatan?.keterangan} <br />
+                        </p>
+
+                        <p className="mt-2 text-sm text-gray-500">
+                          ✍️ ditulis oleh: <span className="text-blue-700 font-semibold">{catatan.ditulis_oleh}</span> |{" "}
+                          <span className="text-gray-600">
+                            {catatan.created_at.split("T")[0]} {catatan.created_at.split("T")[1].split(".")[0]}
+                          </span>
+                        </p>
+                      </div>
+                    ))}
+
+                    <br />
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant={"default"}>
+                          <Pen />
+                          Tambah catatan persidangan
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Tambah catatan persidangan</DialogTitle>
+
+                          <DialogDescription>Catatan Persidangan</DialogDescription>
+                          <br />
+                          <TambahCatatanPersidangan id_persidangan={item.persidangan_id} token={token} user={data_user} />
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </div>
