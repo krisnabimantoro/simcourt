@@ -66,19 +66,19 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
     fetchDataUser();
   }, [token]);
 
-  const fetchJadwalSidang = async (): Promise<any> => {
-    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    return response.json();
-  };
-
   useEffect(() => {
+    const fetchJadwalSidang = async (): Promise<any> => {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      return response.json();
+    };
+
     const fetchPersidangan = async (): Promise<any> => {
       const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/detail_pendaftaran:${id}`, {
         method: "GET",
@@ -95,9 +95,9 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
     const loadData = async () => {
       try {
         const result = await fetchJadwalSidang();
-        setDataSidang(result.data.jadwal_sidang);
+        setDataSidang(result?.data?.jadwal_sidang || []);
         const persidangan = await fetchPersidangan();
-        setDataPersidangan(persidangan.data.persidangan);
+        setDataPersidangan(persidangan?.data?.persidangan || []);
       } catch (error) {
         console.error("Gagal ambil data pembayaran:", error);
       }
@@ -106,8 +106,9 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
     loadData();
   }, [id, token]);
 
-  console.log("Data user", user);
-  console.log("Data persidangan", dataPersidangan);
+  // console.log("Data user", user);
+  // console.log("Data jadwal", dataSidang);
+  // console.log("Data persidangan", dataPersidangan);
 
   return (
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-2 mb-10">
