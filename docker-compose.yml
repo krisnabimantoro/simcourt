@@ -18,8 +18,4 @@ services:
       - API_KEY_DAERAH=${API_KEY_DAERAH}
     volumes:
       - .:/app
-      - next-cache:/app/.next/cache/images
     restart: unless-stopped
-
-volumes:
-  next-cache:
