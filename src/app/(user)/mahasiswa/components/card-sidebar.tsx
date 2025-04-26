@@ -20,7 +20,7 @@ export function CardHeaderSidebar() {
     <div className="flex items-center justify-center w-full h-full p-2">
       <Image src="/logo.png" width={50} height={74.6} alt="Logo Laboratorium Hukum" className=" p-2 rounded-lg dark:bg-white" />
       <div className="ml-3 items-center justify-center">
-        <Typography.H3>Sim-Court</Typography.H3>
+        <Typography.H3>SimuCourt</Typography.H3>
         <Typography.P>Sistem lorem ipsum</Typography.P>
       </div>
     </div>

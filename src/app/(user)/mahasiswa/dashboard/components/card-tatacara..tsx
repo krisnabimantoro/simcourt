@@ -5,7 +5,7 @@ export default function CardTatacara() {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Tata Cara Penggunaan Sim-Court </CardTitle>
+        <CardTitle>Tata Cara Penggunaan SimuCourt </CardTitle>
         <CardDescription>Lab Hukum Universitas Muhammadiyah Malang</CardDescription>
       </CardHeader>
       <CardContent>

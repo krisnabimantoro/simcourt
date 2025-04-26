@@ -12,7 +12,7 @@ export default async function DashboardMahasiswa() {
   return (
     <div className="w-[calc(100vw-18rem)]  ml-2 ">
       <Typography.H2 className="flex flex-col">
-        Halaman Dashboard <p className="text-sm font-normal">Informasi Terkait Sim-Court</p>
+        Halaman Dashboard <p className="text-sm font-normal">Informasi Terkait SimuCourt</p>
       </Typography.H2>
 
       <div className="flex gap-2 mt-4 h-full">

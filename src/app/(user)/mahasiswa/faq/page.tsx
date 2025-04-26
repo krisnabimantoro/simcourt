@@ -50,7 +50,7 @@ export default function faq() {
       </Typography.H2>
       <Card className="mt-4">
         <CardHeader>
-          <CardTitle>FAQ Sim-court</CardTitle>
+          <CardTitle>FAQ SimuCourt</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4 ">

@@ -47,7 +47,7 @@ export default function LoginForm() {
   return (
     <Card className="w-96 ">
       <CardHeader>
-        <CardTitle>Login Sim-Court</CardTitle>
+        <CardTitle>Login SimuCourt</CardTitle>
         <CardDescription>Masukkan Data Diri Anda</CardDescription>
       </CardHeader>
       <CardContent>

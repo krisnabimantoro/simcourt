@@ -64,7 +64,7 @@ const SignUpForm = () => {
   return (
     <Card className="w-96">
       <CardHeader>
-        <CardTitle>Buat Akun Sim-Court</CardTitle>
+        <CardTitle>Buat Akun SimuCourt</CardTitle>
         <CardDescription>Masukkan Data Diri Anda</CardDescription>
       </CardHeader>
       <CardContent>

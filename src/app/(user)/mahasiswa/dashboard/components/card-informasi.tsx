@@ -6,7 +6,7 @@ export default function CardInformasi() {
   return (
     <Card className={cn("h-full")}>
       <CardHeader>
-        <CardTitle>Informasi Simcourt</CardTitle>
+        <CardTitle>Informasi Simucourt</CardTitle>
         <CardDescription>Lorem ipsum dolor sit amet consectetur adipisicing elit. </CardDescription>
       </CardHeader>
       <CardContent>
