@@ -43,7 +43,8 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
         }
 
         const data = await response.json();
-        setDataPendaftaran(data || null);
+        setDataPendaftaran(data?.data);
+        console.log("Data Pendaftaran cooo:", dataPendaftaran);
         console.log("Data Pendaftaran testing:", data);
         setIdPendaftaranSidang(data?.data?.pendaftaran_sidang_id);
       } catch (err: any) {

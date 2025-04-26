@@ -23,7 +23,7 @@ export default function ModalPersidanganPertama({
   token: any;
   user: any;
 }) {
-  const pihak = data?.data?.pendaftaran_sidang?.pihak;
+  const pihak = data?.pendaftaran_sidang?.pihak;
   console.log("ID Pendaftaraasdn:", pihak);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [form, setForm] = useState({
