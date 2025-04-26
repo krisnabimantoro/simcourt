@@ -17,12 +17,21 @@ export const labels = [
 
 export const statusPihak = [
   {
-    value: "penggugat/pemohon",
-    label: "Penggugat/Pemohon",
+    value: "penggugat",
+    label: "Penggugat",
   },
   {
-    value: "tergugat/termohon",
-    label: "Tergugat/Termohon",
+    value: "tergugat",
+    label: "Tergugat",
+  },
+
+  {
+    value: "pemohon",
+    label: "Pemohon",
+  },
+  {
+    value: "termohon",
+    label: "Termohon",
   },
 ];
 export const statusAlamat = [

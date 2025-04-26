@@ -45,7 +45,7 @@ export default function SelectButtonGroup({
         console.log("Post result:", result);
         router.refresh();
       } else {
-        const res = await fetch(`${url}/api/v1/student-groups`, {
+        const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/student-groups`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
