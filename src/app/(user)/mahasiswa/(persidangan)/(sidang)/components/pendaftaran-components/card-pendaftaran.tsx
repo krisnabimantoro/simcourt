@@ -14,7 +14,7 @@ interface CardPendaftaranProps {
   data: any;
 }
 export default function CardPendaftaran({ data }: CardPendaftaranProps) {
-  console.log("Data Pendaftaran:", data);
+  console.log("Data Pendaftaran coy:", data);
 
   function fileUrl(filePath: string | null): string | undefined {
     if (!filePath) return undefined;
@@ -32,7 +32,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
         <div className="grid grid-cols-2 gap-2 justify-self-center mt-4">
           <Typography.H4 className={cn("text-lg text-right")}>Tanggal Pendaftaran</Typography.H4>
           <Typography.P className={cn("text-muted-foreground")}>
-            {new Date(data.data.created_at).toLocaleDateString("id-ID", {
+            {new Date(data?.data?.created_at).toLocaleDateString("id-ID", {
               day: "2-digit",
               month: "long",
               year: "numeric",
@@ -40,7 +40,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
           </Typography.P>
 
           <Typography.H4 className={cn("text-lg text-right")}>Nomor Pendaftaran Online</Typography.H4>
-          <Typography.P className={cn("text-muted-foreground")}>{data.data.no_pendaftaran}</Typography.P>
+          <Typography.P className={cn("text-muted-foreground")}>{data?.data?.no_pendaftaran}</Typography.P>
 
           <Typography.H4 className={cn("text-lg text-right")}>Jenis Perkara</Typography.H4>
           <Typography.P className={cn("text-muted-foreground")}>Backlog </Typography.P>
@@ -79,7 +79,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
             <div className="flex flex-row">
               <p className="mr-2">KTP</p>
               <Link
-                href={fileUrl(data.data.pendaftaran_sidang.advokat.file_dokumen_ktp)}
+                href={fileUrl(data?.data?.pendaftaran_sidang.advokat.file_dokumen_ktp) || "#"}
                 className="text-blue-500"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -96,7 +96,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
                 <p className="mr-2">SURAT PERMOHONAN</p>
 
                 <Link
-                  href={fileUrl(data.data.pendaftaran_sidang.advokat.file_dokumen_kta)}
+                  href={fileUrl(data?.data?.pendaftaran_sidang.advokat.file_dokumen_kta) || "#"}
                   className="text-blue-500"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -112,7 +112,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
                 <p className="mr-2">BUKTI</p>
 
                 <Link
-                  href={fileUrl(data.data.pendaftaran_sidang.advokat.file_dokumen_penyumpahan)}
+                  href={fileUrl(data?.data?.pendaftaran_sidang.advokat.file_dokumen_penyumpahan) || "#"}
                   className="text-blue-500"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -128,7 +128,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
           <Typography.P className={cn("text-muted-foreground")}>
             <div>
               <p>Unknown</p>
-              <p>{new Date(data.data.created_at).toLocaleDateString("en-GB")}</p>
+              <p>{new Date(data?.data?.created_at).toLocaleDateString("en-GB")}</p>
             </div>
           </Typography.P>
         </div>
