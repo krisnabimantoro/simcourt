@@ -42,6 +42,16 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
       },
       credentials: "include",
     });
+
+    if (response.status === 404) {
+      console.warn("Data not found, initializing empty data.");
+      return { data: [], total_pembayaran: 0 };
+    }
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
     return response.json();
   };
 
@@ -49,8 +59,8 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
     try {
       const result = await fetchPembayaranData();
       console.log("Fetched Data:", result);
-      setItems(result.data);
-      setTotalItems(result.total_pembayaran);
+      setItems(result.data || []);
+      setTotalItems(result.total_pembayaran || 0);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -79,10 +89,12 @@ export default function PembayaranJuruSita({ token, id }: PendaftaranSectionProp
     };
 
     try {
-      const url = editingItemId ? `${NEXT_PUBLIC_URL_FETCH}/api/v1/pembayaran/${editingItemId}` : `${NEXT_PUBLIC_URL_FETCH}/api/v1/pembayaran`;
+      const url = editingItemId
+        ? `${NEXT_PUBLIC_URL_FETCH}/api/v1/pembayaran/${editingItemId}`
+        : `${NEXT_PUBLIC_URL_FETCH}/api/v1/pembayaran`;
 
       const method = editingItemId ? "PUT" : "POST";
-      console.log(editingItemId)
+      console.log(editingItemId);
 
       const response = await fetch(url, {
         method,

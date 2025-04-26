@@ -76,6 +76,15 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
         },
         credentials: "include",
       });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.warn("Jadwal sidang not found");
+          return { data: { jadwal_sidang: [] } };
+        }
+        throw new Error(`Error fetching jadwal sidang: ${response.statusText}`);
+      }
+
       return response.json();
     };
 
@@ -88,7 +97,15 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
         },
         credentials: "include",
       });
-      console.log("Data persidangan", response);
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.warn("Persidangan not found");
+          return { data: { persidangan: [] } };
+        }
+        throw new Error(`Error fetching persidangan: ${response.statusText}`);
+      }
+
       return response.json();
     };
 
@@ -99,7 +116,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
         const persidangan = await fetchPersidangan();
         setDataPersidangan(persidangan?.data?.persidangan || []);
       } catch (error) {
-        console.error("Gagal ambil data pembayaran:", error);
+        console.error("Failed to fetch data:", error);
       }
     };
 
