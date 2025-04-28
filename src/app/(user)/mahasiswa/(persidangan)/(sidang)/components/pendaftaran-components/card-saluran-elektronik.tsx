@@ -11,6 +11,9 @@ import InputWithLabelReq from "@/components/ui/input-with-label-req";
 import Form from "next/form";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 const items = [
   {
@@ -38,6 +41,7 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
   const [pihak, setPihak] = useState<any[]>([]);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const router = useRouter();
   const fetchPihak = async (): Promise<any> => {
     try {
       const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/detail_pendaftaran:${id}`, {
@@ -78,9 +82,9 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
       }
 
       const data = await response.json();
-      console.log("Berhasil mengubah status pihak:", data);
-      alert("Status pihak berhasil diubah!");
-      window.location.reload();
+
+      toast({ title: "Status pihak berhasil diubah!", description: "Lihat icon untuk status pihak", variant: "default" });
+      fetchPihak();
     } catch (error) {
       console.error("Error saat update status pihak:", error);
     }
@@ -133,7 +137,7 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
                 <TableCell>
                   {item.persetujuan === "setuju" ? (
                     <CircleCheck size={24} />
-                  ) : item.persetujuan === "tidak_disetujui" ? (
+                  ) : item.persetujuan === "tidak_setuju" ? (
                     <CircleAlert size={24} />
                   ) : (
                     <CircleHelp />
@@ -162,7 +166,11 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
                               />
                             </div>
                           </div>
-                          <Button className="w-full mt-4">Submit</Button>
+                          <DialogPrimitive.Close className="w-full">
+                            <span>
+                              <Button className="w-full mt-4">Submit</Button>
+                            </span>
+                          </DialogPrimitive.Close>
                         </form>
                       </DialogHeader>
                     </DialogContent>
