@@ -21,8 +21,6 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const [dataSidang, setDataSidang] = useState<any>([]);
-  const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
 
   if (!id || Array.isArray(id)) {
@@ -66,63 +64,6 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
     fetchDataUser();
   }, [token]);
 
-  useEffect(() => {
-    const fetchJadwalSidang = async (): Promise<any> => {
-      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          console.warn("Jadwal sidang not found");
-          return { data: { jadwal_sidang: [] } };
-        }
-        throw new Error(`Error fetching jadwal sidang: ${response.statusText}`);
-      }
-
-      return response.json();
-    };
-
-    const fetchPersidangan = async (): Promise<any> => {
-      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/detail_pendaftaran:${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          console.warn("Persidangan not found");
-          return { data: { persidangan: [] } };
-        }
-        throw new Error(`Error fetching persidangan: ${response.statusText}`);
-      }
-
-      return response.json();
-    };
-
-    const loadData = async () => {
-      try {
-        const result = await fetchJadwalSidang();
-        setDataSidang(result?.data?.jadwal_sidang || []);
-        const persidangan = await fetchPersidangan();
-        setDataPersidangan(persidangan?.data?.persidangan || []);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
-
-    loadData();
-  }, [id, token]);
-
   // console.log("Data user", user);
   // console.log("Data jadwal", dataSidang);
   // console.log("Data persidangan", dataPersidangan);
@@ -147,7 +88,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
           <PendaftaranSection token={token} id={id} />
         </TabsContent>
         <TabsContent value="persidangan">
-          <SectionPersidangan token={token} id={id} data_jadwal_sidang={dataSidang} data_persidangan={dataPersidangan} data_user={user} />
+          <SectionPersidangan token={token} id={id}  data_user={user} />
         </TabsContent>
         <TabsContent value="dokumen">
           <DokumenSection id_pendaftaratan={id} token={token} />

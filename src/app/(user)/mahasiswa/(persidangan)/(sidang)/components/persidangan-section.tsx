@@ -25,12 +25,10 @@ const items = [
 interface PersidanganSectionProps {
   token: string;
   id: string;
-  data_jadwal_sidang: any;
-  data_persidangan: any;
   data_user: any;
 }
 
-export default function SectionPersidangan({ token, id, data_jadwal_sidang, data_persidangan, data_user }: PersidanganSectionProps) {
+export default function SectionPersidangan({ token, id, data_user }: PersidanganSectionProps) {
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [error, setError] = useState<string | null>(null);
   const [dataSidang, setDataSidang] = useState<any>([]);
@@ -41,6 +39,64 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
     const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath.replace("public/", "")}`;
     return url;
   }
+
+  useEffect(() => {
+    const fetchJadwalSidang = async (): Promise<any> => {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.warn("Jadwal sidang not found");
+          return { data: { jadwal_sidang: [] } };
+        }
+        throw new Error(`Error fetching jadwal sidang: ${response.statusText}`);
+      }
+
+      return response.json();
+    };
+
+    const fetchPersidangan = async (): Promise<any> => {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/detail_pendaftaran:${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.warn("Persidangan not found");
+          return { data: { persidangan: [] } };
+        }
+        throw new Error(`Error fetching persidangan: ${response.statusText}`);
+      }
+
+      return response.json();
+    };
+
+    const loadData = async () => {
+      try {
+        const result = await fetchJadwalSidang();
+        setDataSidang(result?.data?.jadwal_sidang || []);
+        const persidangan = await fetchPersidangan();
+        setDataPersidangan(persidangan?.data?.persidangan || []);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    loadData();
+  }, [id, token]);
+
   console.log("asdadas", data_user);
   return (
     <div className="w-full space-y-6">
@@ -79,7 +135,7 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data_jadwal_sidang.map((item) => (
+              {dataSidang?.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.id}</TableCell>
                   <TableCell>{item.hari_tanggal}</TableCell>
@@ -103,7 +159,7 @@ export default function SectionPersidangan({ token, id, data_jadwal_sidang, data
         </CardHeader>
         <CardContent>
           <Separator className="mb-4" />
-          {data_persidangan.map((item) => (
+          {dataPersidangan?.map((item) => (
             <div key={item.persidangan_id} className={"mt-8"}>
               <div className="flex gap-10">
                 <div className="w-1/4">
