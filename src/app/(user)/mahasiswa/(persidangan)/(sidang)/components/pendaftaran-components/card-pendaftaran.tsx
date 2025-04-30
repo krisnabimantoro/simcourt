@@ -128,7 +128,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
           <Typography.P className={cn("text-muted-foreground")}>
             <div>
               <p>Unknown</p>
-              <p>{new Date(data?.data?.created_at).toLocaleDateString("en-GB")}</p>
+              <p>{new Date(data?.created_at).toLocaleDateString("en-GB")}</p>
             </div>
           </Typography.P>
         </div>
