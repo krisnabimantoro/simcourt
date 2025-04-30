@@ -72,7 +72,7 @@ export default function CardPembayaran({ id, token }: { id: string; token: strin
           <Typography.P className="text-muted-foreground w-80">Rp. {Number(data.panjar_perkara).toLocaleString("id-ID")}</Typography.P>
 
           <Typography.H4 className="text-lg text-right">Status Pembayaran</Typography.H4>
-          <Typography.P className="text-muted-foreground w-80">{data.status_pembayaran}</Typography.P>
+          <Typography.P className="text-muted-foreground w-80">Sudah dibayar</Typography.P>
 
           <Typography.H4 className="text-lg text-right">Tanggal Pembayaran</Typography.H4>
           <Typography.P className="text-muted-foreground w-80">{data.tanggal_pembayaran}</Typography.P>
