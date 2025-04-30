@@ -54,7 +54,7 @@ export default async function CardAnggota() {
           item.status === "koordinator" ? (
             <div key={item.id} className="flex justify-between items-center text-sm">
               <p>{item.name}</p>
-              {userToken && <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups} />}
+              {userToken && <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups} user={item.role} />}
             </div>
           ) : null
         )}
@@ -67,7 +67,7 @@ export default async function CardAnggota() {
               <div key={item.id} className="flex justify-between items-center text-sm">
                 <p>{item.name}</p>
                 {userToken && (
-                  <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups?.data[0] ?? ""} />
+                  <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups?.data[0] ?? ""} user={item.role} />
                 )}
               </div>
             ) : null

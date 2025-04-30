@@ -16,10 +16,22 @@ const frameworks = [
   { value: "saksi", label: "Saksi" },
 ];
 
-export function ComponentComboboxDemo({ mahasiswa_id, token, listGroups }: { mahasiswa_id: number; token: any; listGroups: any }) {
+export function ComponentComboboxDemo({
+  mahasiswa_id,
+  token,
+  listGroups,
+  user,
+}: {
+  mahasiswa_id: number;
+  token: any;
+  listGroups: any;
+  user: any;
+}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+
+  console.log("user", user);
   const handleSelect = async (selectedRole: string) => {
     setValue(selectedRole);
     setOpen(false);
@@ -53,7 +65,7 @@ export function ComponentComboboxDemo({ mahasiswa_id, token, listGroups }: { mah
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-fit justify-between my-1">
-          {value ? frameworks.find((framework) => framework.value === value)?.label : "Pilih Role"}
+          {user ? frameworks.find((framework) => framework.value === user)?.label : "Pilih Role"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-fit p-0">
