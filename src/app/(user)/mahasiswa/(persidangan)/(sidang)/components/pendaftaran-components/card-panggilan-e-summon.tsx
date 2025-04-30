@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import ModalPersidanganPertama from "./modal/summons-persidangan-pertama";
 import { useEffect, useState } from "react";
 import { Result } from "postcss";
+import { useRouter } from "next/navigation";
 
 const items = [
   {
@@ -36,7 +37,7 @@ const items = [
 export default function CardPanggilanJuruSita({ id, data, token, user }: { id: any; data: any; token: any; user: any }) {
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [dataPanggilan, setDataPanggilan] = useState<any>([]);
-
+  const router = useRouter();
   const fetchPembayaranData = async (): Promise<any> => {
     const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/panggilan-sidang/detail_pendaftaran:${id}`, {
       method: "GET",
@@ -49,17 +50,16 @@ export default function CardPanggilanJuruSita({ id, data, token, user }: { id: a
     return response.json();
   };
 
+  const loadData = async () => {
+    try {
+      const result = await fetchPembayaranData();
+      setDataPanggilan(result.data);
+      console.log("Data panggilan:", result);
+    } catch (error) {
+      console.error("Gagal ambil data pembayaran:", error);
+    }
+  };
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const result = await fetchPembayaranData();
-        setDataPanggilan(result.data);
-        console.log("Data panggilan:", result);
-      } catch (error) {
-        console.error("Gagal ambil data pembayaran:", error);
-      }
-    };
-
     loadData();
   }, []);
 
@@ -79,7 +79,7 @@ export default function CardPanggilanJuruSita({ id, data, token, user }: { id: a
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Kirim Panggilan/Pemberitahuan</DialogTitle>
-                <ModalPersidanganPertama id_pendaftaratan={id} data={data} token={token} user={user} />
+                <ModalPersidanganPertama id_pendaftaratan={id} data={data} token={token} user={user} onUpdateSuccess={() => { loadData(); }} />
               </DialogHeader>
             </DialogContent>
           </Dialog>
@@ -130,8 +130,21 @@ export default function CardPanggilanJuruSita({ id, data, token, user }: { id: a
                     </p>
                     <p>
                       <span className="font-bold">Pengiriman: </span>
-                      <span>Tanggal: {item.dokumen?.pengiriman?.tanggal || "N/A"}</span>
-                      <span>, Jam: {item.dokumen?.pengiriman?.jam || "N/A"}</span>
+                      <span>
+                        Tanggal:{" "}
+                        {new Date(item?.created_at).toLocaleDateString("id-ID", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        }) || "N/A"}
+                      </span>
+                      <span>
+                        , Jam:{" "}
+                        {new Date(item?.created_at).toLocaleTimeString("id-ID", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }) || "N/A"}
+                      </span>
                     </p>
                     <p> Dikirim Oleh: {item.dokumen?.pengiriman?.dikirim_oleh || "N/A"}</p>
                     <br />

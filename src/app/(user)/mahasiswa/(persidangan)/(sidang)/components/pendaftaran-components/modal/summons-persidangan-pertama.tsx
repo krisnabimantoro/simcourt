@@ -3,7 +3,7 @@ import Form from "next/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import InputWithLabel from "@/components/ui/input-with-label";
 import { InputDateWIthLabel } from "@/components/ui/input-date-req";
-import ComponentTimeField from "@/components/time-field-input";
+import { ComponentTimeField } from "@/components/time-field-input";
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
@@ -11,21 +11,27 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ModalPersidanganPertama({
   id_pendaftaratan,
   data,
   token,
   user,
+  onUpdateSuccess
 }: {
   id_pendaftaratan: any;
   data: any;
   token: any;
   user: any;
+  onUpdateSuccess: () => void | undefined;
 }) {
   const pihak = data?.pendaftaran_sidang?.pihak;
   console.log("ID Pendaftaraasdn:", pihak);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
+  const router = useRouter();
+  const { toast } = useToast();
   const [form, setForm] = useState({
     kategori: "",
     tanggal_panggilan: "",
@@ -50,7 +56,7 @@ export default function ModalPersidanganPertama({
       kategori: form.kategori,
       tanggal_panggilan: form.tanggal_panggilan,
       tanggal_sidang: form.tanggal_sidang,
-      jam_sidang: form.jam_sidang || "12:00",
+      jam_sidang: form.jam_sidang,
       nomor: form.nomor,
       catatan_panggilan: form.catatan_panggilan,
       detail_pendaftaran_id: parseInt(id_pendaftaratan),
@@ -72,7 +78,8 @@ export default function ModalPersidanganPertama({
       });
 
       if (res.ok) {
-        alert("Data berhasil dikirim");
+        toast({ title: "Panggilan berhasil dibuat", description: "Cek table untuk melihat data panggilan", variant: "default" });
+        onUpdateSuccess();
       } else {
         console.error(await res.text());
         alert("Gagal mengirim");
@@ -112,7 +119,7 @@ export default function ModalPersidanganPertama({
           />
         </div>
 
-        <ComponentTimeField />
+        <ComponentTimeField label={"Jam Sidang"} name={"jam_sidang"} onChange={(e) => handleChange("jam_sidang", e.target.value)} />
 
         <div>
           <Label className="mb-2">Pilih Pihak</Label>
@@ -171,7 +178,9 @@ export default function ModalPersidanganPertama({
           </p>
         </div>
 
-        <Button type="submit">Simpan</Button>
+        <Button type="submit" className="w-full">
+          Simpan
+        </Button>
       </form>
     </div>
   );
