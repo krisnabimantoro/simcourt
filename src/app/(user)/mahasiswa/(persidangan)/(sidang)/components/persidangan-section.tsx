@@ -32,6 +32,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [error, setError] = useState<string | null>(null);
   const [dataSidang, setDataSidang] = useState<any>([]);
+  const [open, setOpen] = useState(false);
   const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   function fileUrl(filePath: string | null): string | undefined {
@@ -40,60 +41,60 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
     return url;
   }
 
+  const fetchJadwalSidang = async (): Promise<any> => {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.warn("Jadwal sidang not found");
+        return { data: { jadwal_sidang: [] } };
+      }
+      throw new Error(`Error fetching jadwal sidang: ${response.statusText}`);
+    }
+
+    return response.json();
+  };
+
+  const fetchPersidangan = async (): Promise<any> => {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/detail_pendaftaran:${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.warn("Persidangan not found");
+        return { data: { persidangan: [] } };
+      }
+      throw new Error(`Error fetching persidangan: ${response.statusText}`);
+    }
+
+    return response.json();
+  };
+
+  const loadData = async () => {
+    try {
+      const result = await fetchJadwalSidang();
+      setDataSidang(result?.data?.jadwal_sidang || []);
+      const persidangan = await fetchPersidangan();
+      setDataPersidangan(persidangan?.data?.persidangan || []);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchJadwalSidang = async (): Promise<any> => {
-      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang/detail_pendaftaran:${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          console.warn("Jadwal sidang not found");
-          return { data: { jadwal_sidang: [] } };
-        }
-        throw new Error(`Error fetching jadwal sidang: ${response.statusText}`);
-      }
-
-      return response.json();
-    };
-
-    const fetchPersidangan = async (): Promise<any> => {
-      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/detail_pendaftaran:${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          console.warn("Persidangan not found");
-          return { data: { persidangan: [] } };
-        }
-        throw new Error(`Error fetching persidangan: ${response.statusText}`);
-      }
-
-      return response.json();
-    };
-
-    const loadData = async () => {
-      try {
-        const result = await fetchJadwalSidang();
-        setDataSidang(result?.data?.jadwal_sidang || []);
-        const persidangan = await fetchPersidangan();
-        setDataPersidangan(persidangan?.data?.persidangan || []);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
-
     loadData();
   }, [id, token]);
 
@@ -106,7 +107,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
           <CardDescription>PERSIDANGAN NOMOR: 625/Pdt.P/2024/PN Mlg</CardDescription>
         </CardHeader>
         <CardContent>
-          <Dialog>
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button variant={"default"}>
                 <PlusCircle />
@@ -119,7 +120,15 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
 
                 <DialogDescription>Tambah Jadwal Persidangan</DialogDescription>
                 <br />
-                <ModalCourtCalendar id_persidangan={id} token={token} user={data_user} />
+                <ModalCourtCalendar
+                  id_persidangan={id}
+                  token={token}
+                  user={data_user}
+                  onUpdateSuccess={() => {
+                    loadData();
+                    setOpen(false);
+                  }}
+                />
               </DialogHeader>
             </DialogContent>
           </Dialog>

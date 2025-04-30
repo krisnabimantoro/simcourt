@@ -3,7 +3,7 @@ import Form from "next/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import InputWithLabel from "@/components/ui/input-with-label";
 import { InputDateWIthLabel } from "@/components/ui/input-date-req";
-import ComponentTimeField from "@/components/time-field-input";
+import { ComponentTimeField } from "@/components/time-field-input";
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
@@ -12,11 +12,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import InputWithLabelReq from "@/components/ui/input-with-label-req";
+import { useToast } from "@/hooks/use-toast";
 
-export default function ModalCourtCalendar({ id_persidangan, token, user }: { id_persidangan: any; token: any; user: any }) {
+export default function ModalCourtCalendar({
+  id_persidangan,
+  token,
+  user,
+  onUpdateSuccess,
+}: {
+  id_persidangan: any;
+  token: any;
+  user: any;
+  onUpdateSuccess: () => void | undefined;
+}) {
   console.log("ID persidangan:", id_persidangan);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
-
+  const { toast } = useToast();
   const [form, setForm] = useState({
     hari_tanggal: "",
     jam: "",
@@ -82,10 +93,10 @@ export default function ModalCourtCalendar({ id_persidangan, token, user }: { id
         return;
       }
 
-      alert("Data berhasil dikirim");
+      onUpdateSuccess();
+      toast({ title: "Persidangan berhasil dibuat", description: "Cek table untuk melihat data persidangan", variant: "default" });
     } catch (err) {
-      console.error("Terjadi kesalahan:", err);
-      alert("Terjadi kesalahan");
+      toast({ title: "Terjadi kesalahan", description: String(err), variant: "destructive" });
     }
   };
   return (
@@ -93,7 +104,7 @@ export default function ModalCourtCalendar({ id_persidangan, token, user }: { id
       <form onSubmit={handleSubmit} className="space-y-4">
         <InputDateWIthLabel label="Tanggal Sidang" name="hari_tanggal" onChange={(e) => handleChange("hari_tanggal", e.target.value)} />
 
-        <ComponentTimeField />
+        <ComponentTimeField label={"Jam Sidang"} name={"jam"} onChange={(e) => handleChange("jam", e.target.value)} />
 
         <InputWithLabelReq
           label="Agenda Sidang"
