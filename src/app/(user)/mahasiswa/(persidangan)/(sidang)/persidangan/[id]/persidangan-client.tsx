@@ -22,6 +22,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("pendaftaran"); // default
 
   if (!id || Array.isArray(id)) {
     throw new Error("Invalid or missing 'id' parameter");
@@ -64,6 +65,19 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
     fetchDataUser();
   }, [token]);
 
+  useEffect(() => {
+    // ambil tab terakhir dari localStorage
+    const savedTab = localStorage.getItem("activeTab");
+    if (savedTab) {
+      setActiveTab(savedTab);
+    }
+  }, []);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    localStorage.setItem("activeTab", value); // simpan ke localStorage
+  };
+
   // console.log("Data user", user);
   // console.log("Data jadwal", dataSidang);
   // console.log("Data persidangan", dataPersidangan);
@@ -76,7 +90,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
       </Typography.H2>
       <Separator />
 
-      <Tabs defaultValue={"pendaftaran"} className="mt-4">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="mt-4">
         <Separator />
         <TabsList>
           <TabsTrigger value="pendaftaran">Pendaftaran</TabsTrigger>
@@ -88,7 +102,7 @@ export default function PendaftaranSidangClient({ token, params }: PendaftaranPr
           <PendaftaranSection token={token} id={id} />
         </TabsContent>
         <TabsContent value="persidangan">
-          <SectionPersidangan token={token} id={id}  data_user={user} />
+          <SectionPersidangan token={token} id={id} data_user={user} />
         </TabsContent>
         <TabsContent value="dokumen">
           <DokumenSection id_pendaftaratan={id} token={token} />
