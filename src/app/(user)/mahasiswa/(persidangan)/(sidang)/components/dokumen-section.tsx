@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 const items = [
   { id: 1, nama_dokumen: "Surat Gugatan" },
@@ -22,7 +23,7 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [dokumenData, setDokumenData] = useState<any[]>([]);
   const [detailPendaftaran, setDetailPendaftaran] = useState<any>(null);
-  
+
   function fileUrl(filePath: string | null): string | undefined {
     if (!filePath) return undefined;
     const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath.replace("public/", "")}`;
@@ -52,54 +53,49 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
 
       const result = await response.json();
       console.log(result);
-      alert("Upload berhasil!");
+      toast({ title: "Dokumen berhasil di upload", description: "Tekan icon dokumen untuk melihat dokumen", variant: "default" });
       setSelectedDokumenId(null); // reset
       setFile(null);
-      
-      router.refresh();
+      fetchDokumen();
     } catch (error) {
       console.error(error);
-      alert("Gagal mengupload dokumen");
+      toast({ title: "Gagal upload dokumen di upload", description: String(error), variant: "destructive" });
     }
   };
-  
 
-  useEffect(() => {
-    async function fetchDokumen() {
-      try {
-        const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/dokumen-permohonan/detail_pendaftaran:${id_pendaftaratan}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-        const result = await res.json();
+  async function fetchDokumen() {
+    try {
+      const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/dokumen-permohonan/detail_pendaftaran:${id_pendaftaratan}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const result = await res.json();
 
-        const dokumenList = result.data.dokumen || [];
-        const detail = result.data.detail_pendaftaran || null;
+      const dokumenList = result.data.dokumen || [];
+      const detail = result.data.detail_pendaftaran || null;
 
-        // Gabungkan dokumen dengan items berdasarkan nama_dokumen
-        const merged = items.map((item) => {
-          const relatedDokumen = dokumenList.filter((dok) => dok.nama_dokumen === item.nama_dokumen);
-          return {
-            ...item,
-            dokumen_elektronik: relatedDokumen.length > 0 ? relatedDokumen[0] : null,
-            verifikasi: relatedDokumen.length > 0 ? relatedDokumen[0].status : null,
-            keterangan: relatedDokumen.length > 0 ? relatedDokumen[0].keterangan : null,
-          };
-        });
+      // Gabungkan dokumen dengan items berdasarkan nama_dokumen
+      const merged = items.map((item) => {
+        const relatedDokumen = dokumenList.filter((dok) => dok.nama_dokumen === item.nama_dokumen);
+        return {
+          ...item,
+          dokumen_elektronik: relatedDokumen.length > 0 ? relatedDokumen[0] : null,
+          verifikasi: relatedDokumen.length > 0 ? relatedDokumen[0].status : null,
+          keterangan: relatedDokumen.length > 0 ? relatedDokumen[0].keterangan : null,
+        };
+      });
 
-        setDokumenData(merged);
-        setDetailPendaftaran(detail);
-
-        
-      } catch (error) {
-        console.error("Failed to fetch dokumen:", error);
-      }
+      setDokumenData(merged);
+      setDetailPendaftaran(detail);
+    } catch (error) {
+      console.error("Failed to fetch dokumen:", error);
     }
-
+  }
+  useEffect(() => {
     fetchDokumen();
   }, []);
 
@@ -137,6 +133,12 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
                             <FileText className="text-blue-600 cursor-pointer" />
                           </a>
                         </p>
+                        <div className="mt-2">
+                          <input type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+                          <Button className="mt-2" onClick={() => handleUpload(item)}>
+                            Upload
+                          </Button>
+                        </div>
                       </div>
                     ) : (
                       <div className="mt-2">
@@ -160,17 +162,10 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
                 </TableRow>
               ))}
             </TableBody>
-            <TableFooter className="bg-transparent">
-              <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={4}>Total</TableCell>
-                <TableCell className="text-right">-</TableCell>
-              </TableRow>
-            </TableFooter>
+          
           </Table>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
+
       </Card>
     </div>
   );
