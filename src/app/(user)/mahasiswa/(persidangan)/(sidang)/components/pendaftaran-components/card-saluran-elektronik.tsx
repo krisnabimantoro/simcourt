@@ -83,8 +83,8 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
 
       const data = await response.json();
 
-      toast({ title: "Status pihak berhasil diubah!", description: "Lihat icon untuk status pihak", variant: "default" });
       fetchPihak();
+      toast({ title: "Status pihak berhasil diubah!", description: "Lihat icon untuk status pihak", variant: "default" });
     } catch (error) {
       console.error("Error saat update status pihak:", error);
     }
