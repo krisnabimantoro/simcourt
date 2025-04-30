@@ -4,12 +4,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface InputProps {
   label: string;
   placeholder: string;
-  options?: { value: string; label: string }[];
+  options?: { kode: string; nama: string }[]; // options is optional
   name?: string;
   onChange?: (value: any) => void;
 }
 
-export default function SelectWithLabelReq({ label, placeholder, options, name, onChange }: InputProps) {
+export default function SelectWithLabelReqWilayah({ label, placeholder, options = [], name, onChange }: InputProps) {
+  // Ensure options is an array before calling map
+  const safeOptions = Array.isArray(options) ? options : [];
+
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>
@@ -21,12 +24,11 @@ export default function SelectWithLabelReq({ label, placeholder, options, name, 
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
+          {safeOptions.map((option) => (
+            <SelectItem key={option.kode} value={option.kode}>
+              {option.nama}
             </SelectItem>
           ))}
-          
         </SelectContent>
       </Select>
     </div>

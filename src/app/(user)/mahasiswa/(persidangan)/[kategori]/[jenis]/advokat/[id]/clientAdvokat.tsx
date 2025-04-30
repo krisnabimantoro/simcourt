@@ -14,12 +14,13 @@ import FileInputFormReq from "../../components/file-input";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
 import { useParams } from "next/navigation";
 import { statusAlamat, statusPihak } from "@/data/data";
 import DataProvinsi from "@/hooks/data-provinsi";
 import NEXT_PUBLIC_URL_FETCH, { apiKeyDaerah } from "@/constant/data-fetching";
+import SelectWithLabelReqWilayah from "@/components/ui/select-with-label-req-wilayah";
 
 interface AdvokatFormProps {
   token: string;
@@ -33,6 +34,50 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   // const provinsi = DataProvinsi();
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const url = process.env.URL_AUTH;
+
+  const [provinsi, setProvinsi] = useState([]);
+  const [kabupaten, setKabupaten] = useState([]);
+  const [kecamatan, setKecamatan] = useState([]);
+  const [kelurahan, setKelurahan] = useState([]);
+
+  const [selectedProvinsi, setSelectedProvinsi] = useState("");
+  const [selectedKabupaten, setSelectedKabupaten] = useState("");
+  const [selectedKecamatan, setSelectedKecamatan] = useState("");
+
+  useEffect(() => {
+    fetch("/api/wilayah")
+      .then((res) => res.json())
+      .then((data) => setProvinsi(data));
+  }, []);
+
+  // Fetch Kabupaten on Provinsi change
+  useEffect(() => {
+    if (selectedProvinsi) {
+      fetch(`/api/kabupaten?provinsi=${selectedProvinsi}`)
+        .then((res) => res.json())
+        .then((data) => setKabupaten(data));
+    }
+  }, [selectedProvinsi]);
+
+  // Fetch Kecamatan on Kabupaten change
+  useEffect(() => {
+    if (selectedKabupaten) {
+      fetch(`/api/kecamatan?kabupaten=${selectedKabupaten}`)
+        .then((res) => res.json())
+        .then((data) => setKecamatan(data));
+    }
+  }, [selectedKabupaten]);
+
+  // Fetch Kelurahan on Kecamatan change
+  useEffect(() => {
+    if (selectedKecamatan) {
+      fetch(`/api/kelurahan?kecamatan=${selectedKecamatan}`)
+        .then((res) => res.json())
+        .then((data) => setKelurahan(data));
+    }
+  }, [selectedKecamatan]);
+
+  console.log("Provinsi:", provinsi);
   // console.log(provinsi);
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -139,6 +184,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       console.error("Error:", error);
     }
   }
+  console.log("Selected Provinsi:", selectedProvinsi);
 
   return (
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-4 mb-10">
@@ -202,8 +248,20 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
 
             <InputWithLabelReq label={"Nama Lengkap"} placeholder={"Input nama lengkap pengacara"} name={"nama_lengkap"} type={"text"} />
             <SelectWithLabel label={"Status  Alamat"} placeholder={"Pilih Status Alamat"} options={statusAlamat} name={"status_alamat"} />
-            <SelectWithLabel label={"Provinsi"} placeholder={"Pilih Provinsi"} options={statusAlamat} name={"provinsi"} />
-            <SelectWithLabel label={"Kabupaten"} placeholder={"Pilih Kabupaten"} options={statusAlamat} name={"kabupaten"} />
+            <SelectWithLabelReqWilayah
+              label={"Provinsi"}
+              placeholder={"Pilih Provinsi"}
+              name="provinsi"
+              options={provinsi}
+              onChange={(key) => setSelectedProvinsi(key)}
+            />
+            <SelectWithLabelReqWilayah
+              label={"Kabupaten"}
+              placeholder={"Pilih Kabupaten"}
+              name="kabupaten"
+              options={kabupaten}
+              onChange={(key) => setSelectedKabupaten(key)}
+            />
           </div>
 
           <div className="w-1/2 gap-y-2 flex flex-col ">
@@ -212,8 +270,14 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
             <InputWithLabel label={"Alamat"} placeholder={"Input Alamat Lengkap "} name={"alamat"} type={"text"} />
             <InputWithLabel label={"Telepon"} placeholder={"Input No Telepon "} name={"telepon"} type={"text"} />
 
-            <SelectWithLabel label={"Kecamatan"} placeholder={"Pilih Kecamatan"} options={statusAlamat} name={"kecamatan"} />
-            <SelectWithLabel label={"Kelurahan"} placeholder={"Pilih Kelurahan"} options={statusAlamat} name={"kelurahan"} />
+            <SelectWithLabelReqWilayah
+              label={"Kecamatan"}
+              placeholder={"Pilih Kecamatan"}
+              name="kecamatan"
+              options={kecamatan}
+              onChange={(key) => setSelectedKecamatan(key)}
+            />
+            <SelectWithLabelReqWilayah label={"Kelurahan"} placeholder={"Pilih Kelurahan"} name="kelurahan" options={kelurahan} />
           </div>
         </div>
         <Button className="w-full mt-4">Submit</Button>
