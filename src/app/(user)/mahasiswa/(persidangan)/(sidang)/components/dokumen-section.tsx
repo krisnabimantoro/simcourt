@@ -17,7 +17,15 @@ const items = [
   { id: 5, nama_dokumen: "Penunjukan Jurusita/JSP" },
 ];
 
-export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaftaratan: any; token: any }) {
+const frameworks = [
+  { value: "kuasa_hukum", label: "Kuasa Hukum" },
+  { value: "hakim", label: "Hakim" },
+  { value: "juru_sita", label: "Juru Sita" },
+  { value: "panitera_pengganti", label: "Panitera Pengganti" },
+  { value: "saksi", label: "Saksi" },
+];
+
+export default function DokumenSection({ id_pendaftaratan, token,user }: { id_pendaftaratan: any; token: any ,user:any}) {
   const [selectedDokumenId, setSelectedDokumenId] = useState<number | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
@@ -31,14 +39,15 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
   }
   const router = useRouter();
 
+  console.log("user datadokumen" , user);
   const handleUpload = async (item: (typeof items)[0]) => {
-    if (!file) return alert("Silakan pilih file terlebih dahulu");
+    if (!file) return toast({ title: "Silahkan upload file dahulu", variant: "destructive" });;
 
     const formData = new FormData();
     formData.append("detail_pendaftaran_id", id_pendaftaratan);
-    formData.append("nama_dokumen", item.nama_dokumen);
-    formData.append("diupload_oleh", "John Doe");
-    formData.append("peran", "Kuasa Hukum");
+    formData.append("nama_dokumen", item?.nama_dokumen);
+    formData.append("diupload_oleh", user?.name || ""); // Assuming user.name is the uploader's name
+    formData.append("peran", user?.role || ""); // Assuming user.role is the uploader's role
     formData.append("status", "Belum terverifikasi");
     // formData.append("keterangan", ``);
     formData.append("file", file);
@@ -125,8 +134,11 @@ export default function DokumenSection({ id_pendaftaratan, token }: { id_pendaft
                   <TableCell>
                     {item.dokumen_elektronik ? (
                       <div>
-                        <p>{item.dokumen_elektronik.diupload_oleh}</p>
-                        <p>{item.dokumen_elektronik.peran}</p>
+                        <p>{item?.dokumen_elektronik?.diupload_oleh}</p>
+                        <p>
+                        {item?.dokumen_elektronik?.peran ? frameworks.find((framework) => framework.value === item.dokumen_elektronik.peran)?.label : "N/A"}
+
+                        </p>
                         <p>{new Date(item.dokumen_elektronik.created_at).toLocaleDateString()}</p>
                         <p className="py-2">
                           <a href={fileUrl(item?.dokumen_elektronik?.file_path)} target="_blank" rel="noopener noreferrer">
