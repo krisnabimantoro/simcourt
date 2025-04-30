@@ -13,8 +13,19 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import InputWithLabelReq from "@/components/ui/input-with-label-req";
 import FileInputFormReq from "../../../[kategori]/[jenis]/components/file-input";
+import { toast } from "@/hooks/use-toast";
 
-export default function TambahCatatanPersidangan({ id_persidangan, token, user }: { id_persidangan: any; token: any; user: any }) {
+export default function TambahCatatanPersidangan({
+  id_persidangan,
+  token,
+  user,
+  onUpdateSuccess,
+}: {
+  id_persidangan: any;
+  token: any;
+  user: any;
+  onUpdateSuccess: () => void | undefined;
+}) {
   console.log("ID persidangan:", id_persidangan);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
 
@@ -67,12 +78,11 @@ export default function TambahCatatanPersidangan({ id_persidangan, token, user }
       }
 
       const data = await res.json();
-      console.log("Response data:", data);
-
-      alert("Data berhasil dikirim");
+      onUpdateSuccess();
+      toast({ title: "Catatan berhasil ditambahkan", variant: "default" });
     } catch (err) {
       console.error("Terjadi kesalahan:", err);
-      alert("Terjadi kesalahan");
+      toast({ title: "Terjadi kesalahan", description: String(err), variant: "destructive" });
     }
   };
   return (

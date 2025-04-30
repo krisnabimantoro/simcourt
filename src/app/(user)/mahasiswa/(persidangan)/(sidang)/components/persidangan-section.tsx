@@ -10,6 +10,7 @@ import router from "next/router";
 import ModalDokumenPersidangan from "./persidangan-components/modal-dokumen-persidangan";
 import ModalPutusanPersidangan from "./persidangan-components/modal-putusan-persidangan";
 import TambahCatatanPersidangan from "./persidangan-components/tambah-catatan-persidangan";
+import { ComponentComboboxVerifikasi } from "./persidangan-components/combo-box-verifikasi-dokumen";
 
 const items = [
   {
@@ -32,7 +33,9 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
   const [error, setError] = useState<string | null>(null);
   const [dataSidang, setDataSidang] = useState<any>([]);
-  const [open, setOpen] = useState(false);
+  const [openCatatan, setOpenCatatan] = useState(false);
+  const [openCalendar, setOpenCalendar] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   function fileUrl(filePath: string | null): string | undefined {
@@ -107,7 +110,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
           <CardDescription>PERSIDANGAN NOMOR: 625/Pdt.P/2024/PN Mlg</CardDescription>
         </CardHeader>
         <CardContent>
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog open={openCalendar} onOpenChange={setOpenCalendar}>
             <DialogTrigger asChild>
               <Button variant={"default"}>
                 <PlusCircle />
@@ -126,7 +129,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
                   user={data_user}
                   onUpdateSuccess={() => {
                     loadData();
-                    setOpen(false);
+                    setOpenCalendar(false);
                   }}
                 />
               </DialogHeader>
@@ -211,8 +214,8 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
                       </p>
                       <p>
                         <span className="font-semibold">Status Dokumen:</span>{" "}
-                        <span className="text-blue-600">Verifikasi Majelis Hakim</span> /{" "}
-                        <span className="text-red-500">{item.dokumen_persidangan?.status || "N/A"}</span>
+                        <span className="text-blue-600">Verifikasi Majelis Hakim</span> :{" "}
+                        <span className="">{item.dokumen_persidangan?.status || "N/A"}</span>
                       </p>
                       <p>
                         <span className="font-semibold">Jenis:</span> {item.dokumen_persidangan?.jenis || "N/A"}
@@ -250,15 +253,18 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
                         >
                           📄 Lihat Dokumen
                         </button>
-                        <button
-                          className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
-                          onClick={() => window.open(fileUrl(item.dokumen_persidangan?.upload_dokumen || ""), "_blank")}
-                        >
-                          📄 Lihat Dokumen
-                        </button>
+                        <ComponentComboboxVerifikasi
+                          token={token}
+                          user={data_user}
+                          persidangan_id={item?.persidangan_id}
+                          onUpdateSuccess={() => {
+                            loadData();
+                          }}
+                        />
+                        {/*                        
                         <button className="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg hover:bg-blue-600">
                           Verifikasi Dokumen
-                        </button>
+                        </button> */}
                       </p>
                     </div>
                   </div>
@@ -282,7 +288,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
                     ))}
 
                     <br />
-                    <Dialog>
+                    <Dialog open={openCatatan} onOpenChange={setOpenCatatan}>
                       <DialogTrigger asChild>
                         <Button variant={"default"}>
                           <Pen />
@@ -295,7 +301,15 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
 
                           <DialogDescription>Catatan Persidangan</DialogDescription>
                           <br />
-                          <TambahCatatanPersidangan id_persidangan={item.persidangan_id} token={token} user={data_user} />
+                          <TambahCatatanPersidangan
+                            id_persidangan={item.persidangan_id}
+                            token={token}
+                            user={data_user}
+                            onUpdateSuccess={() => {
+                              loadData();
+                              setOpenCatatan(false);
+                            }}
+                          />
                         </DialogHeader>
                       </DialogContent>
                     </Dialog>
