@@ -79,7 +79,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
             <div className="flex flex-row">
               <p className="mr-2">KTP</p>
               <Link
-                href={fileUrl(data?.pendaftaran_sidang?.advokat.file_dokumen_ktp) || "#"}
+                href={fileUrl(data?.pendaftaran_sidang?.advokat?.file_dokumen_ktp) || "#"}
                 className="text-blue-500"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -96,7 +96,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
                 <p className="mr-2">SURAT PERMOHONAN</p>
 
                 <Link
-                  href={fileUrl(data?.pendaftaran_sidang?.advokat.file_dokumen_kta) || "#"}
+                  href={fileUrl(data?.pendaftaran_sidang?.advokat?.file_dokumen_kta) || "#"}
                   className="text-blue-500"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -112,7 +112,7 @@ export default function CardPendaftaran({ data }: CardPendaftaranProps) {
                 <p className="mr-2">BUKTI</p>
 
                 <Link
-                  href={fileUrl(data?.pendaftaran_sidang?.advokat.file_dokumen_penyumpahan) || "#"}
+                  href={fileUrl(data?.pendaftaran_sidang?.advokat?.file_dokumen_penyumpahan) || "#"}
                   className="text-blue-500"
                   target="_blank"
                   rel="noopener noreferrer"

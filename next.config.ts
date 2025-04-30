@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
     SESSION_SECRET: process.env.SESSION_SECRET,
     URL_AUTH: process.env.URL_AUTH,
     NEXT_PUBLIC_URL_FETCH: process.env.NEXT_PUBLIC_URL_FETCH,
+    DB_CONNECTION: process.env.DB_CONNECTION,
+    DB_HOST: process.env.DB_HOST,
+    DB_PORT: process.env.DB_PORT,
+    DB_USER: process.env.DB_USER,
+    DB_PASS: process.env.DB_PASS,
+    DB_NAME: process.env.DB_NAME,
   },
 
   async headers() {
