@@ -79,6 +79,7 @@ export default function ModalPersidanganPertama({
 
       if (res.ok) {
         toast({ title: "Panggilan berhasil dibuat", description: "Cek table untuk melihat data panggilan", variant: "default" });
+        
         onUpdateSuccess();
       } else {
         console.error(await res.text());
