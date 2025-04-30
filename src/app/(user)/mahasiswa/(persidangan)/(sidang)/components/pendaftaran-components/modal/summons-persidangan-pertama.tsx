@@ -19,7 +19,7 @@ export default function ModalPersidanganPertama({
   data,
   token,
   user,
-  onUpdateSuccess
+  onUpdateSuccess,
 }: {
   id_pendaftaratan: any;
   data: any;
@@ -79,15 +79,15 @@ export default function ModalPersidanganPertama({
 
       if (res.ok) {
         toast({ title: "Panggilan berhasil dibuat", description: "Cek table untuk melihat data panggilan", variant: "default" });
-        
+
         onUpdateSuccess();
       } else {
         console.error(await res.text());
-        alert("Gagal mengirim");
+        toast({ title: "Gagal membuat panggilan sidang", description: String(await res.text()), variant: "destructive" });
       }
     } catch (err) {
       console.error(err);
-      alert("Terjadi kesalahan");
+      toast({ title: "Gagal membuat panggilan sidang", description: String(err), variant: "destructive" });
     }
   };
   return (
