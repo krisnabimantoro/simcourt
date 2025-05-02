@@ -50,7 +50,7 @@ export default function CardPutusanAkhir({ token, id, data_user }: PutusanSectio
 
   return (
     <div>
-      <Card>
+      <Card >
         <CardHeader>
           <CardTitle>Putusan Akhir</CardTitle>
           <CardDescription>INFO PUTUSAN NOMOR: 99/Pdt.Bth/2018/PN Mjk</CardDescription>

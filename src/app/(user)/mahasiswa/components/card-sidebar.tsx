@@ -21,7 +21,7 @@ export function CardHeaderSidebar() {
       <Image src="/logo.png" width={50} height={74.6} alt="Logo Laboratorium Hukum" className=" p-2 rounded-lg dark:bg-white" />
       <div className="ml-3 items-center justify-center">
         <Typography.H3>SimuCourt</Typography.H3>
-        <Typography.P>Sistem lorem ipsum</Typography.P>
+        <Typography.P>Hukum UMM</Typography.P>
       </div>
     </div>
   );
