@@ -45,6 +45,11 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   const [selectedKabupaten, setSelectedKabupaten] = useState("");
   const [selectedKecamatan, setSelectedKecamatan] = useState("");
 
+  const [valueProvinsi, setValueProvinsi] = useState("");
+  const [valueKabupaten, setValueKabupaten] = useState("");
+  const [valueKecamatan, setValueKecamatan] = useState("");
+  const [valueKelurahan, setValueKelurahan] = useState("");
+
   const [dataPihak, setDataPihak] = useState<any>([]);
   useEffect(() => {
     fetch("/api/wilayah")
@@ -113,6 +118,10 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
     const form = event.currentTarget;
     const formDataPihak = new FormData(form);
     formDataPihak.append("pendaftaran_sidang_id", projectId.toString());
+    formDataPihak.append("provinsi", valueProvinsi);
+    formDataPihak.append("kabupaten", valueKabupaten);
+    formDataPihak.append("kecamatan", valueKecamatan);
+    formDataPihak.append("kelurahan", valueKelurahan);
 
     try {
       const responsePihak = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks`, {
@@ -271,7 +280,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
           ))}
         </div>
       )}
-   <Separator className="my-4" />
+      <Separator className="my-4" />
       <form onSubmit={onSubmitPihak} className=" ">
         <InputWithLabelReq
           label={"No Pendaftaran"}
@@ -292,6 +301,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
               name="provinsi"
               options={provinsi}
               onChange={(key) => setSelectedProvinsi(key)}
+              onLabelChange={(nama) => setValueProvinsi(nama)}
             />
             <SelectWithLabelReqWilayah
               label={"Kabupaten"}
@@ -299,6 +309,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
               name="kabupaten"
               options={kabupaten}
               onChange={(key) => setSelectedKabupaten(key)}
+              onLabelChange={(nama) => setValueKabupaten(nama)}
             />
           </div>
 
@@ -313,9 +324,16 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
               placeholder={"Pilih Kecamatan"}
               name="kecamatan"
               options={kecamatan}
+              onLabelChange={(nama) => setValueKecamatan(nama)}
               onChange={(key) => setSelectedKecamatan(key)}
             />
-            <SelectWithLabelReqWilayah label={"Kelurahan"} placeholder={"Pilih Kelurahan"} name="kelurahan" options={kelurahan} />
+            <SelectWithLabelReqWilayah
+              label={"Kelurahan"}
+              placeholder={"Pilih Kelurahan"}
+              name="kelurahan"
+              options={kelurahan}
+              onLabelChange={(nama) => setValueKelurahan(nama)}
+            />
           </div>
         </div>
         <FileInputForm label="Dokumen Surat Kuasa" name="dokumen_surat_kuasa" />

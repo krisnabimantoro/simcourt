@@ -7,19 +7,29 @@ interface InputProps {
   options?: { kode: string; nama: string }[]; // options is optional
   name?: string;
   onChange?: (value: any) => void;
+  onLabelChange?: (nama: string) => void;
 }
 
-export default function SelectWithLabelReqWilayah({ label, placeholder, options = [], name, onChange }: InputProps) {
+export default function SelectWithLabelReqWilayah({ label, placeholder, options = [], name, onChange, onLabelChange }: InputProps) {
   // Ensure options is an array before calling map
   const safeOptions = Array.isArray(options) ? options : [];
 
+  const handleChange = (value: string) => {
+    onChange?.(value);
+
+    // Cari nama dari kode
+    const selected = safeOptions.find((opt) => opt.kode === value);
+    if (selected) {
+      onLabelChange?.(selected.nama);
+    }
+  };
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>
         {label}
         <span className="text-destructive">*</span>
       </Label>
-      <Select name={name} onValueChange={onChange}>
+      <Select name={name} onValueChange={handleChange}>
         <SelectTrigger id={name}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
