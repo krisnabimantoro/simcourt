@@ -42,15 +42,16 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const router = useRouter();
+  const [open, setOpen] = useState(false);
   const [selectedPihak, setSelectedPihak] = useState<{
-    no_pendaftaran: ReactNode;
-    status_alamat: ReactNode;
-    telepon: ReactNode;
-    provinsi: ReactNode;
-    kabupaten: ReactNode;
-    kecamatan: ReactNode;
-    kelurahan: ReactNode;
-    pendaftaran_sidang_id: ReactNode;
+    no_pendaftaran: string;
+    status_alamat: string;
+    telepon: string | number;
+    provinsi: string | number;
+    kabupaten: string | number;
+    kecamatan: string | number;
+    kelurahan:string | number;
+    pendaftaran_sidang_id: string | number;
     dokumen_surat_kuasa: any;
     created_at: string | number | Date;
     updated_at: string | number | Date;
@@ -172,7 +173,7 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <Dialog>
+                  <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
                       <UserPen
                         onClick={() => {
