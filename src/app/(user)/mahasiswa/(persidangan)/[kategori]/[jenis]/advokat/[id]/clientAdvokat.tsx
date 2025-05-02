@@ -22,6 +22,7 @@ import DataProvinsi from "@/hooks/data-provinsi";
 import NEXT_PUBLIC_URL_FETCH, { apiKeyDaerah } from "@/constant/data-fetching";
 import SelectWithLabelReqWilayah from "@/components/ui/select-with-label-req-wilayah";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { usePathname } from "next/navigation";
 
 interface AdvokatFormProps {
   token: string;
@@ -51,6 +52,8 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   const [valueKelurahan, setValueKelurahan] = useState("");
 
   const [dataPihak, setDataPihak] = useState<any>([]);
+
+  const [nomorPendaftaran, setNomorPendaftaran] = useState("");
   useEffect(() => {
     fetch("/api/wilayah")
       .then((res) => res.json())
@@ -84,11 +87,14 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
     }
   }, [selectedKecamatan]);
 
-  console.log("Provinsi:", provinsi);
   // console.log(provinsi);
 
+  const pathname = usePathname();
+  const pathSegments = pathname.split("/"); // ['', 'mahasiswa', 'perdata', 'gugatan', 'advokat', '329']
+  const jenisPendaftaran = pathSegments[3];
+
   const fetchDataPihak = async (): Promise<any> => {
-    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/${projectId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/sidang:${projectId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -166,6 +172,9 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       formData.append("mahasiswa_id", userId.toString());
       formData.append("pendaftaran_sidang_id", projectId.toString());
       formData.append("persetujuan", "belum_membuat");
+      formData.append("no_pendaftaran", nomorPendaftaran);
+      formData.append("jenis_perkara", jenisPendaftaran);
+      formData.append("status_pendaftaran", "belum_terdaftar");
     } catch (error: any) {
       console.error("Error appending data to FormData:", error.message);
       if (!classId) {
@@ -287,6 +296,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
           placeholder={"Input nomor pendaftaran/registrasi"}
           name={"no_pendaftaran"}
           type={"text"}
+          onChange={(e) => setNomorPendaftaran(e.target.value)}
         />
 
         <div className="flex mt-2 gap-x-2">
