@@ -23,6 +23,7 @@ import NEXT_PUBLIC_URL_FETCH, { apiKeyDaerah } from "@/constant/data-fetching";
 import SelectWithLabelReqWilayah from "@/components/ui/select-with-label-req-wilayah";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePathname } from "next/navigation";
+import { Trash2 } from "lucide-react";
 
 interface AdvokatFormProps {
   token: string;
@@ -54,6 +55,8 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   const [dataPihak, setDataPihak] = useState<any>([]);
 
   const [nomorPendaftaran, setNomorPendaftaran] = useState("");
+
+  const [idPihak, setIdPihak] = useState(0);
   useEffect(() => {
     fetch("/api/wilayah")
       .then((res) => res.json())
@@ -118,6 +121,27 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   }, []);
 
   console.log("Data panggilan:", dataPihak);
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Yakin ingin menghapus data ini?")) return;
+
+    try {
+      const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Gagal menghapus data");
+      toast({ title: "Berhasil menghapus data", variant: "default" });
+      loadData();
+    } catch (error) {
+      console.error("Gagal menghapus:", error);
+    }
+  };
 
   async function onSubmitPihak(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -250,7 +274,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       <Typography.H2 className="flex flex-col">
         Mengisi Data Pendaftaran Persidangan{" "}
         <p className="text-sm font-normal">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, hic sapiente. Ea fugiat ipsam aliquam harum doloremque{" "}
+          Silakan isi data pendaftaran persidangan dengan lengkap dan benar. Pastikan semua dokumen yang diperlukan sudah diunggah.
         </p>
       </Typography.H2>
       <Separator />
@@ -284,7 +308,11 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
                   <strong>Persetujuan:</strong> {pihak.persetujuan}
                 </p>
               </CardContent>
-              <CardFooter className="text-xs text-gray-500">Dibuat pada: {new Date(pihak.created_at).toLocaleString()}</CardFooter>
+         
+              <CardFooter className="text-xs text-gray-500 flex justify-between items-center">
+                Dibuat pada: {new Date(pihak.created_at).toLocaleString()}
+                <Trash2 className="hover:cursor-pointer text-red-500" onClick={() => handleDelete(pihak.id)} />
+              </CardFooter>
             </Card>
           ))}
         </div>
