@@ -11,6 +11,10 @@ import ModalDokumenPersidangan from "./persidangan-components/modal-dokumen-pers
 import ModalPutusanPersidangan from "./persidangan-components/modal-putusan-persidangan";
 import TambahCatatanPersidangan from "./persidangan-components/tambah-catatan-persidangan";
 import { ComponentComboboxVerifikasi } from "./persidangan-components/combo-box-verifikasi-dokumen";
+import { set } from "date-fns";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import ModalCourtCalendarTundaan from "./persidangan-components/modal-court-calendar-tundaan";
 
 const items = [
   {
@@ -35,6 +39,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
   const [dataSidang, setDataSidang] = useState<any>([]);
   const [openCatatan, setOpenCatatan] = useState(false);
   const [openCalendar, setOpenCalendar] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   // const [open, setOpen] = useState(false);
   const [dataPersidangan, setDataPersidangan] = useState<any>([]);
   const [loading, setLoading] = useState(true);
@@ -101,7 +106,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
     loadData();
   }, [id, token]);
 
-  console.log("asdadas", data_user);
+  console.log("data sidang coy", dataPersidangan);
   return (
     <div className="w-full space-y-6">
       <Card>
@@ -147,18 +152,51 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dataSidang?.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.id}</TableCell>
-                  <TableCell>{item.hari_tanggal}</TableCell>
-                  <TableCell>{item.jam}</TableCell>
-                  <TableCell>{item.agenda}</TableCell>
-                  <TableCell>{item.keterangan}</TableCell>
-                  <TableCell>
-                    <Pencil className="hover:cursor-pointer" />
-                  </TableCell>
-                </TableRow>
-              ))}
+              {dataSidang?.map((item) => {
+                // Find the related persidangan data
+                const relatedPersidangan = dataPersidangan.find((persidangan) => persidangan.jadwal_sidang_id === item.id);
+
+                return (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium">{item.id}</TableCell>
+                    <TableCell>{item.hari_tanggal}</TableCell>
+                    <TableCell>{item.jam}</TableCell>
+                    <TableCell>{item.agenda}</TableCell>
+                    <TableCell>{item.keterangan}</TableCell>
+                    <TableCell>
+                      <Dialog open={openEdit} onOpenChange={setOpenEdit}>
+                        <DialogTrigger asChild>
+                          <Pencil className="hover:cursor-pointer" />
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Buat Tundaan Sidang</DialogTitle>
+                            <Separator />
+                            <p className="flex flex-col">
+                              <strong>Tanggal Sidang</strong> {item?.hari_tanggal}
+                            </p>
+                            <p className="flex flex-col">
+                              <strong>Agenda</strong> {item?.agenda}
+                            </p>
+
+                            <ModalCourtCalendarTundaan
+                              id_persidangan={id}
+                              token={token}
+                              user={data_user}
+                              onUpdateSuccess={() => {
+                                loadData();
+                                setOpenCalendar(false);
+                              }}
+                              id_sidang={relatedPersidangan?.persidangan_id || null} // Use persidangan_id from related data
+                              agendaSidang={item.agenda}
+                            />
+                          </DialogHeader>
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </CardContent>
@@ -193,7 +231,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
                   <div className="flex gap-2">
                     <Calendar width={20} />
                     <p className="font-semibold">
-                      Alasan di tunda: <span className="font-normal">{item.agendaTunda || "N/A"}</span>
+                      Alasan di tunda: <span className="font-normal">{item.alasan_ditunda || "N/A"}</span>
                     </p>
                   </div>
                   <br />
@@ -320,7 +358,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
           ))}
         </CardContent>
       </Card>
-      <Dialog >
+      <Dialog>
         <DialogTrigger asChild>
           <Button variant={"default"} className="w-full">
             <Gavel />

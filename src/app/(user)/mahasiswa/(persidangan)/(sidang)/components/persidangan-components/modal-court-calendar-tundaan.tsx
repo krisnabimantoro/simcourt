@@ -14,13 +14,17 @@ import { useState } from "react";
 import InputWithLabelReq from "@/components/ui/input-with-label-req";
 import { useToast } from "@/hooks/use-toast";
 
-export default function ModalCourtCalendar({
+export default function ModalCourtCalendarTundaan({
   id_persidangan,
+  id_sidang,
   token,
+  agendaSidang,
   user,
   onUpdateSuccess,
 }: {
   id_persidangan: any;
+  id_sidang: any;
+  agendaSidang: any;
   token: any;
   user: any;
   onUpdateSuccess: () => void | undefined;
@@ -31,8 +35,9 @@ export default function ModalCourtCalendar({
   const [form, setForm] = useState({
     hari_tanggal: "",
     jam: "",
-    agenda: "",
+    agenda: agendaSidang,
     keterangan: "",
+    alasan_ditunda: "",
   });
 
   const handleChange = (name: string, value: string) => {
@@ -44,11 +49,37 @@ export default function ModalCourtCalendar({
       detail_pendaftaran_id: parseInt(id_persidangan),
       hari_tanggal: form.hari_tanggal,
       jam: form.jam || "12:00",
-      agenda: form.agenda,
+      agenda: agendaSidang,
       keterangan: form.keterangan,
+      alasan_ditunda: form.alasan_ditunda,
     };
 
     console.log("Payload:", JSON.stringify(payload));
+
+    try {
+      const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/persidangan/${id_sidang}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          alasan_ditunda: form.alasan_ditunda,
+        }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to update role");
+      }
+
+      const data = await res.json();
+
+      onUpdateSuccess();
+    } catch (error) {
+      toast({ title: "Status dokumen gagal diganti", description: String(error), variant: "destructive" });
+    }
+
     try {
       const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/jadwal-sidang`, {
         method: "POST",
@@ -57,7 +88,13 @@ export default function ModalCourtCalendar({
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          detail_pendaftaran_id: parseInt(id_persidangan),
+          hari_tanggal: form.hari_tanggal,
+          jam: form.jam || "12:00",
+          agenda: form.agenda,
+          keterangan: form.keterangan,
+        }),
       });
 
       if (!res.ok) {
@@ -94,26 +131,34 @@ export default function ModalCourtCalendar({
       }
 
       onUpdateSuccess();
-      toast({ title: "Persidangan berhasil dibuat", description: "Cek table untuk melihat data persidangan", variant: "default" });
+      toast({ title: "Tundaan Persidangan dan Persidangan berhasil dibuat ", description: "Cek table untuk melihat data persidangan", variant: "default" });
     } catch (err) {
       toast({ title: "Terjadi kesalahan", description: String(err), variant: "destructive" });
     }
   };
   return (
     <div className="max-h-[500px] overflow-y-auto">
+      <Separator className="my-2" />
+
+      <br />
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid w-full gap-1.5">
+          <Label htmlFor="alasan_ditunda">Alasan Ditunda</Label>
+          <Textarea
+            id="alasan_ditunda"
+            placeholder="Ketik alasan penundaan sidang"
+            value={form.alasan_ditunda}
+            onChange={(e) => handleChange("alasan_ditunda", e.target.value)}
+          />
+          <p className="text-sm text-muted-foreground text-justify">
+            Catatan ini digunakan untuk menjelaskan alasan mengapa sidang ditunda. Pastikan alasan yang diberikan jelas dan sesuai dengan
+            kondisi yang ada.
+          </p>
+        </div>
+
         <InputDateWIthLabel label="Tanggal Sidang" name="hari_tanggal" onChange={(e) => handleChange("hari_tanggal", e.target.value)} />
 
         <ComponentTimeField label={"Jam Sidang"} name={"jam"} onChange={(e) => handleChange("jam", e.target.value)} />
-
-        <InputWithLabelReq
-          label="Agenda Sidang"
-          placeholder="Ketik agenda sidang"
-          name="agenda"
-          type="text"
-          value={form.agenda}
-          onChange={(e) => handleChange("agenda", e.target.value)}
-        />
 
         <div className="grid w-full gap-1.5">
           <Label htmlFor="keterangan_sidang">
