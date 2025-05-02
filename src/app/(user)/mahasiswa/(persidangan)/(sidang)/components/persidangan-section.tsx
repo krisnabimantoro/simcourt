@@ -209,153 +209,159 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
         </CardHeader>
         <CardContent>
           <Separator className="mb-4" />
-          {dataPersidangan?.map((item) => (
-            <div key={item.persidangan_id} className={"mt-8"}>
-              <div className="flex gap-10">
-                <div className="w-1/4">
-                  {
-                    <div className="flex justify-end flex-col text-right">
-                      <p className="">{item.hari_tanggal}</p>
-                      <p className="text-2xl">{item.jam}</p>
-                      <p className="text-red-600 text-sm">keterangan: {item.keterangan}</p>
+          {dataPersidangan?.map((item, index) => {
+            const isLastItem = index === dataPersidangan.length - 1;
+            const isSingleItem = dataPersidangan.length === 1;
+            const isEnabled = isSingleItem || isLastItem;
+            return (
+              <div key={item.persidangan_id} className={"mt-8"}>
+                <div className="flex gap-10">
+                  <div className="w-1/4">
+                    {
+                      <div className="flex justify-end flex-col text-right">
+                        <p className="">{item.hari_tanggal}</p>
+                        <p className="text-2xl">{item.jam}</p>
+                        <p className="text-red-600 text-sm">keterangan: {item.keterangan}</p>
+                      </div>
+                    }
+                  </div>
+                  <div className="w-3/4 rounded-lg bg-muted/60  p-2">
+                    <div className="flex gap-2">
+                      <Calendar width={20} />
+                      <p className="font-semibold">
+                        Agenda Sidang: <span className="font-normal">{item.agenda}</span>
+                      </p>
                     </div>
-                  }
-                </div>
-                <div className="w-3/4 rounded-lg bg-muted/60  p-2">
-                  <div className="flex gap-2">
-                    <Calendar width={20} />
-                    <p className="font-semibold">
-                      Agenda Sidang: <span className="font-normal">{item.agenda}</span>
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Calendar width={20} />
-                    <p className="font-semibold">
-                      Alasan di tunda: <span className="font-normal">{item.alasan_ditunda || "N/A"}</span>
-                    </p>
-                  </div>
-                  <br />
-                  <Separator />
+                    <div className="flex gap-2">
+                      <Calendar width={20} />
+                      <p className="font-semibold">
+                        Alasan di tunda: <span className="font-normal">{item.alasan_ditunda || "N/A"}</span>
+                      </p>
+                    </div>
+                    <br />
+                    <Separator />
 
-                  <div className="mb-4">
-                    <h2 className="text-lg font-semibold ">📂 Dokumen Persidangan :</h2>
-                    <div className="mt-2 text-gray-700">
-                      <p>
-                        <span className="font-semibold">1. Dokumen diupload oleh:</span>{" "}
-                        <span className="text-red-600 font-semibold">{item.dokumen_persidangan?.diupload_oleh?.status || "N/A"}</span> -{" "}
-                        <span className="text-blue-700">{item.dokumen_persidangan?.diupload_oleh?.email || "N/A"}</span>
-                      </p>
-                      <p>
-                        <span className="font-semibold">Upload pada:</span>{" "}
-                        {item.dokumen_persidangan?.diupload_pada?.tanggal_upload || "N/A"}{" "}
-                        {item.dokumen_persidangan?.diupload_pada?.jam_upload || "N/A"}
-                      </p>
-                      <p>
-                        <span className="font-semibold">Status Dokumen:</span>{" "}
-                        <span className="text-blue-600">Verifikasi Majelis Hakim</span> :{" "}
-                        <span className="">{item.dokumen_persidangan?.status || "N/A"}</span>
-                      </p>
-                      <p>
-                        <span className="font-semibold">Jenis:</span> {item.dokumen_persidangan?.jenis || "N/A"}
-                      </p>
-                      <p>
-                        <span className="font-semibold">Judul Dokumen:</span>
-                        {item.dokumen_persidangan?.judul_dokumen || "N/A"}
-                      </p>
-                      <p className="flex items-center gap-4 mt-2">
-                        <span className="font-semibold">Upload Dokumen:</span>
+                    <div className="mb-4">
+                      <h2 className="text-lg font-semibold ">📂 Dokumen Persidangan :</h2>
+                      <div className="mt-2 text-gray-700">
+                        <p>
+                          <span className="font-semibold">1. Dokumen diupload oleh:</span>{" "}
+                          <span className="text-red-600 font-semibold">{item.dokumen_persidangan?.diupload_oleh?.status || "N/A"}</span> -{" "}
+                          <span className="text-blue-700">{item.dokumen_persidangan?.diupload_oleh?.email || "N/A"}</span>
+                        </p>
+                        <p>
+                          <span className="font-semibold">Upload pada:</span>{" "}
+                          {item.dokumen_persidangan?.diupload_pada?.tanggal_upload || "N/A"}{" "}
+                          {item.dokumen_persidangan?.diupload_pada?.jam_upload || "N/A"}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Status Dokumen:</span>{" "}
+                          <span className="text-blue-600">Verifikasi Majelis Hakim</span> :{" "}
+                          <span className="">{item.dokumen_persidangan?.status || "N/A"}</span>
+                        </p>
+                        <p>
+                          <span className="font-semibold">Jenis:</span> {item.dokumen_persidangan?.jenis || "N/A"}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Judul Dokumen:</span>
+                          {item.dokumen_persidangan?.judul_dokumen || "N/A"}
+                        </p>
+                        <p className="flex items-center gap-4 mt-2">
+                          <span className="font-semibold">Upload Dokumen:</span>
 
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant={"default"}>
-                              <FilePlus />
-                              Upload dokumen persidangan
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Upload dokumen persidangan</DialogTitle>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant={"default"} disabled={!isEnabled}>
+                                <FilePlus />
+                                Upload dokumen persidangan
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Upload dokumen persidangan</DialogTitle>
 
-                              <DialogDescription>Tambah data dokumen</DialogDescription>
-                              <br />
-                              <ModalDokumenPersidangan id_persidangan={item.persidangan_id} token={token} user={data_user} />
-                            </DialogHeader>
-                          </DialogContent>
-                        </Dialog>
-                      </p>
-                      <p className="flex items-center gap-4 mt-2">
-                        <span className="font-semibold">Dokumen:</span>
-                        <button
-                          className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
-                          onClick={() => window.open(fileUrl(item.dokumen_persidangan?.upload_dokumen || ""), "_blank")}
-                        >
-                          📄 Lihat Dokumen
-                        </button>
-                        <ComponentComboboxVerifikasi
-                          token={token}
-                          user={data_user}
-                          persidangan_id={item?.persidangan_id}
-                          onUpdateSuccess={() => {
-                            loadData();
-                          }}
-                        />
-                        {/*                        
+                                <DialogDescription>Tambah data dokumen</DialogDescription>
+                                <br />
+                                <ModalDokumenPersidangan id_persidangan={item.persidangan_id} token={token} user={data_user} />
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+                        </p>
+                        <p className="flex items-center gap-4 mt-2">
+                          <span className="font-semibold">Dokumen:</span>
+                          <button
+                            className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+                            onClick={() => window.open(fileUrl(item.dokumen_persidangan?.upload_dokumen || ""), "_blank")}
+                            disabled={!isEnabled}
+                          >
+                            📄 Lihat Dokumen
+                          </button>
+                          <ComponentComboboxVerifikasi
+                            token={token}
+                            user={data_user}
+                            persidangan_id={item?.persidangan_id}
+                            onUpdateSuccess={() => {
+                              loadData();
+                            }}
+                          />
+                          {/*                        
                         <button className="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg hover:bg-blue-600">
                           Verifikasi Dokumen
                         </button> */}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-4">
-                    <Separator />
-                    <h2 className="text-lg font-semibold  flex items-center gap-2">📘 Catatan Persidangan</h2>
-                    {item.catatan_persidangan?.map((catatan) => (
-                      <div key={catatan.id}>
-                        <p className="mt-2 text-gray-700">
-                          {catatan?.keterangan} <br />
-                        </p>
-
-                        <p className="mt-2 text-sm text-gray-500">
-                          ✍️ ditulis oleh: <span className="text-blue-700 font-semibold">{catatan.ditulis_oleh}</span> |{" "}
-                          <span className="text-gray-600">
-                            {catatan.created_at.split("T")[0]} {catatan.created_at.split("T")[1].split(".")[0]}
-                          </span>
                         </p>
                       </div>
-                    ))}
+                    </div>
 
-                    <br />
-                    <Dialog open={openCatatan} onOpenChange={setOpenCatatan}>
-                      <DialogTrigger asChild>
-                        <Button variant={"default"}>
-                          <Pen />
-                          Tambah catatan persidangan
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Tambah catatan persidangan</DialogTitle>
+                    <div className="mt-4">
+                      <Separator />
+                      <h2 className="text-lg font-semibold  flex items-center gap-2">📘 Catatan Persidangan</h2>
+                      {item.catatan_persidangan?.map((catatan) => (
+                        <div key={catatan.id}>
+                          <p className="mt-2 text-gray-700">
+                            {catatan?.keterangan} <br />
+                          </p>
 
-                          <DialogDescription>Catatan Persidangan</DialogDescription>
-                          <br />
-                          <TambahCatatanPersidangan
-                            id_persidangan={item.persidangan_id}
-                            token={token}
-                            user={data_user}
-                            onUpdateSuccess={() => {
-                              loadData();
-                              setOpenCatatan(false);
-                            }}
-                          />
-                        </DialogHeader>
-                      </DialogContent>
-                    </Dialog>
+                          <p className="mt-2 text-sm text-gray-500">
+                            ✍️ ditulis oleh: <span className="text-blue-700 font-semibold">{catatan.ditulis_oleh}</span> |{" "}
+                            <span className="text-gray-600">
+                              {catatan.created_at.split("T")[0]} {catatan.created_at.split("T")[1].split(".")[0]}
+                            </span>
+                          </p>
+                        </div>
+                      ))}
+
+                      <br />
+                      <Dialog open={openCatatan} onOpenChange={setOpenCatatan}>
+                        <DialogTrigger asChild>
+                          <Button variant={"default"} disabled={!isEnabled}>
+                            <Pen />
+                            Tambah catatan persidangan
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Tambah catatan persidangan</DialogTitle>
+
+                            <DialogDescription>Catatan Persidangan</DialogDescription>
+                            <br />
+                            <TambahCatatanPersidangan
+                              id_persidangan={item.persidangan_id}
+                              token={token}
+                              user={data_user}
+                              onUpdateSuccess={() => {
+                                loadData();
+                                setOpenCatatan(false);
+                              }}
+                            />
+                          </DialogHeader>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </CardContent>
       </Card>
       <Dialog>
