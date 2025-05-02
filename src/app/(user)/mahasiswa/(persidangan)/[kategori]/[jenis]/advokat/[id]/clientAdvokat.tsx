@@ -21,6 +21,7 @@ import { statusAlamat, statusPihak } from "@/data/data";
 import DataProvinsi from "@/hooks/data-provinsi";
 import NEXT_PUBLIC_URL_FETCH, { apiKeyDaerah } from "@/constant/data-fetching";
 import SelectWithLabelReqWilayah from "@/components/ui/select-with-label-req-wilayah";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AdvokatFormProps {
   token: string;
@@ -44,6 +45,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   const [selectedKabupaten, setSelectedKabupaten] = useState("");
   const [selectedKecamatan, setSelectedKecamatan] = useState("");
 
+  const [dataPihak, setDataPihak] = useState<any>([]);
   useEffect(() => {
     fetch("/api/wilayah")
       .then((res) => res.json())
@@ -80,6 +82,32 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   console.log("Provinsi:", provinsi);
   // console.log(provinsi);
 
+  const fetchDataPihak = async (): Promise<any> => {
+    const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/${projectId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return response.json();
+  };
+
+  const loadData = async () => {
+    try {
+      const result = await fetchDataPihak();
+      setDataPihak(result?.data);
+    } catch (error) {
+      console.error("Gagal ambil data pembayaran:", error);
+    }
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  console.log("Data panggilan:", dataPihak);
+
   async function onSubmitPihak(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -108,8 +136,9 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       console.log("Response:", dataPihak);
 
       toast({ title: "Pihak berhasil dibuat", variant: "default" });
+      loadData();
       form.reset();
-      
+
       // Redirect after success
       //   router.push(`/advokat/${data.data.id}`);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -211,7 +240,38 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       <br />
 
       <Typography.H3>Tambah Pihak</Typography.H3>
-
+      <Separator className="my-2" />
+      {dataPihak && dataPihak.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+          {dataPihak.map((pihak) => (
+            <Card key={pihak.id} className="rounded-2xl shadow-md">
+              <CardHeader>
+                <CardTitle>{pihak.nama_lengkap}</CardTitle>
+                <CardDescription>Status: {pihak.status_pihak}</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm space-y-1">
+                <p>
+                  <strong>Email:</strong> {pihak.email}
+                </p>
+                <p>
+                  <strong>Telepon:</strong> {pihak.telepon}
+                </p>
+                <p>
+                  <strong>Alamat:</strong> {pihak.alamat}
+                </p>
+                <p>
+                  <strong>Wilayah:</strong> {`${pihak.provinsi} / ${pihak.kabupaten} / ${pihak.kecamatan} / ${pihak.kelurahan}`}
+                </p>
+                <p>
+                  <strong>Persetujuan:</strong> {pihak.persetujuan}
+                </p>
+              </CardContent>
+              <CardFooter className="text-xs text-gray-500">Dibuat pada: {new Date(pihak.created_at).toLocaleString()}</CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
+   <Separator className="my-4" />
       <form onSubmit={onSubmitPihak} className=" ">
         <InputWithLabelReq
           label={"No Pendaftaran"}

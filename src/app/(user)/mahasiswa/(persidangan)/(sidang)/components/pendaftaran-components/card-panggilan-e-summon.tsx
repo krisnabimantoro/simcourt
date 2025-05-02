@@ -39,6 +39,7 @@ export default function CardPanggilanJuruSita({ id, data, token, user }: { id: a
   const [dataPanggilan, setDataPanggilan] = useState<any>([]);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  
   const fetchPembayaranData = async (): Promise<any> => {
     const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/panggilan-sidang/detail_pendaftaran:${id}`, {
       method: "GET",
