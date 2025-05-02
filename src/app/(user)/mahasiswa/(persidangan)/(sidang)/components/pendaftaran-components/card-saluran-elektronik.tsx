@@ -42,6 +42,34 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const router = useRouter();
+  const [selectedPihak, setSelectedPihak] = useState<{
+    no_pendaftaran: ReactNode;
+    status_alamat: ReactNode;
+    telepon: ReactNode;
+    provinsi: ReactNode;
+    kabupaten: ReactNode;
+    kecamatan: ReactNode;
+    kelurahan: ReactNode;
+    pendaftaran_sidang_id: ReactNode;
+    dokumen_surat_kuasa: any;
+    created_at: string | number | Date;
+    updated_at: string | number | Date;
+    id: number;
+    nama_lengkap: string;
+    alamat: string;
+    email: string;
+    status_pihak: string;
+    persetujuan: string;
+    status_dokumen: string;
+  } | null>(null);
+
+  function fileUrl(filePath: string | null): string | undefined {
+    if (!filePath) return undefined;
+    const url = `${NEXT_PUBLIC_URL_FETCH}/storage/${filePath.replace("public/", "")}`;
+    return url;
+  }
+
+
   const fetchPihak = async (): Promise<any> => {
     try {
       const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks/detail_pendaftaran:${id}`, {
@@ -146,15 +174,84 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
                 <TableCell className="text-right">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <UserPen onClick={() => setSelectedId(item.id)} className={cn("hover:cursor-pointer")} />
+                      <UserPen
+                        onClick={() => {
+                          setSelectedId(item.id);
+                          setSelectedPihak(item);
+                        }}
+                        className={cn("hover:cursor-pointer")}
+                      />
                     </DialogTrigger>
                     <DialogContent className="w-[800px]">
                       <DialogHeader>
                         <DialogTitle>Status Pihak</DialogTitle>
-                        <DialogDescription>
-                          Silakan ubah status pihak sesuai dengan persetujuan yang telah diberikan. Pastikan untuk memilih status yang
-                          sesuai sebelum mengirimkan formulir.
-                        </DialogDescription>
+                        <DialogDescription>Silakan ubah status pihak sesuai dengan persetujuan yang telah diberikan.</DialogDescription>
+                        {selectedPihak && (
+                          <div className="mb-4 space-y-2">
+                            <p>
+                              <strong>ID:</strong> {selectedPihak.id}
+                            </p>
+                            <p>
+                              <strong>No. Pendaftaran:</strong> {selectedPihak.no_pendaftaran}
+                            </p>
+                            <p>
+                              <strong>Status Pihak:</strong> {selectedPihak.status_pihak}
+                            </p>
+                            <p>
+                              <strong>Email:</strong> {selectedPihak.email}
+                            </p>
+                            <p>
+                              <strong>Nama Lengkap:</strong> {selectedPihak.nama_lengkap}
+                            </p>
+                            <p>
+                              <strong>Status Alamat:</strong> {selectedPihak.status_alamat}
+                            </p>
+                            <p>
+                              <strong>Telepon:</strong> {selectedPihak.telepon}
+                            </p>
+                            <p>
+                              <strong>Provinsi:</strong> {selectedPihak.provinsi}
+                            </p>
+                            <p>
+                              <strong>Kabupaten:</strong> {selectedPihak.kabupaten}
+                            </p>
+                            <p>
+                              <strong>Kecamatan:</strong> {selectedPihak.kecamatan}
+                            </p>
+                            <p>
+                              <strong>Kelurahan:</strong> {selectedPihak.kelurahan}
+                            </p>
+                            <p>
+                              <strong>Pendaftaran Sidang ID:</strong> {selectedPihak.pendaftaran_sidang_id}
+                            </p>
+                            <p>
+                              <strong>Persetujuan:</strong> {selectedPihak.persetujuan}
+                            </p>
+                            <p>
+                              <strong>Status Dokumen:</strong> {selectedPihak.status_dokumen}
+                            </p>
+                            <p>
+                              <strong>Dokumen Surat Kuasa:</strong>
+                              <a
+                                href={fileUrl(selectedPihak.dokumen_surat_kuasa) || "#"}
+                                
+                            
+                                className="text-blue-500 underline ml-1"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Lihat Dokumen
+                              </a>
+                            </p>
+                            <p>
+                              <strong>Dibuat:</strong> {new Date(selectedPihak.created_at).toLocaleString()}
+                            </p>
+                            <p>
+                              <strong>Diperbarui:</strong> {new Date(selectedPihak.updated_at).toLocaleString()}
+                            </p>
+                          </div>
+                        )}
+
                         <form onSubmit={handleSubmit} className="">
                           <div className="flex  gap-x-2">
                             <div className="w-full gap-y-4 flex flex-col">
@@ -166,11 +263,10 @@ export default function CardSaluranElektronik({ id, token }: { id: any; token: a
                               />
                             </div>
                           </div>
-                          <DialogPrimitive.Close className="w-full">
-                            <span>
-                              <Button className="w-full mt-4">Submit</Button>
-                            </span>
-                          </DialogPrimitive.Close>
+
+                          <span>
+                            <Button className="w-full mt-4">Submit</Button>
+                          </span>
                         </form>
                       </DialogHeader>
                     </DialogContent>
