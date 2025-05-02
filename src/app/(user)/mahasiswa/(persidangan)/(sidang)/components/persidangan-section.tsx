@@ -320,7 +320,7 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
           ))}
         </CardContent>
       </Card>
-      <Dialog>
+      <Dialog >
         <DialogTrigger asChild>
           <Button variant={"default"} className="w-full">
             <Gavel />
