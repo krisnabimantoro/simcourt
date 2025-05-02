@@ -79,6 +79,45 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
 
   console.log("Provinsi:", provinsi);
   // console.log(provinsi);
+
+  async function onSubmitPihak(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formDataPihak = new FormData(form);
+    formDataPihak.append("pendaftaran_sidang_id", projectId.toString());
+
+    try {
+      const responsePihak = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
+        },
+        credentials: "include",
+        body: formDataPihak, // Correctly send FormData without JSON.stringify
+      });
+
+      console.log("Response Pihak:", responsePihak);
+
+      if (!responsePihak.ok) {
+        const errorData = await responsePihak.json();
+        throw new Error(errorData?.message || "Failed to submit");
+      }
+
+      const dataPihak = await responsePihak.json();
+      // toast({ title: "Pihak berhasil dibuat" });
+      console.log("Response:", dataPihak);
+
+      toast({ title: "Pihak berhasil dibuat", variant: "default" });
+      form.reset();
+      
+      // Redirect after success
+      //   router.push(`/advokat/${data.data.id}`);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast({ title: error.message, variant: "destructive" });
+      console.error("Error:", error);
+    }
+  }
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -129,33 +168,6 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
     }
 
     try {
-      const responsePihak = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/pihaks`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`, // Only Authorization header needed for FormData
-        },
-        credentials: "include",
-        body: formData, // Correctly send FormData without JSON.stringify
-      });
-
-      if (!responsePihak.ok) {
-        const errorData = await responsePihak.json();
-        throw new Error(errorData?.message || "Failed to submit");
-      }
-
-      const dataPihak = await responsePihak.json();
-      // toast({ title: "Pihak berhasil dibuat" });
-      console.log("Response:", dataPihak);
-
-      // Redirect after success
-      //   router.push(`/advokat/${data.data.id}`);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast({ title: error.message, variant: "destructive" });
-      console.error("Error:", error);
-    }
-
-    try {
       const responseDaftar = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/detail-pendaftarans`, {
         method: "POST",
         headers: {
@@ -189,7 +201,7 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
   return (
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-4 mb-10">
       <Typography.H2 className="flex flex-col">
-        Mengisi Data Advokat{" "}
+        Mengisi Data Pendaftaran Persidangan{" "}
         <p className="text-sm font-normal">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, hic sapiente. Ea fugiat ipsam aliquam harum doloremque{" "}
         </p>
@@ -197,51 +209,17 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
       <Separator />
 
       <br />
-      <Typography.H3>Form data</Typography.H3>
 
-      <form onSubmit={onSubmit} className=" ">
-        <div className="flex">
-          <div className="w-1/2 gap-y-4 flex flex-col">
-            <InputWithLabelReq label="Nama Lengkap" placeholder="Input nama lengkap" name="nama_lengkap" type="text" />
-            <InputWithLabelReq label="Alamat Kantor" placeholder="Input alamat kantor" name="alamat_kantor" type="text" />
-            <InputWithLabel label="No Handphone" placeholder="Input nomor handphone" name="no_handphone" type="number" />
-            <InputWithLabel label="Telp./Fax Kantor" placeholder="Input nomor telp/fax kantor" name="telp_kantor" type="number" />
-            <InputWithLabelReq label="Nomor Induk (KTA)" placeholder="Input Nomor Induk" name="no_induk" type="number" />
-            <InputWithLabelReq label="Organisasi" placeholder="Input asal organisasi" name="organisasi" type="text" />
+      <Typography.H3>Tambah Pihak</Typography.H3>
 
-            <InputWithLabelReq label="BANK" placeholder="Input nama bank" name="bank" type="text" />
-            <InputWithLabelReq label="Nomor Rekening" placeholder="Input Nomor Rekening" name="no_rekening" type="number" />
-          </div>
-
-          <div className="w-1/2 ml-8 gap-y-4 flex flex-col">
-            <InputDateWIthLabel label="Tanggal Mulai Berlaku" name="tanggal_mulai_berlaku" />
-            <InputDateWIthLabel label="Tanggal Penyumpahan" name="tanggal_penyumpahan" />
-            <InputDateWIthLabel label="Tanggal Habis Berlaku" name="tanggal_habis_berlaku" />
-            <InputWithLabelReq label="Tempat Penyumpahan" placeholder="Input tempat penyumpahan" name="tempat_penyumpahan" type="text" />
-            <InputWithLabelReq label="Nomor BA Sumpah" placeholder="Input nomor BA sumpah" name="no_ba_sumpah" type="number" />
-            <InputWithLabelReq label="Nomor KTP" placeholder="Input Nomor KTP" name="no_ktp" type="number" />
-
-            <InputWithLabelReq label="Nama Akun Bank" placeholder="Input nama akun bank" name="nama_akun_bank" type="text" />
-          </div>
-        </div>
-        <Separator className="my-4" />
-
-        <Typography.H3>Dokumen Pendukung Pengacara</Typography.H3>
-        <span className="mt-2"></span>
-        <FileInputForm label="Dokumen KTA" name="file_dokumen_kta" />
-        <FileInputForm label="Dokumen Penyumpahan" name="file_dokumen_penyumpahan" />
-        <FileInputForm label="Dokumen KTP" name="file_dokumen_ktp" />
-
-        <Separator className="my-4" />
-
-        <Typography.H3>Tambah Pihak</Typography.H3>
-
+      <form onSubmit={onSubmitPihak} className=" ">
         <InputWithLabelReq
           label={"No Pendaftaran"}
           placeholder={"Input nomor pendaftaran/registrasi"}
           name={"no_pendaftaran"}
           type={"text"}
         />
+
         <div className="flex mt-2 gap-x-2">
           <div className="w-1/2 gap-y-2 flex flex-col">
             <SelectWithLabel label={"Status Pihak"} placeholder={"Pilih Status Pihak"} options={statusPihak} name={"status_pihak"} />
@@ -280,6 +258,48 @@ export default function ClientAdvokat({ token, userId, classId }: AdvokatFormPro
             <SelectWithLabelReqWilayah label={"Kelurahan"} placeholder={"Pilih Kelurahan"} name="kelurahan" options={kelurahan} />
           </div>
         </div>
+        <FileInputForm label="Dokumen Surat Kuasa" name="dokumen_surat_kuasa" />
+        <Button className="w-full mt-4" type="submit" variant={"default"}>
+          Tambah Pihak
+        </Button>
+      </form>
+
+      <Separator className="my-4" />
+      <Typography.H3>Form data Advokat</Typography.H3>
+
+      <form onSubmit={onSubmit} className=" ">
+        <div className="flex">
+          <div className="w-1/2 gap-y-4 flex flex-col">
+            <InputWithLabelReq label="Nama Lengkap" placeholder="Input nama lengkap" name="nama_lengkap" type="text" />
+            <InputWithLabelReq label="Alamat Kantor" placeholder="Input alamat kantor" name="alamat_kantor" type="text" />
+            <InputWithLabel label="No Handphone" placeholder="Input nomor handphone" name="no_handphone" type="number" />
+            <InputWithLabel label="Telp./Fax Kantor" placeholder="Input nomor telp/fax kantor" name="telp_kantor" type="number" />
+            <InputWithLabelReq label="Nomor Induk (KTA)" placeholder="Input Nomor Induk" name="no_induk" type="number" />
+            <InputWithLabelReq label="Organisasi" placeholder="Input asal organisasi" name="organisasi" type="text" />
+
+            <InputWithLabelReq label="BANK" placeholder="Input nama bank" name="bank" type="text" />
+            <InputWithLabelReq label="Nomor Rekening" placeholder="Input Nomor Rekening" name="no_rekening" type="number" />
+          </div>
+
+          <div className="w-1/2 ml-8 gap-y-4 flex flex-col">
+            <InputDateWIthLabel label="Tanggal Mulai Berlaku" name="tanggal_mulai_berlaku" />
+            <InputDateWIthLabel label="Tanggal Penyumpahan" name="tanggal_penyumpahan" />
+            <InputDateWIthLabel label="Tanggal Habis Berlaku" name="tanggal_habis_berlaku" />
+            <InputWithLabelReq label="Tempat Penyumpahan" placeholder="Input tempat penyumpahan" name="tempat_penyumpahan" type="text" />
+            <InputWithLabelReq label="Nomor BA Sumpah" placeholder="Input nomor BA sumpah" name="no_ba_sumpah" type="number" />
+            <InputWithLabelReq label="Nomor KTP" placeholder="Input Nomor KTP" name="no_ktp" type="number" />
+
+            <InputWithLabelReq label="Nama Akun Bank" placeholder="Input nama akun bank" name="nama_akun_bank" type="text" />
+          </div>
+        </div>
+        <Separator className="my-4" />
+
+        <Typography.H3>Dokumen Pendukung Pengacara</Typography.H3>
+        <span className="mt-2"></span>
+        <FileInputForm label="Dokumen KTA" name="file_dokumen_kta" />
+        <FileInputForm label="Dokumen Penyumpahan" name="file_dokumen_penyumpahan" />
+        <FileInputForm label="Dokumen KTP" name="file_dokumen_ktp" />
+
         <Button className="w-full mt-4">Submit</Button>
       </form>
 
