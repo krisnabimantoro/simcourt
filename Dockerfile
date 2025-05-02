@@ -11,6 +11,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install dependencies menggunakan yarn
+RUN yarn install
 RUN yarn install --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -41,6 +42,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Salin juga node_modules agar runtime bisa berjalan
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
 USER nextjs
 

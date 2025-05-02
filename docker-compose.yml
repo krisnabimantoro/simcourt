@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: simcourt-client
+    container_name: simcourt-client-v0
     ports:
       - "3031:3000"
     environment:
@@ -16,6 +16,13 @@ services:
       - URL_AUTH=${URL_AUTH}
       - SESSION_SECRET=${SESSION_SECRET}
       - API_KEY_DAERAH=${API_KEY_DAERAH}
-    volumes:
-      - .:/app
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
     restart: unless-stopped
+
+volumes:
+  node_modules:
