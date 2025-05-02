@@ -84,7 +84,7 @@ export default function ModalPutusanPersidangan({ id_persidangan, token, user }:
     }
   };
   return (
-    <div className="max-h-[600px] overflow-y-auto">
+    <div className="max-h-[400px] overflow-y-auto">
       <form onSubmit={handleSubmit} className="space-y-4">
         <InputDateWIthLabel
           label="Tanggal Putusan"
