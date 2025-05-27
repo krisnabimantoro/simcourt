@@ -19,7 +19,8 @@ export function CardFooterSidebar({ dataUser }: { dataUser: any }) {
 export function CardHeaderSidebar() {
   return (
     <div className="flex items-center justify-center w-full h-full p-2">
-      <Image src="/logo_sidebar.png" width={200} height={20} alt="Logo Laboratorium Hukum" className=" p-2 rounded-lg dark:bg-white" />
+      <Image src="/logo_sidebar.png" width={150} height={10} alt="Logo SimuCourt" className=" p-2 rounded-lg dark:bg-white" />
+      <Image src="/logo.png" width={50} height={20} alt="Logo Laboratorium Hukum" className=" p-2 rounded-lg dark:bg-white" />
       {/* <div className="ml-3 items-center justify-center">
         <Typography.H3>SimuCourt</Typography.H3>
         <Typography.P>Hukum UMM</Typography.P>

@@ -5,10 +5,17 @@ import CardKelompok from "./components/card-detail-kelompok";
 import CardInformasi from "./components/card-informasi";
 import CardTatacara from "./components/card-tatacara.";
 import CardPersidangan from "./components/card-persidangan";
+import GetFetchingData from "@/lib/fetching-component-get";
 // import { GetIdUser } from "@/lib/get-id-user";
 
 export default async function DashboardMahasiswa() {
+  const responseMe = await GetFetchingData("v1/auth/me");
+  const classId = responseMe?.data?.kelas_id;
+  const mahasiswaId = responseMe?.data?.id;
 
+  const responseClass = await GetFetchingData(`v1/classes/${classId}`);
+  console.log("responseClass", responseClass);
+  
   return (
     <div className="w-[calc(100vw-18rem)]  ml-2 ">
       <Typography.H2 className="flex flex-col">
