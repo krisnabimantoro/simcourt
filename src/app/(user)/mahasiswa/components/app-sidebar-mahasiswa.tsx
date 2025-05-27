@@ -64,10 +64,12 @@ const onLogout = async (token: string): Promise<void> => {
 };
 type AppSidebarProps = {
   token: { token: string };
+  dataUser: { dataUser: any };
 };
-export function AppSidebar({ token }: AppSidebarProps) {
+export function AppSidebar({ token, dataUser }: AppSidebarProps) {
   const { setTheme } = useTheme();
-  return (  
+
+  return (
     <Sidebar>
       <SidebarHeader>
         <CardHeaderSidebar />
@@ -141,10 +143,10 @@ export function AppSidebar({ token }: AppSidebarProps) {
             <SidebarMenu>
               <SidebarMenuItem key={"faq"}>
                 <SidebarMenuButton>
-                  <a href="/mahasiswa/faq" className="flex justify-center items-center gap-2">
+                  <Link href="/mahasiswa/faq" className="flex justify-center items-center gap-2">
                     <CircleHelp width={16} height={16} />
                     FAQ
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -155,7 +157,7 @@ export function AppSidebar({ token }: AppSidebarProps) {
       <SidebarFooter>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <CardFooterSidebar />
+            <CardFooterSidebar dataUser={dataUser?.dataUser} />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent side="right" className="w-[--radix-popper-anchor-width] mb-3">
