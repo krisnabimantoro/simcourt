@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 interface CardClassClientProps {
   classData: { id: string; name: string; code: string };
   token: string;
-  userId: string;
+  userId: number;
 }
 
 export default function CardClassClient({ classData, token, userId }: CardClassClientProps) {
