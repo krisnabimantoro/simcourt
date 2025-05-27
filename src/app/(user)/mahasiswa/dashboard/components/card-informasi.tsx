@@ -11,7 +11,16 @@ export default function CardInformasi() {
         <CardTitle>Informasi Simucourt</CardTitle>
       </CardHeader>
       <CardContent>
-        <Image src={"/logohukum.png"} width={240} height={20} alt={""} />
+        <div className="flex flex-row w-full h-full justify-center items-center gap-2 ">
+          <Image src={"/logohukum.png"} width={200} height={20} alt={""} />
+          <Image
+            src={"/logo_sidebar.png"}
+            width={180}
+            height={20}
+            alt="Logo Laboratorium Hukum"
+            className=" p-2 mt-2 rounded-lg dark:bg-white"
+          />
+        </div>
         <CardDescription className="text-justify">
           SimuCourt dalam sistem ini merupakan kepanjangan dari Sistem Manajemen Simulasi E-Court”. SimuCourt merupakan salah satu sistem
           pembelajaran praktikum pada Laboratorium Huku, menggunakan metode elektronik yang mengadopsi sistem e-court dari Mahkamah Agung.{" "}
