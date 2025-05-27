@@ -20,8 +20,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Simcourt",
-  description: "Sistem Court",
+  title: "SimuCourt",
+  description: "Sistem Manajemen Simulasi E-Court",
 };
 
 export default function RootLayout({
