@@ -22,7 +22,7 @@ export default function Login() {
         {/* <div className=" w-fit h-fit p-6 bg-white">
         </div> */}
         <BlurFade>
-          <Image src="/logo.png" width={210} height={210} alt="Logo Laboratorium Hukum" />
+          <Image src="/logo_simucourt.png" width={500} height={500} alt="Logo Laboratorium Hukum" />
         </BlurFade>
       </div>
       <div className="w-1/2">
