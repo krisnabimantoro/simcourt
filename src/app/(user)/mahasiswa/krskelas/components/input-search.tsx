@@ -2,12 +2,20 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight, Search } from "lucide-react";
 import { useId } from "react";
 
-export default function InputSearchComponents() {
+export default function InputSearchComponents({ onSearchChange }: { onSearchChange: (value: string) => void }) {
   const id = useId();
+
+  console.log("InputSearchComponents rendered with id:", id);
   return (
     <div className="space-y-2 w-full">
       <div className="relative">
-        <Input id={id} className="peer pe-9 ps-9 w-full" placeholder="Search..." type="search" />
+        <Input
+          id={id}
+          className="peer pe-9 ps-9 w-full"
+          placeholder="Search..."
+          type="search"
+          onChange={(e) => onSearchChange(e.target.value)}
+        />
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
           <Search size={16} strokeWidth={2} />
         </div>

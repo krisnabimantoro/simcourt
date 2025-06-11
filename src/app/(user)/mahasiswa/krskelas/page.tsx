@@ -12,11 +12,7 @@ export default async function KrsKelas() {
       <Typography.H2 className="flex flex-col">
         Halaman KRS Kelas <p className="text-sm font-normal">Pilih kelas</p>
       </Typography.H2>
-      <div className="flex gap-2 mt-4 h-full">
-        <div className="flex w-full">
-          <InputSearchComponents />
-        </div>
-      </div>
+     
       <Typography.H3 className="mt-4">List Kelas</Typography.H3>
       <div className="w-full gap-5 flex pt-2">
         <div className="w-1/2">

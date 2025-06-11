@@ -5,6 +5,7 @@ import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast"; // Optional for better UI feedback
 import { useRouter } from "next/navigation";
+import InputSearchComponents from "./input-search";
 
 interface ClientSelectClassProps {
   classes: { id: string; name: string; code: string }[];
@@ -17,7 +18,7 @@ export default function ClientSelectClass({ classes, token, userId }: ClientSele
   const { toast } = useToast(); // Optional: Use a toast for better feedback
   const router = useRouter();
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
-  
+
   const handleUpdateClass = async (classId: string) => {
     setLoading(true);
     try {
@@ -44,10 +45,19 @@ export default function ClientSelectClass({ classes, token, userId }: ClientSele
     }
   };
 
+  const [search, setSearch] = useState("");
+
+  const filteredClasses = classes.filter((cls) => cls.name.toLowerCase().includes(search.toLowerCase()));
   return (
     <div className="space-y-4">
       <Accordion type="single" collapsible className="w-full space-y-2">
-        {classes.map((data) => (
+        <div className="flex gap-2 mt-4 h-full">
+          <div className="flex w-full">
+            <InputSearchComponents onSearchChange={setSearch} />
+          </div>
+        </div>
+
+        {filteredClasses.map((data) => (
           <AccordionItem value={data.id} key={data.id} className="rounded-lg border bg-background px-4 py-1">
             <AccordionTrigger className="py-2 text-[15px] leading-6 hover:no-underline">{data.name}</AccordionTrigger>
             <AccordionContent className="pb-2 text-muted-foreground">
