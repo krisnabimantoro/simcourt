@@ -90,8 +90,6 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
     fetchDataUser();
   }, [token]);
 
-  console.log("Data Pendaftaran:", user);
-  console.log("Data Pendaftaranasd:", idPendaftaranSidang);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -109,7 +107,7 @@ export default function PendaftaranSection({ token, id }: PendaftaranSectionProp
       <Separator />
       <CardPendaftaran data={dataPendaftaran} />
       <CardPembayaran id={id} token={token} />
-      <CardSaluranElektronik id={id} token={token} />
+      <CardSaluranElektronik id={id} token={token} user={user} />
       <CardPembayaranJuruSita token={token} id={id} />
       <CardPanggilanJuruSita id={id} data={dataPendaftaran} token={token} user={user} />
     </div>
