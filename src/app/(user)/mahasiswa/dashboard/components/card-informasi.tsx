@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function CardInformasi() {
   return (
-    <Card className={cn("h-full")}>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Informasi Simucourt</CardTitle>
       </CardHeader>

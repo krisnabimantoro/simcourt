@@ -24,18 +24,19 @@ export default async function DashboardMahasiswa() {
         Halaman Dashboard <p className="text-sm font-normal">Informasi Terkait SimuCourt</p>
       </Typography.H2>
 
-      <div className="flex gap-2 mt-4 h-full">
-        <div className="w-full">
-          <BlurFade delay={0.05}>
+      <div className="flex gap-2 mt-4 items-stretch  relative min-h-[400px]">
+        <div className="flex-1  ">
+          <BlurFade delay={0.05} className="h-full ">
             <CardTatacara />
           </BlurFade>
         </div>
-        <div className="w-1/2 h-full">
-          <BlurFade delay={0.3}>
+        <div className="w-1/3 ">
+          <BlurFade delay={0.3} className="h-full ">
             <CardInformasi />
           </BlurFade>
         </div>
       </div>
+
       <BlurFade delay={0.5}>
         <div className="flex gap-2 mt-2 w-full">
           <div className="w-full flex gap-2">
