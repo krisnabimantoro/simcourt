@@ -20,7 +20,7 @@ export default async function CardAnggota() {
   const userToken = await GetToken();
 
   const dataListGroups = responseListGroups?.data?.[0];
-  console.log("responseListGroups", dataListGroups);
+  console.log("response me ", responseMe);
 
   return (
     <Card className="h-full">
@@ -28,22 +28,24 @@ export default async function CardAnggota() {
         <CardTitle>
           <div className="flex justify-between">
             Anggota Kelompok{" "}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Settings2 className="hover:cursor-pointer" />
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Tambahkan Anggota</DialogTitle>
-                  <DialogDescription>
-                    This action cannot be undone. This will permanently delete your account and remove your data from our servers.
-                  </DialogDescription>
-                  {response && userToken && responseListGroups && (
-                    <TableAnggota response={response} userToken={userToken} listGroups={responseListGroups} />
-                  )}
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
+            {responseMe.data?.status === "koordinator" && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Settings2 className="hover:cursor-pointer" />
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Tambahkan Anggota</DialogTitle>
+                    <DialogDescription>
+                      This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                    </DialogDescription>
+                    {response && userToken && responseListGroups && (
+                      <TableAnggota response={response} userToken={userToken} listGroups={responseListGroups} />
+                    )}
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            )}
           </div>
         </CardTitle>
         <CardDescription>{dataListGroups?.name || "No group name available"} </CardDescription>
@@ -54,7 +56,9 @@ export default async function CardAnggota() {
           item.status === "koordinator" ? (
             <div key={item.id} className="flex justify-between items-center text-sm">
               <p>{item.name}</p>
-              {userToken && <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups} user={item.role} />}
+              {userToken && (
+                <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups} user={item.role} />
+              )}
             </div>
           ) : null
         )}
@@ -67,7 +71,15 @@ export default async function CardAnggota() {
               <div key={item.id} className="flex justify-between items-center text-sm">
                 <p>{item.name}</p>
                 {userToken && (
-                  <ComponentComboboxDemo mahasiswa_id={item.id} token={userToken} listGroups={responseListGroups?.data[0] ?? ""} user={item.role} />
+                  <div className="relative">
+                    <ComponentComboboxDemo
+                      mahasiswa_id={item.id}
+                      token={userToken}
+                      listGroups={responseListGroups?.data[0] ?? ""}
+                      user={item.role}
+                    />
+                    <div className="absolute inset-0 z-10 " />
+                  </div>
                 )}
               </div>
             ) : null

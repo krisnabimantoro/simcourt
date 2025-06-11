@@ -13,9 +13,11 @@ export default async function DashboardMahasiswa() {
   const classId = responseMe?.data?.kelas_id;
   const mahasiswaId = responseMe?.data?.id;
 
-  const responseClass = await GetFetchingData(`v1/classes/${classId}`);
-  console.log("responseClass", responseClass);
-  
+  if (classId) {
+    const responseClass = await GetFetchingData(`v1/classes/${classId}`);
+    console.log("responseClass", responseClass);
+  }
+
   return (
     <div className="w-[calc(100vw-18rem)]  ml-2 ">
       <Typography.H2 className="flex flex-col">
