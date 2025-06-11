@@ -34,6 +34,9 @@ export default async function PersidanganTable({ params }: persidanganProps) {
   const token = (await GetToken()) ?? "";
   const userId = (await GetIdUser()) ?? 0;
 
+  const responseMe = await GetFetchingData("v1/auth/me");
+
+
   return (
     <div className="h-screen w-[calc(100vw-18rem)] flex flex-col ml-3">
       <Typography.H2 className="flex flex-col">
@@ -46,7 +49,9 @@ export default async function PersidanganTable({ params }: persidanganProps) {
 
       <BlurFade delay={0.05}>
         <div className="px-4 mt-6 space-y-2 mb-6">
-          <DialogServer token={token} userId={userId} kategoriSidang={kategori} jenisSidang={jenis} />
+          {responseMe?.data?.role === "kuasa_hukum" && (
+            <DialogServer token={token} userId={userId} kategoriSidang={kategori} jenisSidang={jenis} />
+          )}
           <DataTable data={tasks} columns={columns} />
           {/* <ComponentTablePersidangan /> */}
         </div>
