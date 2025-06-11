@@ -57,9 +57,9 @@ export const columns: ColumnDef<Task>[] = [
           <Badge className="w-fit" variant="outline">
             {statusPembayaran as string}
           </Badge>
-          <Link href={`../persidangan`}>
+          <div >
             <span className="max-w-[500px] truncate font-medium text-blue-600">(Konfirmasi Otomatis)</span>
-          </Link>
+          </div>
         </div>
       );
     },
