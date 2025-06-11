@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { toast } from "@/hooks/use-toast";
 
 const frameworks = [
   { value: "kuasa_hukum", label: "Kuasa Hukum" },
@@ -31,7 +32,6 @@ export function ComponentComboboxDemo({
   const [value, setValue] = React.useState("");
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
 
-  console.log("user", user);
   const handleSelect = async (selectedRole: string) => {
     setValue(selectedRole);
     setOpen(false);
@@ -54,7 +54,9 @@ export function ComponentComboboxDemo({
       }
 
       const data = await res.json();
-      console.log("Role updated successfully:", data);
+      // console.log("Role updated successfully:", data);
+
+      toast({ title: "Role berhasil diganti", variant: "default" });
     } catch (error) {
       console.error("Error updating role:", error);
     }
@@ -65,7 +67,11 @@ export function ComponentComboboxDemo({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-fit justify-between my-1">
-          {user ? frameworks.find((framework) => framework.value === user)?.label : "Pilih Role"}
+          {value
+            ? frameworks.find((framework) => framework.value === value)?.label
+            : user
+            ? frameworks.find((framework) => framework.value === user)?.label
+            : "Pilih Role"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-fit p-0">

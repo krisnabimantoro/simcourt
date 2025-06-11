@@ -11,9 +11,9 @@ import { useEffect } from "react";
 import { delSession } from "@/lib/del-session";
 
 export default function LoginForm() {
-  useEffect(() => {
-    delSession(); // ✅ Call the Server Action inside useEffect()
-  }, []);
+  // useEffect(() => {
+  //   delSession(); // ✅ Call the Server Action inside useEffect()
+  // }, []);
 
   const router = useRouter();
   const { toast } = useToast();
