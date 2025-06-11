@@ -67,9 +67,24 @@ export default async function CardAnggota() {
         <div className="flex flex-col w-full">
           <Typography.H5>Anggota Kelompok</Typography.H5>
           {dataListGroups?.students?.map((item: any) =>
-            item.status === "anggota" ? (
+            item.status === "anggota" && responseMe?.data?.status === "koordinator" ? (
               <div key={item.id} className="flex justify-between items-center text-sm">
                 <p>{item.name}</p>
+                {userToken && (
+                  <div className="relative">
+                    <ComponentComboboxDemo
+                      mahasiswa_id={item.id}
+                      token={userToken}
+                      listGroups={responseListGroups?.data[0] ?? ""}
+                      user={item.role}
+                    />
+                    {/* <div className="absolute inset-0 z-10 " /> */}
+                  </div>
+                )}
+              </div>
+            ) : item.status === "anggota" ? (
+              <div key={item.id} className="flex justify-between items-center text-sm">
+                <p>{item.name} </p>
                 {userToken && (
                   <div className="relative">
                     <ComponentComboboxDemo
