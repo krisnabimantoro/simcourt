@@ -101,12 +101,12 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
       console.error("Failed to fetch data:", error);
     }
   };
-
   useEffect(() => {
-    loadData();
-  }, [id, token]);
+    if (data_user) {
+      loadData();
+    }
+  }, [id, token, data_user]);
 
-  console.log("data sidang coy", dataPersidangan);
   return (
     <div className="w-full space-y-6">
       <Card>
@@ -115,31 +115,37 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
           <CardDescription>PERSIDANGAN NOMOR: 625/Pdt.P/2024/PN Mlg</CardDescription>
         </CardHeader>
         <CardContent>
-          <Dialog open={openCalendar} onOpenChange={setOpenCalendar}>
-            <DialogTrigger asChild>
-              <Button variant={"default"}>
-                <PlusCircle />
-                Tambah Jadwal Persidangan
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>COURT CALENDAR/RENCANA</DialogTitle>
+          {data_user ? (
+            (data_user?.role === "admin" || data_user?.role === "panitera_pengganti") && (
+              <Dialog open={openCalendar} onOpenChange={setOpenCalendar}>
+                <DialogTrigger asChild>
+                  <Button variant={"default"}>
+                    <PlusCircle />
+                    Tambah Jadwal Persidangan
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>COURT CALENDAR/RENCANA</DialogTitle>
 
-                <DialogDescription>Tambah Jadwal Persidangan</DialogDescription>
-                <br />
-                <ModalCourtCalendar
-                  id_persidangan={id}
-                  token={token}
-                  user={data_user}
-                  onUpdateSuccess={() => {
-                    loadData();
-                    setOpenCalendar(false);
-                  }}
-                />
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+                    <DialogDescription>Tambah Jadwal Persidangan</DialogDescription>
+                    <br />
+                    <ModalCourtCalendar
+                      id_persidangan={id}
+                      token={token}
+                      user={data_user}
+                      onUpdateSuccess={() => {
+                        loadData();
+                        setOpenCalendar(false);
+                      }}
+                    />
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            )
+          ) : (
+            <p>Loading data user...</p>
+          )}
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
@@ -148,7 +154,9 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
                 <TableHead>Jam</TableHead>
                 <TableHead>Agenda/Acara Sidang</TableHead>
                 <TableHead className="w-1/2">Keterangan</TableHead>
-                <TableHead>Aksi</TableHead>
+                {data_user
+                  ? (data_user?.role === "admin" || data_user?.role === "panitera_pengganti") && <TableHead>Aksi</TableHead>
+                  : null}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -164,35 +172,39 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
                     <TableCell>{item.agenda}</TableCell>
                     <TableCell>{item.keterangan}</TableCell>
                     <TableCell>
-                      <Dialog open={openEdit} onOpenChange={setOpenEdit}>
-                        <DialogTrigger asChild>
-                          <Pencil className="hover:cursor-pointer" />
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Buat Tundaan Sidang</DialogTitle>
-                            <Separator />
-                            <p className="flex flex-col">
-                              <strong>Tanggal Sidang</strong> {item?.hari_tanggal}
-                            </p>
-                            <p className="flex flex-col">
-                              <strong>Agenda</strong> {item?.agenda}
-                            </p>
+                      {data_user
+                        ? (data_user?.role === "admin" || data_user?.role === "panitera_pengganti") && (
+                            <Dialog open={openEdit} onOpenChange={setOpenEdit}>
+                              <DialogTrigger asChild>
+                                <Pencil className="hover:cursor-pointer" />
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Buat Tundaan Sidang</DialogTitle>
+                                  <Separator />
+                                  <p className="flex flex-col">
+                                    <strong>Tanggal Sidang</strong> {item?.hari_tanggal}
+                                  </p>
+                                  <p className="flex flex-col">
+                                    <strong>Agenda</strong> {item?.agenda}
+                                  </p>
 
-                            <ModalCourtCalendarTundaan
-                              id_persidangan={id}
-                              token={token}
-                              user={data_user}
-                              onUpdateSuccess={() => {
-                                loadData();
-                                setOpenCalendar(false);
-                              }}
-                              id_sidang={relatedPersidangan?.persidangan_id || null} // Use persidangan_id from related data
-                              agendaSidang={item.agenda}
-                            />
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
+                                  <ModalCourtCalendarTundaan
+                                    id_persidangan={id}
+                                    token={token}
+                                    user={data_user}
+                                    onUpdateSuccess={() => {
+                                      loadData();
+                                      setOpenCalendar(false);
+                                    }}
+                                    id_sidang={relatedPersidangan?.persidangan_id || null} // Use persidangan_id from related data
+                                    agendaSidang={item.agenda}
+                                  />
+                                </DialogHeader>
+                              </DialogContent>
+                            </Dialog>
+                          )
+                        : null}
                     </TableCell>
                   </TableRow>
                 );
@@ -296,14 +308,16 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
                           >
                             📄 Lihat Dokumen
                           </button>
-                          <ComponentComboboxVerifikasi
-                            token={token}
-                            user={data_user}
-                            persidangan_id={item?.persidangan_id}
-                            onUpdateSuccess={() => {
-                              loadData();
-                            }}
-                          />
+                          {(data_user?.role === "admin" || data_user?.role === "hakim") && (
+                            <ComponentComboboxVerifikasi
+                              token={token}
+                              user={data_user}
+                              persidangan_id={item?.persidangan_id}
+                              onUpdateSuccess={() => {
+                                loadData();
+                              }}
+                            />
+                          )}
                           {/*                        
                         <button className="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg hover:bg-blue-600">
                           Verifikasi Dokumen
@@ -364,24 +378,26 @@ export default function SectionPersidangan({ token, id, data_user }: Persidangan
           })}
         </CardContent>
       </Card>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant={"default"} className="w-full">
-            <Gavel />
-            Putusan Akhir
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Buat putusan akhir</DialogTitle>
+      {(data_user?.role === "admin" || data_user?.role === "hakim") && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant={"default"} className="w-full">
+              <Gavel />
+              Putusan Akhir
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Buat putusan akhir</DialogTitle>
 
-            <DialogDescription>Pastikan data terinput dengan benar, aksi ini hanya bisa dilakukan sekali</DialogDescription>
-            <br />
+              <DialogDescription>Pastikan data terinput dengan benar, aksi ini hanya bisa dilakukan sekali</DialogDescription>
+              <br />
 
-            <ModalPutusanPersidangan id_persidangan={id} token={token} user={data_user} />
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+              <ModalPutusanPersidangan id_persidangan={id} token={token} user={data_user} />
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      )}
       <Separator />
     </div>
   );

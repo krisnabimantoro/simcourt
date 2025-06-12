@@ -39,7 +39,7 @@ export default function CardPanggilanJuruSita({ id, data, token, user }: { id: a
   const [dataPanggilan, setDataPanggilan] = useState<any>([]);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  
+
   const fetchPembayaranData = async (): Promise<any> => {
     const response = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/panggilan-sidang/detail_pendaftaran:${id}`, {
       method: "GET",
@@ -74,26 +74,29 @@ export default function CardPanggilanJuruSita({ id, data, token, user }: { id: a
       </CardHeader>
       <CardContent>
         <div className="flex  space-x-2">
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button variant={"default"}>Kirim Panggilan/Pemberitahuan</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Kirim Panggilan/Pemberitahuan</DialogTitle>
-                <ModalPersidanganPertama
-                  id_pendaftaratan={id}
-                  data={data}
-                  token={token}
-                  user={user}
-                  onUpdateSuccess={() => {
-                    loadData();
-                    setOpen(false);
-                  }}
-                />
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+          {user?.role === "juru_sita" ||
+            (user?.role === "admin" && (
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                  <Button variant={"default"}>Kirim Panggilan/Pemberitahuan</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Kirim Panggilan/Pemberitahuan</DialogTitle>
+                    <ModalPersidanganPertama
+                      id_pendaftaratan={id}
+                      data={data}
+                      token={token}
+                      user={user}
+                      onUpdateSuccess={() => {
+                        loadData();
+                        setOpen(false);
+                      }}
+                    />
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            ))}
 
           <Button variant={"outline"}>Cetak</Button>
         </div>
