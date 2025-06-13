@@ -1,10 +1,18 @@
+"use client";
+
 import Image from "next/image";
 import LoginForm from "./components/login-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SignUpForm from "./components/signup-form";
 import BlurFade from "@/components/ui/blur-fade";
+import { useState } from "react";
 
 export default function Login() {
+  const [tab, setTab] = useState("login");
+
+  const handleSignupSuccess = () => {
+    setTab("login");
+  };
   return (
     <div className="h-screen w-screen flex flex-col md:flex-row items-center justify-center gap-4">
       {/* Bagian kiri (disembunyikan di mobile) */}
@@ -31,7 +39,7 @@ export default function Login() {
 
         <div className="w-full md:w-1/2 px-4 md:px-0">
           <BlurFade delay={0.25}>
-            <Tabs defaultValue="login" className="w-full max-w-[400px] mx-auto">
+            <Tabs defaultValue="login" className="w-full max-w-[400px] mx-auto" value={tab} onValueChange={setTab}>
               <TabsList>
                 <TabsTrigger value="login">Login</TabsTrigger>
                 <TabsTrigger value="signup">Buat Akun</TabsTrigger>
@@ -40,7 +48,7 @@ export default function Login() {
                 <LoginForm />
               </TabsContent>
               <TabsContent value="signup">
-                <SignUpForm />
+                <SignUpForm onSuccess={handleSignupSuccess} />
               </TabsContent>
             </Tabs>
           </BlurFade>

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
-const SignUpForm = () => {
+const SignUpForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const router = useRouter();
   const { toast } = useToast();
   // State untuk form input
@@ -50,6 +50,9 @@ const SignUpForm = () => {
       const result = await response.json();
 
       if (response.ok) {
+        if (onSuccess) {
+          onSuccess();
+        }
         toast({ title: "Pendaftaran Berhasil", description: "Silakan login!", variant: "default" });
         // Redirect ke halaman login dan trigger tab login
       } else {
