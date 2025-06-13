@@ -12,7 +12,7 @@ export default function CardInformasi() {
       </CardHeader>
       <CardContent>
         <div className="flex flex-row w-full h-full justify-center items-center gap-2 ">
-          <Image src={"/logohukum.png"} width={200} height={20} alt={""} />
+          <Image src={"/logohukum.png"} width={200} height={20} alt={""} className="p-2 mt-2 rounded-lg dark:bg-white" />
           <Image
             src={"/logo_sidebar.png"}
             width={180}
