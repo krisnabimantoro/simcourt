@@ -49,7 +49,7 @@ export default async function PersidanganTable({ params }: persidanganProps) {
 
       <BlurFade delay={0.05}>
         <div className="px-4 mt-6 space-y-2 mb-6">
-          {responseMe?.data?.role === "kuasa_hukum" && (
+          {(responseMe?.data?.role === "kuasa_hukum" ||responseMe?.data?.role === "admin" ) && (
             <DialogServer token={token} userId={userId} kategoriSidang={kategori} jenisSidang={jenis} />
           )}
           <DataTable data={tasks} columns={columns} />
