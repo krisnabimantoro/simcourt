@@ -14,7 +14,17 @@ import { useState } from "react";
 import InputWithLabelReq from "@/components/ui/input-with-label-req";
 import FileInputFormReq from "../../../[kategori]/[jenis]/components/file-input";
 
-export default function ModalDokumenPersidangan({ id_persidangan, token, user }: { id_persidangan: any; token: any; user: any }) {
+export default function ModalDokumenPersidangan({
+  id_persidangan,
+  token,
+  user,
+  dokumen_upload,
+}: {
+  id_persidangan: any;
+  token: any;
+  user: any;
+  dokumen_upload?: any;
+}) {
   console.log("ID persidangan:", id_persidangan);
   const NEXT_PUBLIC_URL_FETCH = process.env.NEXT_PUBLIC_URL_FETCH;
 
@@ -33,9 +43,7 @@ export default function ModalDokumenPersidangan({ id_persidangan, token, user }:
   const handleChange = (name: string, value: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setForm({ ...form, [e.target.name]: e.target.value });
-//   };
+
   const handleFileChange = (name: string, file: File | null) => {
     setForm((prev) => ({ ...prev, [name]: file }));
   };
@@ -53,40 +61,51 @@ export default function ModalDokumenPersidangan({ id_persidangan, token, user }:
     if (form.upload_dokumen) {
       formData.append("upload_dokumen", form.upload_dokumen); // file object
     }
-    // const payload = {
-    //   persidangan_id: form.persidangan_id,
-    //   diupload_oleh_status: form.diupload_oleh_status,
-    //   diupload_oleh_email: form.diupload_oleh_email,
-    //   status: form.status,
-    //   jenis: form.jenis,
-    //   judul_dokumen: form.judul_dokumen,
-    //   catatan: form.catatan,
-    //   upload_dokumen: form.upload_dokumen, // misalnya nama file atau URL
-    // };
 
-    // console.log("Payload:", JSON.stringify(payload));
     console.log("FormData:", formData);
     console.log("FormData keys:", Array.from(formData.keys())); // Log the keys in FormData
     console.log("FormData values:", Array.from(formData.values())); // Log the values in FormData
     try {
-      const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/dokumen-persidangan`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-        body: formData,
-      });
+      if (dokumen_upload && form.upload_dokumen) {
+        formData.append("upload_dokumen", form.upload_dokumen);
+        const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/dokumen-persidangan`, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+          body: formData,
+        });
 
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Gagal membuat dokumen sidang:", errorText);
-        alert("Gagal mengirim dokumen sidang");
-        return;
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error("Gagal membuat dokumen sidang:", errorText);
+          alert("Gagal mengirim dokumen sidang");
+          return;
+        }
+
+        const data = await res.json();
+        console.log("Response data:", data);
+      } else {
+        const res = await fetch(`${NEXT_PUBLIC_URL_FETCH}/api/v1/dokumen-persidangan`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error("Gagal membuat dokumen sidang:", errorText);
+          alert("Gagal mengirim dokumen sidang");
+          return;
+        }
+
+        const data = await res.json();
+        console.log("Response data:", data);
       }
-
-      const data = await res.json();
-      console.log("Response data:", data);
 
       alert("Data berhasil dikirim");
     } catch (err) {

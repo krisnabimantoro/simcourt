@@ -1,8 +1,10 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import GetFetchingDataSelected from "@/lib/fetching-component-get-selected";
 
-export default async function CardKelompok() {
+export default async function CardKelompok({ id }: { id: number }) {
   // const response = await GetFetchingDataSelected
+  const response = await GetFetchingDataSelected("v1/detail-kelompok/mahasiswa", id);
+  console.log("Response Detail Kelompok:", response);
   return (
     <Card className="h-full">
       <CardHeader>

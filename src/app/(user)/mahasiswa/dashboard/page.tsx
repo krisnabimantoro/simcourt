@@ -12,6 +12,7 @@ export default async function DashboardMahasiswa() {
   const responseMe = await GetFetchingData("v1/auth/me");
   const classId = responseMe?.data?.kelas_id;
   const mahasiswaId = responseMe?.data?.id;
+  console.log("mahasiswa ID", mahasiswaId);
 
   if (classId) {
     const responseClass = await GetFetchingData(`v1/classes/${classId}`);
@@ -44,7 +45,7 @@ export default async function DashboardMahasiswa() {
               <CardAnggota />
             </div>
             <div className="w-1/2">
-              <CardKelompok />
+              <CardKelompok id={mahasiswaId} />
             </div>
           </div>
           <div className="w-1/2">
