@@ -24,5 +24,28 @@ services:
       - DB_NAME=${DB_NAME}
     restart: unless-stopped
 
+  nextjs-app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: simcourt-client-v0-dev
+    ports:
+      - "3032:3002"
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_URL_FETCH=${NEXT_PUBLIC_URL_FETCH}
+      - URL_AUTH=${URL_AUTH}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - API_KEY_DAERAH=${API_KEY_DAERAH}
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+    restart: unless-stopped
+
 volumes:
   node_modules:
