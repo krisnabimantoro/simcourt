@@ -56,11 +56,31 @@ const SignUpForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         toast({ title: "Pendaftaran Berhasil", description: "Silakan login!", variant: "default" });
         // Redirect ke halaman login dan trigger tab login
       } else {
-        toast({ title: "Pendaftaran Gagal", description: result.message || "Terjadi kesalahan", variant: "destructive" });
+        if (result.errors && typeof result.errors === "object") {
+          const messages: string[] = Object.values(result.errors).flat() as string[];
+
+          toast({
+            title: "Pendaftaran Gagal",
+            description: (
+              <ul className="list-disc pl-5 space-y-1">
+                {messages.map((msg, i) => (
+                  <li key={i}>{msg}</li>
+                ))}
+              </ul>
+            ),
+            variant: "destructive",
+          });
+        } else {
+          // Jika error bukan validasi (misalnya server error 500)
+          toast({
+            title: "Pendaftaran Gagal",
+            description: result.message || "Terjadi kesalahan",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
-      toast({ title: "Error", description: "Gagal menghubungi server", variant: "destructive" });
-      console.error("Error:", error);
+      toast({ title: "Error", description: String(error), variant: "destructive" });
     }
   };
 
