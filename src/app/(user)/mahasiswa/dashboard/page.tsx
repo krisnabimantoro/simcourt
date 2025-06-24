@@ -12,6 +12,7 @@ export default async function DashboardMahasiswa() {
   const responseMe = await GetFetchingData("v1/auth/me");
   const classId = responseMe?.data?.kelas_id;
   const mahasiswaId = responseMe?.data?.id;
+  console.log("responseMe", responseMe);
   console.log("mahasiswa ID", mahasiswaId);
 
   if (classId) {

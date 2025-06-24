@@ -4,6 +4,7 @@ import GetToken from "@/lib/get-token";
 import { redirect } from "next/navigation";
 export default async function GetFetchingData(url: string) {
   const token = (await GetToken()) ?? "";
+  console.log("Token:", token);
   const url_auth = process.env.URL_AUTH;
 
   const response = await fetch(`${url_auth}/api/${url}`, {
